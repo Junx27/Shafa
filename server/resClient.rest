@@ -1,0 +1,19 @@
+GET http://localhost:5000/admin
+
+//Create a admin
+###
+POST http://localhost:5000/admin
+Content-Type: application/json
+
+{
+    "nama": "baron",
+    "email": "baron@gmail.com",
+    "password": "123456",
+    "confPassword": "123456",
+    "no_tlp": "090199186216",
+    "no_rek": "86865375165361",
+    "image": "ini adalah image file"
+}
+
+###
+GET http://localhost:5000/admin/3f4b4fa5-ebc3-4067-8d31-bc2080538899

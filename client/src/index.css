@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.material-symbols-outlined {
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+}
+.box-login {
+  width: 480px;
+  height: 700px;
+  border-radius: 37px;
+  background-color: #fcfff7;
+}
+.sidebar {
+  width: 320px;
+  height: 780px;
+  border: 1px solid #a7e934;
+  border-bottom-right-radius: 20px;
+  border-top-right-radius: 20px;
+  background-color: #efffe0;
+  box-shadow: rgba(56, 231, 103, 0.2) 0px 7px 29px 0px;
+}
+.box-models {
+  width: 235px;
+  height: 140px;
+  padding: 20px;
+  border: 1px solid #a7e934;
+  background-color: #efffe0;
+  border-radius: 10px;
+}
