@@ -30,7 +30,7 @@ function Bantuan() {
       >
         <div className="flex intems-center">
           <span className="material-symbols-outlined text-sm">arrow_back</span>
-          <p className="text-sm">Kembali</p>
+          <p className="text-sm hover:text-lime-400">Kembali</p>
         </div>
       </button>
       <button
@@ -54,7 +54,7 @@ function Bantuan() {
           Mendaftar Sebagai Konsumen ?
         </h1>
       </div>
-      <div className="flex flex-col mt-10">
+      <div className="flex flex-col mt-10 mx-16">
         {bantuan.map((row, index) => (
           <div
             key={index}
@@ -62,7 +62,7 @@ function Bantuan() {
           >
             <div className="flex flex-row">
               <div>
-                <h1 className="text-center bg-lime-400 w-32 py-2 rounded-l-md font-bold absolute left-[110px] shadow-md z-0">
+                <h1 className="text-center bg-lime-400 w-32 py-2 rounded-l-md font-bold absolute left-[150px] shadow-md z-0">
                   {row.step}
                 </h1>
               </div>
@@ -70,7 +70,9 @@ function Bantuan() {
                 <h1 className="mb-3">{row.nama}</h1>
                 <div className="flex flex-col border border-2 border-dotted border-lime-400 p-2 pb-5 bg-lime-100">
                   <label className="text-xl mb-3">{row.label}</label>
-                  <div className="bg-lime-400 rounded-md py-6 px-10 w-96 ml-3"></div>
+                  <div className="bg-lime-400 rounded-md py-6 px-10 w-96 ml-3 text-center">
+                    {row.btn}
+                  </div>
                 </div>
               </div>
             </div>

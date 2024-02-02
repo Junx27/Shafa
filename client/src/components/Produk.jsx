@@ -82,7 +82,7 @@ function Produk() {
             {showDeskripsi ? "move_group" : "pip"}
           </span>
           <p className="text-xs">
-            {showDeskripsi ? "Lihat deskripsi" : "Tutup deskripsi"}
+            {showDeskripsi ? "Tutup deskripsi" : "Lihat deskripsi"}
           </p>
         </div>
       </button>

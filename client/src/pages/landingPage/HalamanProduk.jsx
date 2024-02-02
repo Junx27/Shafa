@@ -51,7 +51,7 @@ function HalamanProduk() {
       >
         <div className="flex intems-center">
           <span className="material-symbols-outlined text-sm">arrow_back</span>
-          <p className="text-sm">Kembali</p>
+          <p className="text-sm hover:text-lime-400">Kembali</p>
         </div>
       </button>
       <button
