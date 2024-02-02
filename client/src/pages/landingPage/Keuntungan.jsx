@@ -49,7 +49,7 @@ function Keuntungan() {
       </button>
       <div>
         <h1 className="text-3xl font-bold text-green-600">
-          Selamat Datang <br />
+          Keuntungan Konsumen <br />
           di Shafa Farm Hidroponik
         </h1>
       </div>
