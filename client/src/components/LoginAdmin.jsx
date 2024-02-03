@@ -35,7 +35,7 @@ function Login() {
       className="mx-auto p-10 box-login border border-lime-400 shadow-lg shadow-lime-600"
       onSubmit={Auth}
     >
-      <img src={Logo} className="w-16 mx-auto" alt="" />
+      <img src={Logo} className="w-16 mx-auto saturate-200" alt="" />
       {isError && <p className="text-red-500 absolute mt-7">{message}</p>}
       <div className="grid grid-flow-row auto-rows-max mt-16">
         <label htmlFor="email">Email</label>

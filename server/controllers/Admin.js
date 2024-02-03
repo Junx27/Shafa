@@ -1,6 +1,8 @@
 import Admin from "../models/AdminModel.js";
 import argon2 from "argon2";
 import path from "path";
+import fs from "fs";
+import { fileURLToPath } from "url";
 
 export const getAdmin = async (req, res) => {
   try {
@@ -30,6 +32,7 @@ export const createAdmin = async (req, res) => {
       .status(400)
       .json({ msg: "password dan confirm password tidak cocok" });
   const hashPassword = await argon2.hash(password);
+  const gambar_sementara = "belum";
   if (req.files === null) {
     try {
       await Admin.create({
@@ -38,7 +41,7 @@ export const createAdmin = async (req, res) => {
         password: hashPassword,
         no_tlp: no_tlp,
         no_rek: no_rek,
-        image: "http://localhost:5000/images/defaultProfile.png",
+        image: gambar_sementara,
       });
       res.status(201).json({ msg: "Register Berhasil" });
     } catch (error) {
@@ -115,6 +118,7 @@ export const updateAdmin = async (req, res) => {
   } else {
     hashPassword = await argon2.hash(password);
   }
+  const gambar_sementara = "belum";
   if (req.files === null) {
     try {
       await Admin.update(
@@ -124,7 +128,7 @@ export const updateAdmin = async (req, res) => {
           password: hashPassword,
           no_tlp: no_tlpUpdate,
           no_rek: no_rekUpdate,
-          image: "http://localhost:5000/images/defaultProfile.png",
+          image: gambar_sementara,
         },
         {
           where: {
@@ -181,12 +185,27 @@ export const deleteAdmin = async (req, res) => {
     },
   });
   if (!admin) return res.status(404).json({ msg: "User tidak ditemukan" });
+  const imagePath = admin.image;
+  const __dirname = path.dirname(fileURLToPath(import.meta.url));
   try {
     await Admin.destroy({
       where: {
         id: admin.id,
       },
     });
+    if (imagePath !== "belum") {
+      const fileName = imagePath.split("/").pop();
+      const filePath = path.join(__dirname, "../public/images/", fileName);
+      console.log(filePath);
+
+      fs.unlink(filePath, (err) => {
+        if (err) {
+          console.error("Gagal menghapus gambar:", err);
+          return res.status(500).json({ msg: "Gagal menghapus gambar" });
+        }
+        console.log("Gambar berhasil dihapus");
+      });
+    }
     res.status(200).json({ msg: "User deleted" });
   } catch (error) {
     res.status(400).json({ msg: error.message });

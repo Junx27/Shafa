@@ -22,11 +22,9 @@ function Produk() {
       console.error("Gagal mengambil data produk", error);
     }
   };
-
   useEffect(() => {
     produkList();
   }, []);
-
   const hapus = async (produkId) => {
     try {
       await axios.delete(`http://localhost:5000/produk/${produkId}`);
@@ -35,16 +33,6 @@ function Produk() {
       console.error("Gagal menghapus data produk", error);
     }
   };
-
-  const hapusSemua = async () => {
-    try {
-      await axios.delete("http://localhost:5000/produk");
-      setProduk([]);
-    } catch (error) {
-      console.error("Gagal menghapus semua data produk", error);
-    }
-  };
-
   const formatRupiah = (number) => {
     const formatter = new Intl.NumberFormat("id-ID", {
       style: "currency",
@@ -70,7 +58,6 @@ function Produk() {
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
-
   return (
     <div>
       <button
@@ -84,15 +71,6 @@ function Produk() {
           <p className="text-xs">
             {showDeskripsi ? "Tutup deskripsi" : "Lihat deskripsi"}
           </p>
-        </div>
-      </button>
-      <button
-        onClick={hapusSemua}
-        className="text-lime-600 absolute top-40 right-[170px] hover:text-lime-700"
-      >
-        <div className="flex items-center">
-          <span className="material-symbols-outlined mr-2">delete</span>
-          <p className="text-xs">Hapus semua</p>
         </div>
       </button>
       <div className="absolute top-[100px] right-10">
@@ -115,7 +93,11 @@ function Produk() {
         {filteredProduk.map((row, index) => (
           <div className="bg-lime-100 shadow-md rounded-b-lg" key={index}>
             <img
-              src={row.gambar_produk}
+              src={
+                row.gambar_produk === "belum"
+                  ? "http://localhost:5000/images/defaultProductImage.jpg"
+                  : row.gambar_produk
+              }
               alt=""
               className="rounded-t-lg brightness-90 hover:brightness-75 z-0 object-cover h-48 w-96"
             />

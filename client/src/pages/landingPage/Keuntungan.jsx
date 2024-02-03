@@ -30,13 +30,13 @@ function Keuntungan() {
         className={
           changeColor
             ? "sticky top-5 left-5 z-20 bg-lime-200 p-2 rounded-md transition duration-1000"
-            : "sticky top-5 left-5 z-20 bg-white p-2 rounded-md"
+            : "sticky top-5 left-5 z-20 bg-white p-2 rounded-md hover:bg-lime-200 hover:p-2 hover:rounded-md"
         }
         onClick={() => navigate("/bantuanpendaftaran")}
       >
         <div className="flex intems-center">
           <span className="material-symbols-outlined text-sm">arrow_back</span>
-          <p className="text-sm hover:text-lime-400">Kembali</p>
+          <p className="text-sm">Kembali</p>
         </div>
       </button>
       <div className="mx-32">
@@ -54,7 +54,9 @@ function Keuntungan() {
             <div className="flex justify-between">
               <h1
                 className={
-                  selectedDescription === index ? "font-bold mb-5" : ""
+                  selectedDescription === index
+                    ? "mb-5 transition-all duration-1000"
+                    : ""
                 }
               >
                 {row.nama}
@@ -64,7 +66,7 @@ function Keuntungan() {
                   <span
                     className={`material-symbols-outlined cursor-pointer ${
                       selectedDescription === index
-                        ? "text-red-400"
+                        ? "text-red-400 transition-all duration-1000"
                         : "text-lime-600"
                     }`}
                   >

@@ -16,7 +16,15 @@ function Admin() {
       <div className="flex flex-row items-center">
         Hi,
         <p className="font-bold ml-2 capitalize">{profile.nama}</p>
-        <img src={profile.image} alt="" className="w-10 ml-5 rounded-full" />
+        <img
+          src={
+            profile.image === "belum"
+              ? "http://localhost:5000/images/defaultProfile.png"
+              : profile.image
+          }
+          alt=""
+          className="w-10 ml-5 rounded-full"
+        />
       </div>
     </div>
   );

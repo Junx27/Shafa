@@ -23,14 +23,14 @@ function Bantuan() {
       <button
         className={
           changeColor
-            ? "sticky top-5 left-5 z-20 bg-lime-200 p-2 rounded-md transition duration-1000"
-            : "sticky top-5 left-5 z-20 bg-white p-2 rounded-md"
+            ? "sticky top-5 left-5 z-20 bg-lime-300 hover:bg-lime-400 p-2 rounded-md transition duration-1000"
+            : "sticky top-5 left-5 z-20 bg-white p-2 rounded-md hover:bg-lime-200 hover:p-2 hover:rounded-md"
         }
         onClick={() => navigate("/halamanproduk")}
       >
         <div className="flex intems-center">
           <span className="material-symbols-outlined text-sm">arrow_back</span>
-          <p className="text-sm hover:text-lime-400">Kembali</p>
+          <p className="text-sm">Kembali</p>
         </div>
       </button>
       <button
@@ -49,12 +49,18 @@ function Bantuan() {
         </div>
       </button>
       <div>
-        <h1 className=" mx-32 text-3xl font-bold text-green-600">
+        <h1
+          className={`mx-32 text-3xl font-bold text-green-600 pl-10 pr-20 -mt-10 pb-5 pt-10 w-[650px] fixed z-30 transition-all duration-1000 ${
+            changeColor
+              ? "bg-white rounded-b-lg -mt-[100px] transition-all duration-1000"
+              : ""
+          }`}
+        >
           Bagaimana Cara <br />
           Mendaftar Sebagai Konsumen ?
         </h1>
       </div>
-      <div className="flex flex-col mt-10 mx-16">
+      <div className="flex flex-col mt-32 mx-16">
         {bantuan.map((row, index) => (
           <div
             key={index}

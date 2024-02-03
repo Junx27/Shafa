@@ -13,6 +13,12 @@ import Produk from "./pages/admin/Produk";
 import Promo from "./pages/admin/Promo";
 import Riwayat from "./pages/admin/Riwayat";
 import ScrollToTop from "./components/layout/SrollToTop";
+import Home from "./pages/konsumen/Home";
+import RiwayatKonsumen from "./pages/konsumen/History";
+import Keranjang from "./pages/konsumen/Keranjang";
+import Faq from "./pages/konsumen/Faq";
+import Profile from "./pages/konsumen/Profile";
+import ProdukKonsumen from "./pages/konsumen/Produk";
 
 function App() {
   return (
@@ -32,6 +38,12 @@ function App() {
         <Route path="/riwayat" Component={Riwayat} />
         <Route path="/pengaturan" Component={Pengaturan} />
         <Route path="/kritik" Component={Kritik} />
+        <Route path="/home" Component={Home} />
+        <Route path="/riwayatkonsumen" Component={RiwayatKonsumen} />
+        <Route path="/keranjang" Component={Keranjang} />
+        <Route path="/faq" Component={Faq} />
+        <Route path="/profile" Component={Profile} />
+        <Route path="/produkkonsumen" Component={ProdukKonsumen} />
       </Routes>
     </div>
   );

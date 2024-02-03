@@ -9,7 +9,7 @@ function Login() {
   };
   return (
     <div className="mx-auto p-10 box-login border border-lime-200 shadow-lg shadow">
-      <img src={Logo} className="w-16 mx-auto" alt="" />
+      <img src={Logo} className="w-16 mx-auto saturate-200" alt="" />
       <div className="grid grid-flow-row auto-rows-max mt-16">
         <label htmlFor="email">Email</label>
         <input

@@ -19,7 +19,7 @@ function SideNavbar() {
     <div className="sidebar fixed top-0">
       <div className="flex flex-col">
         <div className="w-16 mx-auto mt-8">
-          <img src={Logo} alt="" />
+          <img src={Logo} alt="" className="saturate-200" />
         </div>
         <div className="flex flex-col mt-10">
           {navbar.map((item) => {

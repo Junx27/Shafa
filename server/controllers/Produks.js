@@ -14,11 +14,12 @@ export const getProduks = async (req, res) => {
         "harga_produk",
         "deskripsi_produk",
         "gambar_produk",
+        "admin_id",
       ],
       include: [
         {
           model: Admin,
-          attributes: ["nama", "email"],
+          attributes: ["nama", "email", "uuid"],
         },
       ],
     });
@@ -62,36 +63,51 @@ export const getProduksById = async (req, res) => {
 export const createProduks = async (req, res) => {
   const { nama_produk, harga_produk, deskripsi_produk, gambar_produk } =
     req.body;
-  if (req.files === null)
-    return res.status(404).json({ msg: "Silahkan masukan gambar" });
-  const file = req.files.gambar_produk;
-  const fileSize = file.data.length;
-  const ext = path.extname(file.name);
-  const fileName = file.md5 + ext;
-  const url = `${req.protocol}://${req.get("host")}/images/${fileName}`;
-  const allowedType = [".png", ".jpg", ".jpeg"];
-
-  if (!allowedType.includes(ext.toLowerCase()))
-    return res.status(422).json({ msg: "Invalid Images" });
-  if (fileSize > 5000000)
-    return res.status(422).json({ msg: "Image must be less than 5 MB" });
-
-  file.mv(`./public/images/${fileName}`, async (err) => {
-    if (err) return res.status(500).json({ msg: err.message });
+  const gambar_sementara = "belum";
+  if (req.files === null) {
     try {
       await Produks.create({
         nama_produk: nama_produk,
         harga_produk: harga_produk,
         deskripsi_produk: deskripsi_produk,
-        gambar_produk: url,
+        gambar_produk: gambar_sementara,
         admin_id: req.adminId,
         adminId: req.adminId,
       });
-      res.status(201).json({ msg: "Product Created Successfuly" });
+      res.status(201).json({ msg: "Produk berhasil ditambahkan" });
     } catch (error) {
-      res.status(400).json({ msg: "Product Created Gagal" });
+      res.status(400).json({ msg: "Product gagal dibuat" });
     }
-  });
+  } else {
+    const file = req.files.gambar_produk;
+    const fileSize = file.data.length;
+    const ext = path.extname(file.name);
+    const fileName = file.md5 + ext;
+    const url = `${req.protocol}://${req.get("host")}/images/${fileName}`;
+    const allowedType = [".png", ".jpg", ".jpeg"];
+
+    if (!allowedType.includes(ext.toLowerCase()))
+      return res.status(422).json({ msg: "Gambar salah" });
+    if (fileSize > 5000000)
+      return res.status(422).json({ msg: "Gambar dibawah 5 Mb" });
+
+    file.mv(`./public/images/${fileName}`, async (err) => {
+      if (err) return res.status(500).json({ msg: err.message });
+      try {
+        await Produks.create({
+          nama_produk: nama_produk,
+          harga_produk: harga_produk,
+          deskripsi_produk: deskripsi_produk,
+          gambar_produk: url,
+          admin_id: req.adminId,
+          adminId: req.adminId,
+        });
+        res.status(201).json({ msg: "Product berhasil ditambahkan" });
+      } catch (error) {
+        res.status(400).json({ msg: "Product gagal dibuat" });
+      }
+    });
+  }
 };
 export const updateProduks = async (req, res) => {
   try {
@@ -121,9 +137,9 @@ export const updateProduks = async (req, res) => {
             },
           }
         );
-        res.status(200).json({ msg: "Product updated successfuly" });
+        res.status(200).json({ msg: "Produk berhasil diupdate" });
       } catch (error) {
-        res.status(400).json({ msg: "Product update Gagal" });
+        res.status(400).json({ msg: "Produk gagal diupdate" });
       }
     } else {
       const file = req.files.gambar_produk;
@@ -134,9 +150,9 @@ export const updateProduks = async (req, res) => {
       const allowedType = [".png", ".jpg", ".jpeg"];
 
       if (!allowedType.includes(ext.toLowerCase()))
-        return res.status(422).json({ msg: "Invalid Images" });
+        return res.status(422).json({ msg: "Gambar salah" });
       if (fileSize > 5000000)
-        return res.status(422).json({ msg: "Image must be less than 5 MB" });
+        return res.status(422).json({ msg: "Gambar kurang dari 5 Mb" });
 
       file.mv(`./public/images/${fileName}`, async (err) => {
         if (err) return res.status(500).json({ msg: err.message });
@@ -170,9 +186,9 @@ export const updateProduks = async (req, res) => {
               }
             });
           }
-          res.status(200).json({ msg: "Product updated successfuly" });
+          res.status(200).json({ msg: "Produk berhasil diupdate" });
         } catch (error) {
-          res.status(400).json({ msg: "Product update Gagal" });
+          res.status(400).json({ msg: "Produk gagal diupdate" });
         }
       });
     }
@@ -195,7 +211,7 @@ export const deleteProduks = async (req, res) => {
         id: produk.id,
       },
     });
-    if (imagePath) {
+    if (imagePath !== "belum") {
       const fileName = imagePath.split("/").pop();
       const filePath = path.join(__dirname, "../public/images/", fileName);
       console.log(filePath);
@@ -208,22 +224,7 @@ export const deleteProduks = async (req, res) => {
         console.log("Gambar berhasil dihapus");
       });
     }
-
     res.status(200).json({ msg: "Produk berhasil dihapus" });
-  } catch (error) {
-    res.status(500).json({ msg: error.message });
-  }
-};
-
-export const deleteAllProduks = async (req, res) => {
-  try {
-    await Produks.destroy({
-      where: {},
-      truncate: {
-        cascade: true,
-      },
-    });
-    res.status(200).json({ msg: "Semua produk berhasil dihapus" });
   } catch (error) {
     res.status(500).json({ msg: error.message });
   }

@@ -39,19 +39,20 @@ function HalamanProduk() {
     });
     return formatter.format(number);
   };
+  console.log(produk.gambar_produk);
   return (
     <div className="mt-10">
       <button
         className={
           changeColor
-            ? "sticky top-5 left-5 z-20 bg-lime-200 p-2 rounded-md transition duration-1000"
-            : "sticky top-5 left-5 z-20 bg-white p-2 rounded-md"
+            ? "sticky top-5 left-5 z-20 bg-lime-300 hover:bg-lime-400 p-2 rounded-md transition duration-1000"
+            : "sticky top-5 left-5 z-20 bg-white p-2 rounded-md hover:bg-lime-200 hover:p-2 hover:rounded-md"
         }
         onClick={() => navigate("/")}
       >
         <div className="flex intems-center">
           <span className="material-symbols-outlined text-sm">arrow_back</span>
-          <p className="text-sm hover:text-lime-400">Kembali</p>
+          <p className="text-sm">Kembali</p>
         </div>
       </button>
       <button
@@ -63,27 +64,39 @@ function HalamanProduk() {
         onClick={() => navigate("/bantuanpendaftaran")}
       >
         <div className="flex intems-center">
-          <p className="text-sm">Selanjutnya</p>
+          <p className="text-sm hover:text-lime-600">Selanjutnya</p>
           <span className="material-symbols-outlined text-sm">
             arrow_forward
           </span>
         </div>
       </button>
-      <div className="mt-0 mx-32">
-        <h1 className="text-3xl font-bold text-green-600">Produk Kami</h1>
-        <p className="mt-8 w-[700px]">
-          Kami berkomitmen memberikan melon berkualitas terbaik yang dihasilkan
-          melalui metode hidroponik yang mengutamakan kualitas, kebersihan, dan
-          kesegaran.
-        </p>
+      <div className="mx-32">
+        <div
+          className={`w-[750px] p-5 -ml-5 -mt-10 fixed z-30 transition-all duration-1000 ${
+            changeColor
+              ? "bg-white rounded-b-lg -mt-[75px] transition-all duration-1000"
+              : ""
+          }`}
+        >
+          <h1 className="text-3xl font-bold text-green-600">Produk Kami</h1>
+          <p className="mt-8 w-[700px]">
+            Kami berkomitmen memberikan melon berkualitas terbaik yang
+            dihasilkan melalui metode hidroponik yang mengutamakan kualitas,
+            kebersihan, dan kesegaran.
+          </p>
+        </div>
       </div>
-      <div className="flex flex-col mx-32">
+      <div className="flex flex-col mx-32 mt-32">
         {produk.map((row, index) => (
           <div key={index} className="w-[700px] h-[400px] mt-10 relative">
             <div className="bg-lime-50 rounded-lg">
               <div className="flex flex-row shadow rounded-r-lg">
                 <img
-                  src={row.gambar_produk}
+                  src={
+                    row.gambar_produk === "belum"
+                      ? "http://localhost:5000/images/defaultProductImage.jpg"
+                      : row.gambar_produk
+                  }
                   alt=""
                   className="object-cover h-96 w-96 rounded-l-lg mr-10"
                 />
