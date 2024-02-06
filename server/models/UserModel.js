@@ -1,6 +1,5 @@
 import { Sequelize } from "sequelize";
 import db from "../config/Database.js";
-import Admin from "./AdminModel.js";
 
 const { DataTypes } = Sequelize;
 
@@ -59,8 +58,8 @@ const Users = db.define(
         notEmpty: true,
       },
     },
-    admin_id: {
-      type: DataTypes.INTEGER,
+    status_konsumen: {
+      type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notEmpty: true,
@@ -71,6 +70,4 @@ const Users = db.define(
     freezeTableName: true,
   }
 );
-Admin.hasMany(Users, { onDelete: "CASCADE" });
-Users.belongsTo(Admin, { foreignKey: "admin_id", onDelete: "CASCADE" });
 export default Users;

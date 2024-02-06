@@ -45,6 +45,13 @@ const Produks = db.define(
         notEmpty: true,
       },
     },
+    status_produk: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
     admin_id: {
       type: DataTypes.INTEGER,
       allowNull: false,

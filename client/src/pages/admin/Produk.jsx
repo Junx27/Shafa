@@ -2,7 +2,7 @@ import Admin from "../../components/Admin";
 import SideNavbar from "../../components/SideNavbar";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { AdminMe } from "../../features/authSliceAdmin";
+import { meAdmin } from "../../features/AuthSlice";
 import { useEffect, useState } from "react";
 import CreateProduk from "../../components/layout/CreateProduk";
 import ProdukList from "../../components/Produk";
@@ -10,10 +10,10 @@ import ProdukList from "../../components/Produk";
 function Produk() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isError } = useSelector((state) => state.authAdmin);
+  const { isError } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    dispatch(AdminMe());
+    dispatch(meAdmin());
   }, [dispatch]);
 
   useEffect(() => {

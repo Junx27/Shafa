@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-
+import { Link } from "react-router-dom";
 function Produk() {
   const [produk, setProduk] = useState([]);
   const [deleteId, setDeleteId] = useState(null);
@@ -91,7 +91,10 @@ function Produk() {
       </div>
       <div className="grid grid-cols-4 gap-10">
         {filteredProduk.map((row, index) => (
-          <div className="bg-lime-100 shadow-md rounded-b-lg" key={index}>
+          <div
+            className="bg-lime-100 shadow-md rounded-b-lg relative"
+            key={index}
+          >
             <img
               src={
                 row.gambar_produk === "belum"
@@ -101,6 +104,12 @@ function Produk() {
               alt=""
               className="rounded-t-lg brightness-90 hover:brightness-75 z-0 object-cover h-48 w-96"
             />
+            {row.status_produk === "promo" && (
+              <p className="bg-lime-400 rounded-b-lg p-2 w-16 absolute top-0 shadow">
+                {row.status_produk}
+              </p>
+            )}
+
             <h1 className="font-bold ml-5 mt-2 capitalize">
               {row.nama_produk}
             </h1>
@@ -116,12 +125,15 @@ function Produk() {
               </div>
             )}
             <div className="flex justify-between items-center mx-5 pt-3 pb-5">
-              <button className="bg-lime-400 hover:bg-lime-500 py-2 rounded-md px-5 flex text-xs">
+              <Link
+                to={`/produk/edit/${row.uuid}`}
+                className="bg-lime-400 hover:bg-lime-500 py-2 rounded-md px-5 flex text-xs"
+              >
                 <span className="material-symbols-outlined mr-2 text-xs">
                   edit
                 </span>
                 Edit
-              </button>
+              </Link>
               <button
                 className="bg-red-400 hover:bg-red-500 py-2 rounded-md px-3 flex text-xs"
                 onClick={() => openPopHapus(row.uuid)}

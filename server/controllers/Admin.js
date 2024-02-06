@@ -87,47 +87,19 @@ export const updateAdmin = async (req, res) => {
   if (!admin) return req.status(404).json({ msg: "Admin tidak ditemukan" });
   const { nama, email, password, confPassword, no_tlp, no_rek, image } =
     req.body;
-  let namaUpdate;
-  let emailUpdate;
-  let hashPassword;
-  let no_tlpUpdate;
-  let no_rekUpdate;
-  if (nama === "" || nama === null) {
-    namaUpdate = admin.nama;
-  } else {
-    namaUpdate = await nama;
-  }
-  if (email === "" || email === null) {
-    emailUpdate = admin.email;
-  } else {
-    emailUpdate = await email;
-  }
-  if (no_tlp === "" || no_tlp === null) {
-    no_tlpUpdate = admin.no_tlp;
-  } else {
-    no_tlpUpdate = await no_tlp;
-  }
-  if (no_rek === "" || no_rek === null) {
-    no_rekUpdate = admin.no_rek;
-  } else {
-    no_rekUpdate = await no_rek;
-  }
-
-  if (password === "" || password === null) {
-    hashPassword = admin.password;
-  } else {
-    hashPassword = await argon2.hash(password);
-  }
+  const hashPassword = await argon2.hash(password);
   const gambar_sementara = "belum";
+  const oldImagePath = admin.image;
+  const __dirname = path.dirname(fileURLToPath(import.meta.url));
   if (req.files === null) {
     try {
       await Admin.update(
         {
-          nama: namaUpdate,
-          email: emailUpdate,
+          nama: nama,
+          email: email,
           password: hashPassword,
-          no_tlp: no_tlpUpdate,
-          no_rek: no_rekUpdate,
+          no_tlp: no_tlp,
+          no_rek: no_rek,
           image: gambar_sementara,
         },
         {
@@ -158,11 +130,11 @@ export const updateAdmin = async (req, res) => {
       try {
         await Admin.update(
           {
-            nama: namaUpdate,
-            email: emailUpdate,
+            nama: nama,
+            email: email,
             password: hashPassword,
-            no_tlp: no_tlpUpdate,
-            no_rek: no_rekUpdate,
+            no_tlp: no_tlp,
+            no_rek: no_rek,
             image: url,
           },
           {
@@ -171,6 +143,17 @@ export const updateAdmin = async (req, res) => {
             },
           }
         );
+        if (oldImagePath) {
+          const fileName = oldImagePath.split("/").pop();
+          const filePath = path.join(__dirname, "../public/images/", fileName);
+          fs.unlink(filePath, (err) => {
+            if (err) {
+              console.error("Gagal menghapus gambar:", err);
+            } else {
+              console.log("Gambar lama berhasil dihapus");
+            }
+          });
+        }
         res.status(201).json({ msg: "Update Berhasil" });
       } catch (error) {
         res.status(400).json({ msg: "Update Gagal" });

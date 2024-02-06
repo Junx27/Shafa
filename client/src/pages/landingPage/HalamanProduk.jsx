@@ -39,7 +39,7 @@ function HalamanProduk() {
     });
     return formatter.format(number);
   };
-  console.log(produk.gambar_produk);
+  console.log(produk);
   return (
     <div className="mt-10">
       <button
@@ -105,6 +105,7 @@ function HalamanProduk() {
                   <p className="mt-5 mr-10 text-justify text-green-600">
                     {row.deskripsi_produk}
                   </p>
+                  <p>{row.admin.uuid}</p>
                   <p className="absolute bottom-10 font-bold">
                     {formatRupiah(row.harga_produk)},00/Kg
                   </p>

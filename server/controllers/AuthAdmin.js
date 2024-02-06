@@ -25,7 +25,6 @@ export const Me = async (req, res) => {
     return res.status(401).json({ msg: "Mohon login ke akun Anda!" });
   }
   const admin = await Admin.findOne({
-    attributes: ["uuid", "nama", "email", "image"],
     where: {
       uuid: req.session.adminId,
     },

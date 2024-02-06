@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Logo from "../assets/images/shafa.png";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { LoginAdmin, reset } from "../features/authSliceAdmin";
+import { loginAdmin, reset } from "../features/AuthSlice.js";
 
 function Login() {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -15,19 +15,19 @@ function Login() {
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { admin, isError, isSuccess, isLoading, message } = useSelector(
-    (state) => state.authAdmin
+  const { user, isError, isSuccess, isLoading, message } = useSelector(
+    (state) => state.auth
   );
   useEffect(() => {
-    if (admin || isSuccess) {
+    if (user || isSuccess) {
       navigate("/dashboard");
     }
     dispatch(reset());
-  }, [admin, isSuccess, dispatch, navigate]);
+  }, [user, isSuccess, dispatch, navigate]);
 
   const Auth = (e) => {
     e.preventDefault();
-    dispatch(LoginAdmin({ email, password }));
+    dispatch(loginAdmin({ email, password }));
   };
 
   return (

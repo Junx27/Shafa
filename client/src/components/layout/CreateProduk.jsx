@@ -7,6 +7,7 @@ function CreateProduk() {
   const [harga_produk, setHargaProduk] = useState("");
   const [deskripsi_produk, setDeskripsiProduk] = useState("");
   const [gambar_produk, setGambarProduk] = useState(null);
+  const [promo, setPromo] = useState("tidak promo");
   const [msg, setMsg] = useState("");
 
   const handleImageChange = (e) => {
@@ -38,6 +39,7 @@ function CreateProduk() {
       formData.append("harga_produk", harga_produk);
       formData.append("deskripsi_produk", deskripsi_produk);
       formData.append("gambar_produk", gambar_produk);
+      formData.append("status_produk", promo);
 
       await axios.post("http://localhost:5000/produk", formData, {
         headers: {
@@ -85,6 +87,7 @@ function CreateProduk() {
               value={nama_produk}
               onChange={(e) => setNamaProduk(e.target.value)}
               className="p-2 rounded-lg outline-lime-400 border border-lime-400"
+              required
             />
           </div>
           <div className="flex flex-col mx-10">
@@ -98,6 +101,7 @@ function CreateProduk() {
               onChange={(e) => setHargaProduk(e.target.value)}
               id="harga"
               className="p-2 rounded-lg outline-lime-400 border border-lime-400"
+              required
             />
           </div>
           <div className="flex flex-col mx-10">
@@ -107,11 +111,27 @@ function CreateProduk() {
             <textarea
               type="text"
               id="deskripsi"
-              maxLength={255}
+              maxLength={220}
               value={deskripsi_produk}
               onChange={(e) => setDeskripsiProduk(e.target.value)}
               className="p-2 rounded-lg outline-lime-400 border border-lime-400 h-[150px]"
+              required
             />
+          </div>
+          <div className="flex flex-col mx-10">
+            <label htmlFor="deskripsi" className="my-2">
+              Status
+            </label>
+            <select
+              name="status"
+              id="status"
+              className="p-2 border border-lime-400 rounded"
+              value={promo}
+              onChange={(e) => setPromo(e.target.value)}
+            >
+              <option value="promo">Promo</option>
+              <option value="tidak promo">Tidak promo</option>
+            </select>
           </div>
           <div className="flex flex-col mx-10 my-2">
             Gambar

@@ -19,6 +19,9 @@ import Keranjang from "./pages/konsumen/Keranjang";
 import Faq from "./pages/konsumen/Faq";
 import Profile from "./pages/konsumen/Profile";
 import ProdukKonsumen from "./pages/konsumen/Produk";
+import EditProduk from "./pages/admin/EditProduk.jsx";
+import Register from "./pages/konsumen/Register.jsx";
+import Page404 from "./pages/Page404.jsx";
 
 function App() {
   return (
@@ -32,6 +35,7 @@ function App() {
         <Route path="/admin" Component={LoginAdmin} />
         <Route path="/dashboard" Component={Dashboard} />
         <Route path="/produk" Component={Produk} />
+        <Route path="/produk/edit/:id" Component={EditProduk} />
         <Route path="/konsumen" Component={Konsumen} />
         <Route path="/promo" Component={Promo} />
         <Route path="/pesanan" Component={Pesanan} />
@@ -44,6 +48,8 @@ function App() {
         <Route path="/faq" Component={Faq} />
         <Route path="/profile" Component={Profile} />
         <Route path="/produkkonsumen" Component={ProdukKonsumen} />
+        <Route path="/register" Component={Register} />
+        <Route path="/*" Component={Page404} />
       </Routes>
     </div>
   );

@@ -14,6 +14,7 @@ export const getProduks = async (req, res) => {
         "harga_produk",
         "deskripsi_produk",
         "gambar_produk",
+        "status_produk",
         "admin_id",
       ],
       include: [
@@ -44,6 +45,7 @@ export const getProduksById = async (req, res) => {
         "harga_produk",
         "deskripsi_produk",
         "gambar_produk",
+        "status_produk",
       ],
       where: {
         id: produk.id,
@@ -61,8 +63,13 @@ export const getProduksById = async (req, res) => {
   }
 };
 export const createProduks = async (req, res) => {
-  const { nama_produk, harga_produk, deskripsi_produk, gambar_produk } =
-    req.body;
+  const {
+    nama_produk,
+    harga_produk,
+    deskripsi_produk,
+    gambar_produk,
+    status_produk,
+  } = req.body;
   const gambar_sementara = "belum";
   if (req.files === null) {
     try {
@@ -71,6 +78,7 @@ export const createProduks = async (req, res) => {
         harga_produk: harga_produk,
         deskripsi_produk: deskripsi_produk,
         gambar_produk: gambar_sementara,
+        status_produk: status_produk,
         admin_id: req.adminId,
         adminId: req.adminId,
       });
@@ -99,6 +107,7 @@ export const createProduks = async (req, res) => {
           harga_produk: harga_produk,
           deskripsi_produk: deskripsi_produk,
           gambar_produk: url,
+          status_produk: status_produk,
           admin_id: req.adminId,
           adminId: req.adminId,
         });
@@ -117,18 +126,24 @@ export const updateProduks = async (req, res) => {
       },
     });
     if (!produk) return res.status(404).json({ msg: "Data tidak ditemukan" });
-    const { nama_produk, harga_produk, deskripsi_produk, gambar_produk } =
-      req.body;
+    const {
+      nama_produk,
+      harga_produk,
+      deskripsi_produk,
+      gambar_produk,
+      status_produk,
+    } = req.body;
     const oldImagePath = produk.gambar_produk;
     const __dirname = path.dirname(fileURLToPath(import.meta.url));
     if (req.files === null) {
       try {
         await Produks.update(
           {
-            nama_produk: produk.nama_produk,
-            harga_produk: produk.harga_produk,
-            deskripsi_produk: produk.deskripsi_produk,
+            nama_produk: nama_produk,
+            harga_produk: harga_produk,
+            deskripsi_produk: deskripsi_produk,
             gambar_produk: produk.gambar_produk,
+            status_produk: status_produk,
             admin_id: req.adminId,
           },
           {
@@ -163,6 +178,7 @@ export const updateProduks = async (req, res) => {
               harga_produk: harga_produk,
               deskripsi_produk: deskripsi_produk,
               gambar_produk: url,
+              status_produk: status_produk,
               admin_id: req.adminId,
             },
             {

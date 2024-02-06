@@ -2,16 +2,16 @@ import { NavLink, useNavigate } from "react-router-dom";
 import Logo from "../assets/images/shafa.png";
 import { navbar } from "../data/navbar.js";
 import { useDispatch, useSelector } from "react-redux";
-import { LogoutAdmin, reset } from "../features/authSliceAdmin.js";
+import { logoutAdmin, reset } from "../features/AuthSlice.js";
 import logoutIcon from "../assets/navbar/square.svg";
 
 function SideNavbar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  useSelector((state) => state.authAdmin);
+  useSelector((state) => state.auth);
 
   const logout = () => {
-    dispatch(LogoutAdmin());
+    dispatch(logoutAdmin());
     dispatch(reset());
     navigate("/admin");
   };

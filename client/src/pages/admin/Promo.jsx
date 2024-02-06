@@ -2,17 +2,17 @@ import Admin from "../../components/Admin";
 import SideNavbar from "../../components/SideNavbar";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { AdminMe } from "../../features/authSliceAdmin";
+import { meAdmin } from "../../features/AuthSlice";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
 function Promo() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isError } = useSelector((state) => state.authAdmin);
+  const { isError } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    dispatch(AdminMe());
+    dispatch(meAdmin());
   }, [dispatch]);
 
   useEffect(() => {
@@ -48,11 +48,6 @@ function Promo() {
       <div className="mt-20 ms-80 pl-6 mr-10">
         <hr className="h-px border-0 bg-lime-200 mb-5" />
         <h1 className="text-xl">Ini halaman promo</h1>
-        {produk.map((row, index) => (
-          <div key={index}>
-            {row.admin.uuid === profile.uuid && <h1>{row.nama_produk}</h1>}
-          </div>
-        ))}
       </div>
     </div>
   );

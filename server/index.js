@@ -16,6 +16,7 @@ import KeranjangRoute from "./routes/KeranjangRoute.js";
 import PembelianRoute from "./routes/PembelianRoute.js";
 import PenjualanRoute from "./routes/PenjualanRoute.js";
 import AuthAdminRoute from "./routes/AuthAdminRoute.js";
+import AuthRoute from "./routes/Auth.js";
 dotenv.config();
 
 const app = express();
@@ -24,9 +25,9 @@ const sessionStore = SequelizeStore(session.Store);
 const store = new sessionStore({
   db: db,
 });
-(async () => {
-  await db.sync();
-})();
+// (async () => {
+//   await db.sync();
+// })();
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
@@ -58,6 +59,7 @@ app.use(KeranjangRoute);
 app.use(PembelianRoute);
 app.use(PenjualanRoute);
 app.use(AuthAdminRoute);
+app.use(AuthRoute);
 
 // store.sync();
 app.listen(process.env.APP_PORT, () => {

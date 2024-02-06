@@ -28,3 +28,7 @@
   background-color: #efffe0;
   border-radius: 10px;
 }
+
+.slick-slide > div {
+  padding: 10px;
+}

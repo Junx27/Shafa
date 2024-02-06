@@ -2,7 +2,7 @@ import Admin from "../../components/Admin";
 import SideNavbar from "../../components/SideNavbar";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { AdminMe } from "../../features/authSliceAdmin";
+import { meAdmin } from "../../features/AuthSlice.js";
 import { useEffect } from "react";
 import produkIcon from "../../assets/navbar/shop.svg";
 import konsumenIcon from "../../assets/navbar/user.svg";
@@ -19,10 +19,10 @@ import PendaftaranKonsumen from "../../components/PendaftaranKonsumen.jsx";
 function Dashboard() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isError } = useSelector((state) => state.authAdmin);
+  const { isError } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    dispatch(AdminMe());
+    dispatch(meAdmin());
   }, [dispatch]);
 
   useEffect(() => {
