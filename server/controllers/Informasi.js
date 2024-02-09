@@ -1,21 +1,18 @@
 import Admin from "../models/AdminModel.js";
-import Produks from "../models/ProdukModel.js";
 import path from "path";
 import fs from "fs";
 import { fileURLToPath } from "url";
-
-export const getProduks = async (req, res) => {
+import Informasi from "../models/InformasiModel.js";
+export const getInformasi = async (req, res) => {
   try {
     let response;
-    response = await Produks.findAll({
+    response = await Informasi.findAll({
       attributes: [
         "id",
         "uuid",
-        "nama_produk",
-        "harga_produk",
-        "deskripsi_produk",
-        "gambar_produk",
-        "status_produk",
+        "nama_informasi",
+        "deskripsi_informasi",
+        "gambar_informasi",
         "admin_id",
       ],
       include: [
@@ -30,28 +27,27 @@ export const getProduks = async (req, res) => {
     res.status(500).json({ msg: error.message });
   }
 };
-export const getProduksById = async (req, res) => {
+export const getInformasiById = async (req, res) => {
   try {
-    const produk = await Produks.findOne({
+    const informasi = await Informasi.findOne({
       where: {
         uuid: req.params.id,
       },
     });
-    if (!produk) return res.status(404).json({ msg: "Data tidak ditemukan" });
+    if (!informasi)
+      return res.status(404).json({ msg: "Data tidak ditemukan" });
     let response;
-    response = await Produks.findOne({
+    response = await Informasi.findOne({
       attributes: [
         "id",
         "uuid",
-        "nama_produk",
-        "harga_produk",
-        "deskripsi_produk",
-        "gambar_produk",
-        "status_produk",
+        "nama_informasi",
+        "deskripsi_informasi",
+        "gambar_informasi",
         "admin_id",
       ],
       where: {
-        id: produk.id,
+        id: informasi.id,
       },
       include: [
         {
@@ -65,32 +61,23 @@ export const getProduksById = async (req, res) => {
     res.status(500).json({ msg: error.message });
   }
 };
-export const createProduks = async (req, res) => {
-  const {
-    nama_produk,
-    harga_produk,
-    deskripsi_produk,
-    gambar_produk,
-    status_produk,
-  } = req.body;
+export const createInformasi = async (req, res) => {
+  const { nama_informasi, deskripsi_informasi, gambar_informasi } = req.body;
   const gambar_sementara = "belum";
   if (req.files === null) {
     try {
-      await Produks.create({
-        nama_produk: nama_produk,
-        harga_produk: harga_produk,
-        deskripsi_produk: deskripsi_produk,
-        gambar_produk: gambar_sementara,
-        status_produk: status_produk,
+      await Informasi.create({
+        nama_informasi: nama_informasi,
+        deskripsi_informasi: deskripsi_informasi,
+        gambar_informasi: gambar_sementara,
         admin_id: req.adminId,
-        adminId: req.adminId,
       });
-      res.status(201).json({ msg: "Produk berhasil ditambahkan" });
+      res.status(201).json({ msg: "informasi berhasil ditambahkan" });
     } catch (error) {
-      res.status(400).json({ msg: "Product gagal dibuat" });
+      res.status(400).json({ msg: "informasi gagal dibuat" });
     }
   } else {
-    const file = req.files.gambar_produk;
+    const file = req.files.gambar_informasi;
     const fileSize = file.data.length;
     const ext = path.extname(file.name);
     const fileName = file.md5 + ext;
@@ -105,62 +92,55 @@ export const createProduks = async (req, res) => {
     file.mv(`./public/images/${fileName}`, async (err) => {
       if (err) return res.status(500).json({ msg: err.message });
       try {
-        await Produks.create({
-          nama_produk: nama_produk,
-          harga_produk: harga_produk,
-          deskripsi_produk: deskripsi_produk,
-          gambar_produk: url,
-          status_produk: status_produk,
+        await Informasi.create({
+          nama_informasi: nama_informasi,
+          deskripsi_informasi: deskripsi_informasi,
+          gambar_informasi: url,
           admin_id: req.adminId,
-          adminId: req.adminId,
         });
-        res.status(201).json({ msg: "Product berhasil ditambahkan" });
+        res
+          .status(201)
+          .json({ msg: "informasi ada gambar berhasil ditambahkan" });
       } catch (error) {
-        res.status(400).json({ msg: "Product gagal dibuat" });
+        res.status(400).json({ msg: "informasi ada gambar gagal dibuat" });
       }
     });
   }
 };
-export const updateProduks = async (req, res) => {
+export const updateInformasi = async (req, res) => {
   try {
-    const produk = await Produks.findOne({
+    const informasi = await Informasi.findOne({
       where: {
         uuid: req.params.id,
       },
     });
-    if (!produk) return res.status(404).json({ msg: "Data tidak ditemukan" });
-    const {
-      nama_produk,
-      harga_produk,
-      deskripsi_produk,
-      gambar_produk,
-      status_produk,
-    } = req.body;
-    const oldImagePath = produk.gambar_produk;
+    if (!informasi)
+      return res.status(404).json({ msg: "Data tidak ditemukan" });
+    const { nama_informasi, deskripsi_informasi, gambar_informasi } = req.body;
+    const oldImagePath = informasi.gambar_informasi;
     const __dirname = path.dirname(fileURLToPath(import.meta.url));
     if (req.files === null) {
       try {
-        await Produks.update(
+        await Informasi.update(
           {
-            nama_produk: nama_produk,
-            harga_produk: harga_produk,
-            deskripsi_produk: deskripsi_produk,
-            gambar_produk: produk.gambar_produk,
-            status_produk: status_produk,
+            nama_informasi: nama_informasi,
+            deskripsi_informasi: deskripsi_informasi,
+            gambar_informasi: gambar_sementara,
             admin_id: req.adminId,
+            adminId: req.adminId,
           },
           {
             where: {
-              id: produk.id,
+              id: informasi.id,
             },
           }
         );
-        res.status(200).json({ msg: "Produk berhasil diupdate" });
+        res.status(200).json({ msg: "informasi berhasil diupdate" });
       } catch (error) {
-        res.status(400).json({ msg: "Produk gagal diupdate" });
+        res.status(400).json({ msg: "informasi gagal diupdate" });
       }
     } else {
-      const file = req.files.gambar_produk;
+      const file = req.files.gambar_informasi;
       const fileSize = file.data.length;
       const ext = path.extname(file.name);
       const fileName = file.md5 + ext;
@@ -175,18 +155,17 @@ export const updateProduks = async (req, res) => {
       file.mv(`./public/images/${fileName}`, async (err) => {
         if (err) return res.status(500).json({ msg: err.message });
         try {
-          await Produks.update(
+          await Informasi.update(
             {
-              nama_produk: nama_produk,
-              harga_produk: harga_produk,
-              deskripsi_produk: deskripsi_produk,
-              gambar_produk: url,
-              status_produk: status_produk,
+              nama_informasi: nama_informasi,
+              deskripsi_informasi: deskripsi_informasi,
+              gambar_informasi: url,
               admin_id: req.adminId,
+              adminId: req.adminId,
             },
             {
               where: {
-                id: produk.id,
+                id: informasi.id,
               },
             }
           );
@@ -205,9 +184,9 @@ export const updateProduks = async (req, res) => {
               }
             });
           }
-          res.status(200).json({ msg: "Produk berhasil diupdate" });
+          res.status(200).json({ msg: "informasi berhasil diupdate" });
         } catch (error) {
-          res.status(400).json({ msg: "Produk gagal diupdate" });
+          res.status(400).json({ msg: "informasi gagal diupdate" });
         }
       });
     }
@@ -215,19 +194,20 @@ export const updateProduks = async (req, res) => {
     res.status(500).json({ msg: error.message });
   }
 };
-export const deleteProduks = async (req, res) => {
+export const deleteInformasi = async (req, res) => {
   try {
-    const produk = await Produks.findOne({
+    const informasi = await Informasi.findOne({
       where: {
         uuid: req.params.id,
       },
     });
-    if (!produk) return res.status(404).json({ msg: "Data tidak ditemukan" });
-    const imagePath = produk.gambar_produk;
+    if (!informasi)
+      return res.status(404).json({ msg: "Data tidak ditemukan" });
+    const imagePath = informasi.gambar_informasi;
     const __dirname = path.dirname(fileURLToPath(import.meta.url));
-    await Produks.destroy({
+    await Informasi.destroy({
       where: {
-        id: produk.id,
+        id: informasi.id,
       },
     });
     if (imagePath !== "belum") {
@@ -243,7 +223,7 @@ export const deleteProduks = async (req, res) => {
         console.log("Gambar berhasil dihapus");
       });
     }
-    res.status(200).json({ msg: "Produk berhasil dihapus" });
+    res.status(200).json({ msg: "informasi berhasil dihapus" });
   } catch (error) {
     res.status(500).json({ msg: error.message });
   }

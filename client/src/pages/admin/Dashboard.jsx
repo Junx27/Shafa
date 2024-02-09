@@ -37,10 +37,13 @@ function Dashboard() {
       <Admin />
       <div className="mt-5 ms-80 pl-6 mr-10">
         <hr className="h-px border-0 bg-lime-200 mb-5" />
-        <h1 className="text-3xl font-light">Selamat Datang</h1>
-        <div className="grid grid-cols-4 gap-16 mt-10">
+        <div className="flex">
+          <span className="material-symbols-outlined">grid_view</span>
+          <h1 className="ml-2">Dashboard Admin</h1>
+        </div>
+        <div className="grid grid-cols-4 gap-16 mt-5">
           <div
-            className="box-models shadow-md shadow-lime-400 cursor-pointer hover:bg-lime-200"
+            className="transition-all duration-1000 box-models shadow-md cursor-pointer hover:shadow-lime-200 hover:shadow-lg"
             onClick={() => navigate("/produk")}
           >
             <div className="flex flex-row items-center">
@@ -51,7 +54,7 @@ function Dashboard() {
               <JumlahProduk />
             </div>
           </div>
-          <div className="box-models shadow-md shadow-lime-400">
+          <div className="transition-all duration-1000 box-models shadow-md cursor-pointer hover:shadow-lime-200 hover:shadow-lg">
             <div className="flex flex-row items-center">
               <img src={konsumenIcon} alt="" className="w-10 mr-5" />
               <h2>Konsumen</h2>
@@ -60,7 +63,7 @@ function Dashboard() {
               <JumlahKonsumen />
             </div>
           </div>
-          <div className="box-models shadow-md shadow-lime-400">
+          <div className="transition-all duration-1000 box-models shadow-md cursor-pointer hover:shadow-lime-200 hover:shadow-lg">
             <div className="flex flex-row items-center">
               <img src={promoIcon} alt="" className="w-10 mr-5" />
               <h2>Promo</h2>
@@ -69,7 +72,7 @@ function Dashboard() {
               <JumlahPromo />
             </div>
           </div>
-          <div className="box-models shadow-md shadow-lime-400">
+          <div className="transition-all duration-1000 box-models shadow-md cursor-pointer hover:shadow-lime-200 hover:shadow-lg">
             <div className="flex flex-row items-center">
               <img src={pesananIcon} alt="" className="w-10 mr-5" />
               <h2>Pesanan</h2>
@@ -82,12 +85,18 @@ function Dashboard() {
       </div>
       <div className="grid grid-cols-2 gap-20 mt-16 ms-80 pl-6 mr-10">
         <div>
-          <h1 className="text-xl">Pesanan Masuk</h1>
+          <div className="flex">
+            <span className="material-symbols-outlined">mail</span>
+            <h1 className="text ml-2">Pesanan Masuk</h1>
+          </div>
           <Table data={data} />
         </div>
         <div>
-          <h1 className="text-xl">Konsumen Baru</h1>
-          <PendaftaranKonsumen data={konsumen} />
+          <div className="flex">
+            <span className="material-symbols-outlined">verified_user</span>
+            <h1 className="text ml-2">Konfirmasi Pengguna Baru</h1>
+          </div>
+          <PendaftaranKonsumen />
         </div>
       </div>
     </div>

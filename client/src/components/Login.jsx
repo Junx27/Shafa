@@ -60,6 +60,7 @@ function Login() {
         <button
           onClick={togglePasswordVisibility}
           className="absolute top-14 right-5"
+          type="button"
         >
           <span className="material-symbols-outlined text-lime-300">
             {passwordVisible ? "visibility_off" : "visibility"}

@@ -11,9 +11,30 @@ Content-Type: application/json
     "password": "123456",
     "confPassword": "123456",
     "no_tlp": "090199186216",
-    "no_rek": "86865375165361",
-    "image": "ini adalah image file"
+    "no_rek": "86865375165361"
 }
 
 ###
-GET http://localhost:5000/admin/3f4b4fa5-ebc3-4067-8d31-bc2080538899
+POST http://localhost:5000/login
+Content-Type: application/json
+
+{
+    "email": "panji@gmail.com",
+    "password": "123456"
+}
+
+###
+GET http://localhost:5000/me
+###
+DELETE  http://localhost:5000/logout
+
+###
+GET http://localhost:5000/sarans
+
+###
+POST http://localhost:5000/sarans
+Content-Type: application/json
+
+{
+    "saran": "panji@gmail.com"
+}

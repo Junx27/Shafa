@@ -4,8 +4,8 @@ import Admin from "./AdminModel.js";
 
 const { DataTypes } = Sequelize;
 
-const Informasis = db.define(
-  "informasis",
+const Informasi = db.define(
+  "informasi",
   {
     uuid: {
       type: DataTypes.STRING,
@@ -17,34 +17,13 @@ const Informasis = db.define(
     },
     nama_informasi: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-        len: [3, 100],
-      },
-    },
-    alamat: {
-      type: DataTypes.STRING,
+      unique: true,
       allowNull: false,
       validate: {
         notEmpty: true,
       },
     },
-    barcode_alamat: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
-    },
-    bio: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
-    },
-    informasi_bisnis: {
+    deskripsi_informasi: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
@@ -70,6 +49,6 @@ const Informasis = db.define(
     freezeTableName: true,
   }
 );
-Admin.hasMany(Informasis, { onDelete: "CASCADE" });
-Informasis.belongsTo(Admin, { foreignKey: "admin_id", onDelete: "CASCADE" });
-export default Informasis;
+Admin.hasMany(Informasi, { onDelete: "CASCADE" });
+Informasi.belongsTo(Admin, { foreignKey: "admin_id", onDelete: "CASCADE" });
+export default Informasi;

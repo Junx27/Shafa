@@ -10,7 +10,13 @@ function JumlahKonsumen() {
   useEffect(() => {
     fetchData();
   }, []);
-  return <div className="font-medium">{hasil.length} Active</div>;
+  const konsumenTerdaftar = hasil.filter(
+    (row) => row.status_konsumen.toLowerCase() === "terdaftar"
+  );
+  const konsumenBelum = hasil.filter(
+    (row) => row.status_konsumen.toLowerCase() === "belum"
+  );
+  return <div className="font-medium">{hasil.length} Konsumen</div>;
 }
 
 export default JumlahKonsumen;

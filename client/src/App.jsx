@@ -22,6 +22,8 @@ import ProdukKonsumen from "./pages/konsumen/Produk";
 import EditProduk from "./pages/admin/EditProduk.jsx";
 import Register from "./pages/konsumen/Register.jsx";
 import Page404 from "./pages/Page404.jsx";
+import ViewKonsumen from "../src/pages/admin/EditKonsumen.jsx";
+import Transaksi from "./pages/konsumen/Transaksi.jsx";
 
 function App() {
   return (
@@ -37,6 +39,7 @@ function App() {
         <Route path="/produk" Component={Produk} />
         <Route path="/produk/edit/:id" Component={EditProduk} />
         <Route path="/konsumen" Component={Konsumen} />
+        <Route path="/konsumen/:id" Component={ViewKonsumen} />
         <Route path="/promo" Component={Promo} />
         <Route path="/pesanan" Component={Pesanan} />
         <Route path="/riwayat" Component={Riwayat} />
@@ -45,6 +48,7 @@ function App() {
         <Route path="/home" Component={Home} />
         <Route path="/riwayatkonsumen" Component={RiwayatKonsumen} />
         <Route path="/keranjang" Component={Keranjang} />
+        <Route path="/transaksi/:id" Component={Transaksi} />
         <Route path="/faq" Component={Faq} />
         <Route path="/profile" Component={Profile} />
         <Route path="/produkkonsumen" Component={ProdukKonsumen} />

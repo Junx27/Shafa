@@ -1,19 +1,19 @@
 import express from "express";
-
 import {
-  getInformasis,
-  getInformasisById,
-  createInformasis,
-  updateInformasis,
-  deleteInformasis,
-} from "../controllers/Informasis.js";
+  getInformasi,
+  getInformasiById,
+  createInformasi,
+  updateInformasi,
+  deleteInformasi,
+} from "../controllers/Informasi.js";
+import { verifyAdmin } from "../middleware/AuthAdmin.js";
 
 const router = express.Router();
 
-router.get("/informasis");
-router.get("/informasis/:id");
-router.post("/informasis");
-router.patch("/informasis/:id");
-router.delete("/informasis/:id");
+router.get("/informasi", getInformasi);
+router.get("/informasi/:id", getInformasiById);
+router.post("/informasi", verifyAdmin, createInformasi);
+router.patch("/informasi/:id", updateInformasi);
+router.delete("/informasi/:id", deleteInformasi);
 
 export default router;

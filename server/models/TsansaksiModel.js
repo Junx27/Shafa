@@ -2,12 +2,12 @@ import { Sequelize } from "sequelize";
 import db from "../config/Database.js";
 import Produks from "./ProdukModel.js";
 import Admin from "./AdminModel.js";
-import Pembelians from "./PembelianModel.js";
+import Users from "./UserModel.js";
 
 const { DataTypes } = Sequelize;
 
-const Penjualans = db.define(
-  "penjualans",
+const Transaksi = db.define(
+  "transaksi",
   {
     uuid: {
       type: DataTypes.STRING,
@@ -25,27 +25,27 @@ const Penjualans = db.define(
       },
     },
     harga_produk: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notEmpty: true,
       },
     },
     jumlah_produk: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notEmpty: true,
       },
     },
-    total_penjualan: {
-      type: DataTypes.INTEGER,
+    total_transaksi: {
+      type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notEmpty: true,
       },
     },
-    status_penjualan: {
+    bukti_transfer: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
@@ -59,39 +59,43 @@ const Penjualans = db.define(
         notEmpty: true,
       },
     },
-    admin_id: {
-      type: DataTypes.INTEGER,
+    status_penerimaan: {
+      type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notEmpty: true,
       },
+    },
+    admin_id: {
+      type: DataTypes.INTEGER,
+    },
+    user_id: {
+      type: DataTypes.INTEGER,
     },
     produk_id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
-    },
-    pembelian_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
     },
   },
   { freezeTableName: true }
 );
 
-Admin.hasMany(Penjualans, { onDelete: "CASCADE" });
-Penjualans.belongsTo(Admin, { foreignKey: "user_id", onDelete: "CASCADE" });
-Produks.hasMany(Penjualans, { onDelete: "CASCADE" });
-Penjualans.belongsTo(Produks, { foreignKey: "produk_id", onDelete: "CASCADE" });
-Penjualans.hasMany(Pembelians, { onDelete: "CASCADE" });
-Pembelians.belongsTo(Penjualans, {
-  foreignKey: "pembelian_id",
+Admin.hasMany(Transaksi, { onDelete: "CASCADE", onUpdate: "CASCADE" });
+Transaksi.belongsTo(Admin, {
+  foreignKey: "admin_id",
   onDelete: "CASCADE",
+  onUpdate: "CASCADE",
+});
+Users.hasMany(Transaksi, { onDelete: "CASCADE", onUpdate: "CASCADE" });
+Transaksi.belongsTo(Users, {
+  foreignKey: "user_id",
+  onDelete: "CASCADE",
+  onUpdate: "CASCADE",
+});
+Produks.hasMany(Transaksi, { onDelete: "CASCADE", onUpdate: "CASCADE" });
+Transaksi.belongsTo(Produks, {
+  foreignKey: "produk_id",
+  onDelete: "CASCADE",
+  onUpdate: "CASCADE",
 });
 
-export default Penjualans;
+export default Transaksi;

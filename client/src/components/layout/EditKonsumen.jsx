@@ -1,12 +1,9 @@
-import Navbar from "../../components/Navbar";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { meUser } from "../../features/AuthSlice";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-function Profile() {
-  const [id, setId] = useState();
+function EditKonsumen() {
+  const { id } = useParams();
   const [profile, setProfile] = useState([]);
   const [nama, setNama] = useState("");
   const [email, setEmail] = useState("");
@@ -17,9 +14,7 @@ function Profile() {
   const [image, setImage] = useState(null);
   const [open, setOpen] = useState("");
   const [openPopUp, setOpenPopUp] = useState();
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isError } = useSelector((state) => state.auth);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -50,23 +45,16 @@ function Profile() {
     setOpenPopUp(false);
   };
   const fetchProfile = async () => {
-    const response = await axios.get("http://localhost:5000/me");
+    const response = await axios.get(`http://localhost:5000/users/${id}`);
     setProfile(response.data);
     setNama(response.data.nama);
     setEmail(response.data.email);
     setAlamat(response.data.alamat);
     setNoTlp(response.data.no_tlp);
-    setId(response.data.uuid);
   };
   useEffect(() => {
-    dispatch(meUser());
     fetchProfile();
-  }, [dispatch]);
-  useEffect(() => {
-    if (isError) {
-      navigate("/");
-    }
-  }, [isError, navigate]);
+  }, []);
   const updateProfile = async (e) => {
     e.preventDefault();
     try {
@@ -83,7 +71,7 @@ function Profile() {
           "Content-Type": "multipart/form-data",
         },
       });
-      navigate("/profile");
+      navigate(`/konsumen/${id}`);
       window.location.reload();
     } catch (error) {
       if (error.response) {
@@ -95,7 +83,7 @@ function Profile() {
   const deleteKonsumen = async () => {
     try {
       await axios.delete(`http://localhost:5000/users/${id}`);
-      navigate("/");
+      navigate("/konsumen");
     } catch (error) {
       if (error.response) {
         console.error("Gagal", error);
@@ -105,16 +93,7 @@ function Profile() {
 
   return (
     <div>
-      <div>
-        <Navbar />
-      </div>
-      <div className="m-20 mt-32">
-        <div className="flex ml-20">
-          <span className="material-symbols-outlined text-lime-500">
-            manage_accounts
-          </span>
-          <h1 className="mb-8 ml-5">Informasi profil pengguna</h1>
-        </div>
+      <div className="mt-10 ms-80 pl-6 mr-10">
         <div className="relative flex flex-row mx-20 py-10 border border-lime-400 rounded-lg shadow transition-all duration-1000 hover:shadow-lg">
           <div className="">
             <img
@@ -319,4 +298,4 @@ function Profile() {
   );
 }
 
-export default Profile;
+export default EditKonsumen;

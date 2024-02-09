@@ -121,7 +121,7 @@ function Produk() {
             )}
             <div className="flex justify-between items-center mx-5 pt-3 pb-5">
               <Link
-                to={`/produk/edit/${row.uuid}`}
+                to={`/transaksi/${row.uuid}`}
                 className="bg-lime-400 hover:bg-lime-500 py-2 rounded-md px-5 text-xs mx-auto"
               >
                 <span className="material-symbols-outlined mr-2 text-xs">

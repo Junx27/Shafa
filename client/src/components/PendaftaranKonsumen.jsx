@@ -1,20 +1,59 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
-import React from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
-function PendaftaranKonsumen({ data }) {
+function PendaftaranKonsumen() {
+  const status = "terdaftar";
+  const [dataKonsumen, setData] = useState([]);
+  const fetchData = async () => {
+    const response = await axios.get("http://localhost:5000/users");
+    setData(response.data);
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
+  const updateProfile = async (e, id) => {
+    e.preventDefault();
+    try {
+      const formData = new FormData();
+      formData.append("status_konsumen", status);
+      await axios.patch(`http://localhost:5000/users/${id}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      window.location.reload();
+    } catch (error) {
+      if (error.response) {
+        console.error("Gagal memperbarui data:", error);
+      }
+    }
+  };
   return (
     <div className="mt-5">
-      {data.map((row, index) => (
-        <div
-          className="flex flex-row items-center bg-lime-100 p-2 rounded-lg my-3"
-          key={index}
-        >
-          <img src={row.image} alt="" className="w-16 mr-5 ml-3 rounded-full" />
-          <h1 className="basis-1/2">{row.nama}</h1>
-          <button className="basis-1/4 bg-lime-300 p-3 rounded-lg ml-5 hover:bg-lime-400 hover:text-white">
-            Submit
-          </button>
+      {dataKonsumen.map((row, index) => (
+        <div className="my-3" key={index}>
+          {row.status_konsumen === "belum" && (
+            <div className="transition-all duration-1000 bg-lime-100 rounded-lg  flex justify-between items-center py-2 shadow hover:shadow-lg">
+              <img
+                src={
+                  row.gambar_profil === "belum"
+                    ? "http://localhost:5000/images/defaultProfile.png"
+                    : row.gambar_profil
+                }
+                alt=""
+                className="w-16 mr-5 ml-3 rounded-full"
+              />
+              <h1 className="basis-1/2">{row.nama}</h1>
+              <form action="" onSubmit={(e) => updateProfile(e, row.uuid)}>
+                <button
+                  className="basis-1/4 bg-lime-300 p-3 rounded-lg mr-5 hover:bg-lime-400"
+                  type="submit"
+                >
+                  Submit
+                </button>
+              </form>
+            </div>
+          )}
         </div>
       ))}
     </div>

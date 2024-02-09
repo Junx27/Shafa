@@ -37,7 +37,7 @@ function Produk() {
     const formatter = new Intl.NumberFormat("id-ID", {
       style: "currency",
       currency: "IDR",
-      minimumFractionDigits: 0,
+      minimumFractionDigits: 2,
     });
     return formatter.format(number);
   };
@@ -114,7 +114,7 @@ function Produk() {
               {row.nama_produk}
             </h1>
             <p className="ml-5 underline text-sm">
-              {formatRupiah(row.harga_produk)},00/Kg
+              {formatRupiah(row.harga_produk)}/Kg
             </p>
 
             {showDeskripsi && (

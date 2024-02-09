@@ -29,7 +29,7 @@ function SideNavbar() {
                 to={item.link}
                 className={({ isActive }) =>
                   isActive
-                    ? "bg-lime-300 py-4 px-5 hover:bg-lime-400 hover:text-white ml-10 rounded-l-lg shadow"
+                    ? "transition-all duration-1000 bg-lime-400 py-4 px-5 hover:bg-lime-500 hover:shadow-lg ml-10 rounded-l-lg shadow"
                     : "py-4 px-5 ml-10 hover:text-lime-500"
                 }
               >

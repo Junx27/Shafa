@@ -1,4 +1,4 @@
-import Users from "../models/UserModel.js";
+import User from "../models/UserModel.js";
 import argon2 from "argon2";
 import path from "path";
 import fs from "fs";
@@ -6,7 +6,7 @@ import { fileURLToPath } from "url";
 
 export const getUsers = async (req, res) => {
   try {
-    const response = await Users.findAll();
+    const response = await User.findAll();
     res.status(200).json(response);
   } catch (error) {
     res.status(500).json({ msg: error.message });
@@ -14,7 +14,7 @@ export const getUsers = async (req, res) => {
 };
 export const getUsersById = async (req, res) => {
   try {
-    const response = await Users.findOne({
+    const response = await User.findOne({
       where: {
         uuid: req.params.id,
       },
@@ -39,7 +39,7 @@ export const createUser = async (req, res) => {
   const gambar_sementara = "belum";
   if (req.files === null) {
     try {
-      await Users.create({
+      await User.create({
         nama: nama,
         email: email,
         password: hashPassword,
@@ -68,7 +68,7 @@ export const createUser = async (req, res) => {
     file.mv(`./public/images/${fileName}`, async (err) => {
       if (err) return res.status(500).json({ msg: err.message });
       try {
-        await Users.create({
+        await User.create({
           nama: nama,
           email: email,
           password: hashPassword,
@@ -85,7 +85,7 @@ export const createUser = async (req, res) => {
   }
 };
 export const updateUser = async (req, res) => {
-  const users = await Users.findOne({
+  const users = await User.findOne({
     where: {
       uuid: req.params.id,
     },
@@ -101,19 +101,17 @@ export const updateUser = async (req, res) => {
   } = req.body;
   const oldImagePath = users.gambar_profil;
   const __dirname = path.dirname(fileURLToPath(import.meta.url));
-  const hashPassword = await argon2.hash(password);
-  const gambar_sementara = "belum";
   if (req.files === null) {
     try {
-      await Users.update(
+      await User.update(
         {
-          nama: nama,
-          email: email,
-          password: hashPassword,
-          alamat: alamat,
-          no_tlp: no_tlp,
-          gambar_profil: gambar_sementara,
-          status_konsumen: status_konsumen,
+          nama,
+          email,
+          password: users.password,
+          alamat,
+          no_tlp,
+          gambar_profil: users.gambar_profil,
+          status_konsumen,
         },
         {
           where: {
@@ -141,15 +139,15 @@ export const updateUser = async (req, res) => {
     file.mv(`./public/images/${fileName}`, async (err) => {
       if (err) return res.status(500).json({ msg: err.message });
       try {
-        await Users.update(
+        await User.update(
           {
-            nama: nama,
-            email: email,
-            password: hashPassword,
-            alamat: alamat,
-            no_tlp: no_tlp,
+            nama,
+            email,
+            password: users.password,
+            alamat,
+            no_tlp,
             gambar_profil: url,
-            status_konsumen: status_konsumen,
+            status_konsumen,
           },
           {
             where: {
@@ -176,7 +174,7 @@ export const updateUser = async (req, res) => {
   }
 };
 export const deleteUser = async (req, res) => {
-  const users = await Users.findOne({
+  const users = await User.findOne({
     where: {
       uuid: req.params.id,
     },
@@ -185,7 +183,7 @@ export const deleteUser = async (req, res) => {
   const imagePath = users.gambar_profil;
   const __dirname = path.dirname(fileURLToPath(import.meta.url));
   try {
-    await Users.destroy({
+    await User.destroy({
       where: {
         id: users.id,
       },
