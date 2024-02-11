@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { meUser } from "../../features/AuthSlice";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Footer from "../../components/Footer";
 
 function Profile() {
   const [id, setId] = useState();
@@ -314,6 +315,9 @@ function Profile() {
             </button>
           </div>
         </div>
+      </div>
+      <div>
+        <Footer />
       </div>
     </div>
   );

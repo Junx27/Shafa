@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { meUser } from "../../features/AuthSlice";
 import { useEffect } from "react";
+import Footer from "../../components/Footer";
 
 function Faq() {
   const dispatch = useDispatch();
@@ -24,7 +25,9 @@ function Faq() {
       <div>
         <Navbar />
       </div>
-      <div>Ini halaman faq</div>
+      <div>
+        <Footer />
+      </div>
     </div>
   );
 }

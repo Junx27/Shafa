@@ -12,6 +12,7 @@ import AuthAdminRoute from "./routes/AuthAdminRoute.js";
 import AuthRoute from "./routes/Auth.js";
 import Transaksi from "./routes/TransaksiRoute.js";
 import InformasiRoute from "./routes/InformasiRoute.js";
+import KritikRoute from "./routes/KritikRoute.js";
 dotenv.config();
 const app = express();
 const sessionStore = SequelizeStore(session.Store);
@@ -49,6 +50,7 @@ app.use(AuthAdminRoute);
 app.use(AuthRoute);
 app.use(Transaksi);
 app.use(InformasiRoute);
+app.use(KritikRoute);
 
 store.sync();
 app.listen(process.env.APP_PORT, () => {

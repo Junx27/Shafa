@@ -225,3 +225,32 @@ export const deleteTransaksis = async (req, res) => {
     res.status(500).json({ msg: error.message });
   }
 };
+
+export const deleteTransaksiByProductName = async (req, res) => {
+  const productName = req.params.nama_produk;
+
+  try {
+    // Hapus transaksi berdasarkan nama_produk
+    const deletedTransaksiCount = await Transaksi.destroy({
+      where: {
+        nama_produk: productName,
+      },
+    });
+
+    if (deletedTransaksiCount > 0) {
+      return res
+        .status(200)
+        .json({
+          msg: `Transaksi dengan nama produk ${productName} berhasil dihapus`,
+        });
+    } else {
+      return res
+        .status(404)
+        .json({
+          msg: `Transaksi dengan nama produk ${productName} tidak ditemukan`,
+        });
+    }
+  } catch (error) {
+    return res.status(500).json({ msg: error.message });
+  }
+};

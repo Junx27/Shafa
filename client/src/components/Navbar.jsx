@@ -4,11 +4,22 @@ import Logo from "../assets/images/shafa.png";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser, reset } from "../features/AuthSlice.js";
+import axios from "axios";
 
 function Navbar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   useSelector((state) => state.auth);
+  const [data, setData] = useState([]);
+
+  const fetchData = async () => {
+    const response = await axios.get("http://localhost:5000/transaksis");
+    setData(response.data);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const logout = () => {
     dispatch(logoutUser());
@@ -50,6 +61,12 @@ function Navbar() {
           </NavLink>
         ))}
       </div>
+      <div
+        className={`bg-red-400 p-1 rounded-full absolute right-[725px] top-7 animate-pulse ${
+          data.length !== 0 ? "visible" : "invisible"
+        }`}
+      ></div>
+
       <button
         className="bg-lime-300 hover:bg-lime-400 py-2 px-4 rounded-md"
         onClick={logout}

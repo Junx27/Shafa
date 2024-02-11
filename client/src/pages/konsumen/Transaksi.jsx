@@ -4,22 +4,31 @@ import { useNavigate, useParams } from "react-router-dom";
 import { meUser } from "../../features/AuthSlice";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Footer from "../../components/Footer";
 
 function Transaksi() {
   const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [jumlah, setJumlah] = useState(1);
+  const jumlah = 1;
   const [image, setImage] = useState(null);
   const [nama_produk, setNamaProduk] = useState("");
   const [harga_produk, setHargaProduk] = useState("");
   const [adminId, setAdminId] = useState("");
   const [gambar_produk, setGambarProduk] = useState(null);
-  const [promo, setPromo] = useState("tidak promo");
+  const [deskripsi_produk, setDeskripsi] = useState();
   const [idProduk, setIdProduk] = useState();
   const status = "belum";
   const { isError } = useSelector((state) => state.auth);
 
+  const formatRupiah = (number) => {
+    const formatter = new Intl.NumberFormat("id-ID", {
+      style: "currency",
+      currency: "IDR",
+      minimumFractionDigits: 2,
+    });
+    return formatter.format(number);
+  };
   useEffect(() => {
     dispatch(meUser());
   }, [dispatch]);
@@ -37,7 +46,7 @@ function Transaksi() {
         setHargaProduk(response.data.harga_produk);
         setAdminId(response.data.admin_id);
         setGambarProduk(response.data.gambar_produk);
-        setPromo(response.data.status_produk);
+        setDeskripsi(response.data.deskripsi_produk);
         setIdProduk(response.data.id);
       } catch (error) {
         console.log(error);
@@ -62,7 +71,7 @@ function Transaksi() {
           "Content-Type": "multipart/form-data",
         },
       });
-      window.location.reload();
+      navigate("/keranjang");
     } catch (error) {
       console.log(error);
     }
@@ -73,73 +82,44 @@ function Transaksi() {
         <Navbar />
       </div>
       <div className="mt-32">
-        <form
-          onSubmit={pembelian}
-          className="mx-auto p-10 box-login border border-lime-400 shadow-lg shadow-lime-600"
-        >
-          <div className="grid grid-flow-row auto-rows-max mt-16">
-            <label htmlFor="nama">nama Produk</label>
-            <input
-              id="nama"
-              type="text"
-              value={nama_produk}
-              onChange={(e) => setNamaProduk(e.target.value)}
-              className="mt-3 p-4 rounded-lg border border-lime-500"
-              required
-            />
-          </div>
-          <div className="grid grid-flow-row auto-rows-max mt-16">
-            <label htmlFor="harga">Harga</label>
-            <input
-              id="harga"
-              type="text"
-              value={harga_produk}
-              onChange={(e) => setHargaProduk(e.target.value)}
-              className="mt-3 p-4 rounded-lg border border-lime-500"
-              required
-            />
-          </div>
-          <div className="grid grid-flow-row auto-rows-max mt-16">
-            <label htmlFor="jumlah">Jumlah</label>
-            <select
-              name="jumlah"
-              id="jumlah"
-              value={jumlah}
-              onChange={(e) => setJumlah(e.target.value)}
-            >
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-            </select>
-          </div>
-          <div className="grid grid-flow-row auto-rows-max mt-16">
-            <label htmlFor="total">Total</label>
-            <input
-              id="total"
-              type="text"
-              value={parseInt(harga_produk * jumlah)}
-              className="mt-3 p-4 rounded-lg border border-lime-500"
-              required
-            />
-          </div>
-          <div className="flex justify-center">
-            <button
-              className="bg-lime-300 py-3 px-8 rounded-md mt-10 mx-auto hover:bg-lime-400"
-              type="submit"
-            >
-              Submit
-            </button>
-          </div>
-        </form>
         <div className="mt-32 mx-32">
-          <h1 className="font-bold text-center mb-10">Transaksi pembelian</h1>
-          <hr className="h-px border-0 bg-lime-200 mb-2" />
-          <div className="flex felx-row">
-            <img src={gambar_produk} alt="" />
-            <div className="ml-32">
-              <h1>{nama_produk}</h1>
-            </div>
+          <div className="flex mb-5">
+            <span className="material-symbols-outlined">info</span>
+            <h1 className="ml-3">Informasi produk</h1>
           </div>
+          <form onSubmit={pembelian} className="pb-16 pt-5 shadow rounded-lg">
+            <div className="grid grid-cols-2 mx-20">
+              <img
+                src={gambar_produk}
+                alt=""
+                className="w-[300px] mt-5 rounded"
+              />
+              <div className="-ml-10">
+                <h1 className="my-2">
+                  Nama : <spanc className="font-bold">{nama_produk}</spanc>
+                </h1>
+                <p className="my-2">Harga : {formatRupiah(harga_produk)}</p>
+                <p className="pb-10 text-justify">
+                  Deskripsi : {deskripsi_produk}
+                </p>
+              </div>
+            </div>
+            <div className="text-end mr-20">
+              <button
+                className="bg-red-400 p-2 rounded mr-10"
+                type="button"
+                onClick={() => navigate("/produkkonsumen")}
+              >
+                batal
+              </button>
+              <button className="bg-lime-300 p-2 rounded" type="submit">
+                Pesan
+              </button>
+            </div>
+          </form>
+        </div>
+        <div>
+          <Footer />
         </div>
       </div>
     </div>

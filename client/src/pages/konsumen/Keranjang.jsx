@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { meUser } from "../../features/AuthSlice";
 import { useEffect } from "react";
+import Footer from "../../components/Footer";
+import InfromasiKeranjang from "../../components/konsumen/Keranjang";
 
 function Keranjang() {
   const dispatch = useDispatch();
@@ -24,7 +26,12 @@ function Keranjang() {
       <div>
         <Navbar />
       </div>
-      <div>Ini halaman keranjang</div>
+      <div className="m-32 mb-64">
+        <InfromasiKeranjang />
+      </div>
+      <div>
+        <Footer />
+      </div>
     </div>
   );
 }

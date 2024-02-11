@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { meUser } from "../../features/AuthSlice";
 import { useEffect } from "react";
+import Footer from "../../components/Footer";
 
 function Home() {
   const dispatch = useDispatch();
@@ -45,6 +46,9 @@ function Home() {
       <div className=" bg-[url('http://localhost:5000/images/bghero.jpg')] bg-no-repeat bg-cover bg-center w-[100%] h-[1000px] z-0 bg-fixed top-0 z-0"></div>
       <div className="w-[100%] h-[1000px] bg-lime-50 absolute top-[650px] z-20">
         <Promo />
+      </div>
+      <div>
+        <Footer />
       </div>
     </div>
   );

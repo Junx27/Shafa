@@ -24,9 +24,12 @@ function Kritik() {
     <div className="">
       <SideNavbar />
       <Admin />
-      <div className="mt-20 ms-80 pl-6 mr-10">
+      <div className="mt-5 ms-80 pl-6 mr-10">
         <hr className="h-px border-0 bg-lime-200 mb-5" />
-        <h1 className="text-xl">Ini halaman kritik</h1>
+        <div className="flex">
+          <span className="material-symbols-outlined">mail</span>
+          <h1 className="text ml-2">Kritik dan saran dari konsumen</h1>
+        </div>
       </div>
     </div>
   );
