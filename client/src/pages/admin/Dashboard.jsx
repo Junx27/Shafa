@@ -43,41 +43,41 @@ function Dashboard() {
         </div>
         <div className="grid grid-cols-4 gap-16 mt-5">
           <div
-            className="transition-all duration-1000 box-models shadow-md cursor-pointer hover:shadow-lime-200 hover:shadow-lg"
+            className="transition-all duration-1000 p-5 rounded-lg bg-lime-50 shadow-md cursor-pointer hover:shadow-lg"
             onClick={() => navigate("/produk")}
           >
             <div className="flex flex-row items-center">
               <img src={produkIcon} alt="" className="w-10 mr-5" />
               <h2>Produk</h2>
             </div>
-            <div className="mt-5 text-center font-bold text-xl">
+            <div className="transition-all duration-1000 mt-5 text-center font-bold text-xl hover:bg-lime-300 p-2 rounded-lg">
               <JumlahProduk />
             </div>
           </div>
-          <div className="transition-all duration-1000 box-models shadow-md cursor-pointer hover:shadow-lime-200 hover:shadow-lg">
+          <div className="transition-all duration-1000 p-5 rounded-lg bg-lime-50 shadow-md cursor-pointer hover:shadow-lg">
             <div className="flex flex-row items-center">
               <img src={konsumenIcon} alt="" className="w-10 mr-5" />
               <h2>Konsumen</h2>
             </div>
-            <div className="mt-5 text-center font-bold text-xl">
+            <div className="transition-all duration-1000 mt-5 text-center font-bold text-xl hover:bg-lime-300 p-2 rounded-lg">
               <JumlahKonsumen />
             </div>
           </div>
-          <div className="transition-all duration-1000 box-models shadow-md cursor-pointer hover:shadow-lime-200 hover:shadow-lg">
+          <div className="transition-all duration-1000 p-5 rounded-lg bg-lime-50 shadow-md cursor-pointer hover:shadow-lg">
             <div className="flex flex-row items-center">
               <img src={promoIcon} alt="" className="w-10 mr-5" />
               <h2>Promo</h2>
             </div>
-            <div className="mt-5 text-center font-bold text-xl">
+            <div className="transition-all duration-1000 mt-5 text-center font-bold text-xl hover:bg-lime-300 p-2 rounded-lg">
               <JumlahPromo />
             </div>
           </div>
-          <div className="transition-all duration-1000 box-models shadow-md cursor-pointer hover:shadow-lime-200 hover:shadow-lg">
+          <div className="transition-all duration-1000 p-5 rounded-lg bg-lime-50 shadow-md cursor-pointer hover:shadow-lg">
             <div className="flex flex-row items-center">
               <img src={pesananIcon} alt="" className="w-10 mr-5" />
               <h2>Pesanan</h2>
             </div>
-            <div className="mt-5 text-center font-bold text-xl">
+            <div className="transition-all duration-1000 mt-5 text-center font-bold text-xl hover:bg-lime-300 p-2 rounded-lg">
               <JUmlahPesanan />
             </div>
           </div>

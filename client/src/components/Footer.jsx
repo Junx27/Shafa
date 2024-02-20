@@ -90,6 +90,7 @@ function Footer() {
             <textarea
               className="w-[250px] h-[150px] p-2 border border-lime-400 rounded"
               value={kritik}
+              maxLength={255}
               onChange={(e) => setKritik(e.target.value)}
             ></textarea>
             <div className="flex justify-end -mr-5">

@@ -48,7 +48,7 @@ function Promo() {
         {data.map((row, index) => (
           <div
             key={index}
-            className={`bg-lime-100 rounded rounded-lg mb-10 transition-all duration-1000 shadow-md hover:shadow-lg hover:shadow-lime-400 ${
+            className={`rounded rounded-lg mb-10 transition-all duration-1000 shadow-md hover:shadow-lg ${
               row.status_produk === "promo" ? "visible" : "invisible"
             }`}
             onClick={() => navigate("/produkkonsumen")}

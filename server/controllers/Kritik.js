@@ -32,7 +32,6 @@ export const getKritikById = async (req, res) => {
       include: [
         {
           model: User,
-          attributes: ["nama", "email"],
         },
       ],
     });

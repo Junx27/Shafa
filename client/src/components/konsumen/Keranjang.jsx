@@ -4,8 +4,21 @@ import { useNavigate } from "react-router-dom";
 
 function Keranjang() {
   const navigate = useNavigate();
+  const [id, setId] = useState([]);
+  const [nama, setNama] = useState([]);
+  const [alamat, setAlamat] = useState([]);
   const [data, setData] = useState([]);
   const [productQuantity, setProductQuantity] = useState({});
+
+  const fetchProfile = async () => {
+    const response = await axios.get("http://localhost:5000/me");
+    setId(response.data.id);
+    setNama(response.data.nama);
+    setAlamat(response.data.alamat);
+  };
+  useEffect(() => {
+    fetchProfile();
+  }, []);
 
   const fetchData = async () => {
     const response = await axios.get("http://localhost:5000/transaksis");
@@ -67,22 +80,19 @@ function Keranjang() {
   };
 
   const removeProduct = (nama_produk) => {
-    // Menghapus produk dari state productQuantity
     const updatedProductQuantity = { ...productQuantity };
     delete updatedProductQuantity[nama_produk];
     setProductQuantity(updatedProductQuantity);
 
-    // Menghapus produk dari data transaksi (backend)
     axios
       .delete(`http://localhost:5000/transaksis/nama/${nama_produk}`)
       .then(() => {
         console.log(`Produk ${nama_produk} berhasil dihapus`);
-        // Lakukan apapun yang diperlukan setelah produk dihapus
       })
       .catch((error) => {
         console.error(`Gagal menghapus produk ${nama_produk}:`, error);
-        // Lakukan penanganan kesalahan di sini
       });
+    navigate("/produkkonsumen");
   };
 
   const formatRupiah = (number) => {
@@ -92,6 +102,44 @@ function Keranjang() {
       minimumFractionDigits: 2,
     });
     return formatter.format(number);
+  };
+
+  const handlePesanan = async (userId) => {
+    try {
+      const pembayaran = {
+        nama: nama,
+        total: totalKeseluruhan,
+        bukti_pembayaran: "belum",
+        alamat: alamat,
+        status_pengiriman: "belum",
+        status_penerimaan: "belum",
+      };
+      await axios.post("http://localhost:5000/pembayaran", pembayaran, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const formattedData = Object.keys(productQuantity).map((nama_produk) => ({
+        nama_produk: nama_produk,
+        jumlah_produk: productQuantity[nama_produk],
+        harga_produk: calculateTotalPrice(nama_produk),
+        total_pembelian: parseInt(
+          productQuantity[nama_produk] * calculateTotalPrice(nama_produk)
+        ),
+        pembayaran_id: 8,
+      }));
+      console.log(formattedData);
+      await axios.post("http://localhost:5000/pembelian", formattedData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log("Data berhasil dimasukkan ke dalam tabel:");
+      await axios.delete(`http://localhost:5000/transaksis/user/${userId}`);
+      navigate("/riwayatkonsumen");
+    } catch (error) {
+      console.error("Gagal memasukkan data ke dalam tabel:", error);
+    }
   };
 
   return (
@@ -110,7 +158,6 @@ function Keranjang() {
                 <th className="border border-white px-4 py-2">Jumlah</th>
                 <th className="border border-white px-4 py-2">Total Harga</th>
                 <th className="border border-white px-4 py-2">Aksi</th>{" "}
-                {/* Tambah kolom untuk tombol hapus */}
               </tr>
             </thead>
             <tbody className="bg-lime-50">
@@ -124,13 +171,13 @@ function Keranjang() {
                     {nama_produk}
                   </td>
                   <td className="border border-white px-4 py-2">
-                    {productQuantity[nama_produk]} Kg{" "}
+                    {productQuantity[nama_produk]} Kg
                     <button
                       onClick={() => decrementQuantity(nama_produk)}
                       className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded ml-2"
                     >
                       -
-                    </button>{" "}
+                    </button>
                     <button
                       onClick={() => incrementQuantity(nama_produk)}
                       className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded ml-2"
@@ -142,8 +189,6 @@ function Keranjang() {
                     {formatRupiah(calculateTotalPrice(nama_produk))}
                   </td>
                   <td className="border border-white px-4 py-2">
-                    {" "}
-                    {/* Tombol hapus */}
                     <button
                       onClick={() => removeProduct(nama_produk)}
                       className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
@@ -170,6 +215,14 @@ function Keranjang() {
               </tfoot>
             )}
           </table>
+          <div className="flex justify-end pr-10 pb-10 bg-lime-50">
+            <button
+              className="transition-all duration-1000 bg-lime-400 p-2 rounded mt-10 hover:bg-lime-500"
+              onClick={() => handlePesanan(id)}
+            >
+              Pesan sekarang
+            </button>
+          </div>
         </div>
       ) : (
         <h1 className="text-center">Belum ada data</h1>

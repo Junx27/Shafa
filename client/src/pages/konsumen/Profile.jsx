@@ -151,13 +151,13 @@ function Profile() {
             </div>
             <div className="absolute bottom-10 right-10">
               <button
-                className="bg-lime-300 py-3 px-5 rounded hover:bg-lime-400"
+                className="transition-all duration-1000 bg-lime-300 py-3 px-5 rounded hover:bg-lime-400"
                 onClick={openEdit}
               >
                 Edit
               </button>
               <button
-                className="bg-red-400 py-3 px-5 rounded ml-5 hover:bg-red-500"
+                className="transition-all duration-1000 bg-red-400 py-3 px-5 rounded ml-5 hover:bg-red-500"
                 onClick={openDelete}
               >
                 Hapus
@@ -178,7 +178,7 @@ function Profile() {
                   onChange={handleImageChange}
                   className="invisible"
                 />
-                <p className="bg-lime-400 p-2 rounded-md w-20 text-center -mt-5 hover:bg-lime-500 hover:text-white mb-5">
+                <p className="transition-all duration-1000 bg-lime-400 p-2 rounded-md w-20 text-center -mt-5 hover:bg-lime-500 hover:text-white mb-5">
                   {image ? "Ganti" : "Pilih"}
                 </p>
               </label>
@@ -204,6 +204,7 @@ function Profile() {
                   id="nama"
                   type="text"
                   value={nama}
+                  maxLength={15}
                   onChange={(e) => setNama(e.target.value)}
                   className=" mt-2 p-2 border border-lime-400 rounded"
                 />
@@ -265,12 +266,12 @@ function Profile() {
                   type="number"
                   value={no_tlp}
                   onChange={(e) => setNoTlp(e.target.value)}
-                  className=" mt-2 p-2 border border-lime-400 rounded"
+                  className="mt-2 p-2 border border-lime-400 rounded"
                 />
               </div>
               <div className="absolute bottom-10 right-10">
                 <button
-                  className="bg-lime-300 py-2 px-3 rounded hover:bg-lime-400"
+                  className="transition-all duration-1000 bg-lime-300 py-2 px-3 rounded hover:bg-lime-400"
                   type="submit"
                 >
                   Submit
@@ -278,7 +279,7 @@ function Profile() {
               </div>
               <div className="absolute top-0 right-0">
                 <div
-                  className="bg-red-400 py-2 px-3 rounded-b-md hover:bg-red-500"
+                  className="transition-all duration-1000 bg-red-400 py-2 px-3 rounded-b-md hover:bg-red-500"
                   onClick={cancel}
                   type="button"
                 >
@@ -302,13 +303,13 @@ function Profile() {
           </p>
           <div className="flex justify-end pb-5">
             <button
-              className="bg-red-400 hover:bg-red-500 p-2 rounded w-20"
+              className="transition-all duration-1000 bg-red-400 hover:bg-red-500 p-2 rounded w-20"
               onClick={closeDelete}
             >
               Tidak
             </button>
             <button
-              className="bg-lime-400 hover:bg-lime-500 p-2 rounded w-20 mx-5"
+              className="transition-all duration-1000 bg-lime-400 hover:bg-lime-500 p-2 rounded w-20 mx-5"
               onClick={deleteKonsumen}
             >
               ya

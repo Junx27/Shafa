@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { meUser } from "../../features/AuthSlice";
 import { useEffect } from "react";
 import Footer from "../../components/Footer";
+import Pembelian from "../../components/konsumen/Pembelian";
 
 function History() {
   const dispatch = useDispatch();
@@ -24,6 +25,9 @@ function History() {
     <div>
       <div>
         <Navbar />
+      </div>
+      <div className="m-32">
+        <Pembelian />
       </div>
       <div>
         <Footer />

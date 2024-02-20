@@ -20,6 +20,7 @@ export const getTransaksis = async (req, res) => {
         "total_transaksi",
         "status_pengiriman",
         "status_penerimaan",
+        "user_id",
       ],
       include: [
         {
@@ -116,13 +117,85 @@ export const createTransaksis = async (req, res) => {
       status_penerimaan: status_penerimaan,
       admin_id: req.adminId,
       user_id: req.userId,
-      produk_id: req.produkId,
+      produk_id: produk_id,
     });
 
     return res.status(201).json({ msg: "Transaksi berhasil ditambahkan" });
   } catch (error) {
     return res.status(400).json({ msg: "Transaksi gagal dibuat" });
   }
+};
+export const createTransaksiArray = async (req, res) => {
+  const transaksiData = req.body;
+
+  // Buat array untuk menampung hasil pesan untuk setiap transaksi
+  const results = [];
+
+  // Loop melalui setiap objek transaksi dalam data array
+  for (let i = 0; i < transaksiData.length; i++) {
+    const {
+      nama_produk,
+      harga_produk,
+      jumlah_produk,
+      total_transaksi,
+      status_pengiriman,
+      status_penerimaan,
+      admin_id,
+      user_id,
+      produk_id,
+    } = transaksiData[i];
+
+    let bukti_transfer = "belum";
+
+    if (req.files && req.files[i] && req.files[i].bukti_transfer) {
+      const file = req.files[i].bukti_transfer;
+      const fileSize = file.data.length;
+      const ext = path.extname(file.name);
+      const fileName = file.md5 + ext;
+      const url = `${req.protocol}://${req.get("host")}/images/${fileName}`;
+      const allowedType = [".png", ".jpg", ".jpeg"];
+
+      if (!allowedType.includes(ext.toLowerCase())) {
+        results.push({ msg: `Gambar salah untuk transaksi ${i + 1}` });
+        continue; // Lanjutkan ke transaksi berikutnya
+      }
+      if (fileSize > 5000000) {
+        results.push({ msg: `Gambar dibawah 5 Mb untuk transaksi ${i + 1}` });
+        continue; // Lanjutkan ke transaksi berikutnya
+      }
+
+      try {
+        await file.mv(`./public/images/${fileName}`);
+        bukti_transfer = url;
+      } catch (error) {
+        results.push({
+          msg: `Gagal menyimpan gambar untuk transaksi ${i + 1}`,
+        });
+        continue; // Lanjutkan ke transaksi berikutnya
+      }
+    }
+
+    try {
+      await Transaksi.create({
+        nama_produk: nama_produk,
+        harga_produk: harga_produk,
+        jumlah_produk: jumlah_produk,
+        total_transaksi: total_transaksi,
+        bukti_transfer: bukti_transfer,
+        status_pengiriman: status_pengiriman,
+        status_penerimaan: status_penerimaan,
+        admin_id: req.adminId,
+        user_id: req.userId,
+        produk_id: produk_id,
+      });
+
+      results.push({ msg: `Transaksi ${i + 1} berhasil ditambahkan` });
+    } catch (error) {
+      results.push({ msg: `Transaksi ${i + 1} gagal dibuat` });
+    }
+  }
+
+  return res.status(201).json(results);
 };
 
 export const updateTransaksis = async (req, res) => {
@@ -238,17 +311,36 @@ export const deleteTransaksiByProductName = async (req, res) => {
     });
 
     if (deletedTransaksiCount > 0) {
-      return res
-        .status(200)
-        .json({
-          msg: `Transaksi dengan nama produk ${productName} berhasil dihapus`,
-        });
+      return res.status(200).json({
+        msg: `Transaksi dengan nama produk ${productName} berhasil dihapus`,
+      });
     } else {
-      return res
-        .status(404)
-        .json({
-          msg: `Transaksi dengan nama produk ${productName} tidak ditemukan`,
-        });
+      return res.status(404).json({
+        msg: `Transaksi dengan nama produk ${productName} tidak ditemukan`,
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({ msg: error.message });
+  }
+};
+export const deleteTransaksiByUserId = async (req, res) => {
+  const userId = req.params.user_id;
+
+  try {
+    const deletedTransaksiCount = await Transaksi.destroy({
+      where: {
+        user_id: userId,
+      },
+    });
+
+    if (deletedTransaksiCount > 0) {
+      return res.status(200).json({
+        msg: `Transaksi dengan user_id ${userId} berhasil dihapus`,
+      });
+    } else {
+      return res.status(404).json({
+        msg: `Transaksi dengan user_id ${userId} tidak ditemukan`,
+      });
     }
   } catch (error) {
     return res.status(500).json({ msg: error.message });

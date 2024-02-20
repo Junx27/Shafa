@@ -1,13 +1,10 @@
 import { Sequelize } from "sequelize";
 import db from "../config/Database.js";
-import Produks from "./ProdukModel.js";
-import Admin from "./AdminModel.js";
-import Users from "./UserModel.js";
-
+import User from "./UserModel.js";
 const { DataTypes } = Sequelize;
 
-const Transaksi = db.define(
-  "transaksi",
+const Pembayaran = db.define(
+  "pembayaran",
   {
     uuid: {
       type: DataTypes.STRING,
@@ -17,35 +14,28 @@ const Transaksi = db.define(
         notEmpty: true,
       },
     },
-    nama_produk: {
+    nama: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notEmpty: true,
       },
     },
-    harga_produk: {
+    total: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notEmpty: true,
       },
     },
-    jumlah_produk: {
+    bukti_pembayaran: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notEmpty: true,
       },
     },
-    total_transaksi: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
-    },
-    bukti_transfer: {
+    alamat: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
@@ -66,37 +56,18 @@ const Transaksi = db.define(
         notEmpty: true,
       },
     },
-    admin_id: {
-      type: DataTypes.INTEGER,
-    },
     user_id: {
       type: DataTypes.INTEGER,
-    },
-    produk_id: {
-      type: DataTypes.INTEGER,
       allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
     },
   },
-  { freezeTableName: true }
+  {
+    freezeTableName: true,
+  }
 );
-
-Admin.hasMany(Transaksi, { onDelete: "CASCADE", onUpdate: "CASCADE" });
-Transaksi.belongsTo(Admin, {
-  foreignKey: "admin_id",
-  onDelete: "CASCADE",
-  onUpdate: "CASCADE",
-});
-Users.hasMany(Transaksi, { onDelete: "CASCADE", onUpdate: "CASCADE" });
-Transaksi.belongsTo(Users, {
-  foreignKey: "user_id",
-  onDelete: "CASCADE",
-  onUpdate: "CASCADE",
-});
-Produks.hasMany(Transaksi, { onDelete: "CASCADE", onUpdate: "CASCADE" });
-Transaksi.belongsTo(Produks, {
-  foreignKey: "produk_id",
-  onDelete: "CASCADE",
-  onUpdate: "CASCADE",
-});
-
-export default Transaksi;
+User.hasMany(Pembayaran, { onDelete: "CASCADE" });
+Pembayaran.belongsTo(User, { foreignKey: "user_id", onDelete: "CASCADE" });
+export default Pembayaran;

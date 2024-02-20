@@ -56,7 +56,7 @@ function Produk() {
           )
           .map((row, index) => (
             <div
-              className="transition-all duration-1000 bg-lime-100 shadow-md hover:shadow-lg hover:shadow-lime-300 rounded-b-lg relative mt-10"
+              className="transition-all duration-1000 shadow-md hover:shadow-lg rounded-b-lg relative mt-10"
               key={index}
             >
               <img
@@ -79,7 +79,7 @@ function Produk() {
               </h1>
               <div className="flex justify-between items-center py-2">
                 <p
-                  className={`ml-5 underline text-sm my-3 font-light ${
+                  className={`ml-5 my-3 ${
                     row.status_produk === "promo" ? "text-red-500" : ""
                   }`}
                 >
@@ -87,10 +87,10 @@ function Produk() {
                 </p>
                 <Link
                   to={`/transaksi/${row.uuid}`}
-                  className="bg-lime-300 hover:bg-lime-400 py-2 rounded-md px-5 mx-auto text-xs"
+                  className="transition-all duration-1000 bg-lime-300 hover:bg-lime-400 py-2 rounded-md px-5 mx-auto text-xs"
                 >
                   <div className="flex items-center">
-                    <span className="material-symbols-outlined mr-2 text-xs">
+                    <span className="material-symbols-outlined mr-2 text-sm">
                       shopping_cart
                     </span>
                     <p>Pesan</p>

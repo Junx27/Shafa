@@ -13,6 +13,8 @@ import AuthRoute from "./routes/Auth.js";
 import Transaksi from "./routes/TransaksiRoute.js";
 import InformasiRoute from "./routes/InformasiRoute.js";
 import KritikRoute from "./routes/KritikRoute.js";
+import PembelianRoute from "./routes/PembelianRoute.js";
+import PembayaranRoute from "./routes/PembayaranRoute.js";
 dotenv.config();
 const app = express();
 const sessionStore = SequelizeStore(session.Store);
@@ -20,9 +22,9 @@ const sessionStore = SequelizeStore(session.Store);
 const store = new sessionStore({
   db: db,
 });
-(async () => {
-  await db.sync();
-})();
+// (async () => {
+//   await db.sync();
+// })();
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
@@ -51,6 +53,8 @@ app.use(AuthRoute);
 app.use(Transaksi);
 app.use(InformasiRoute);
 app.use(KritikRoute);
+app.use(PembelianRoute);
+app.use(PembayaranRoute);
 
 store.sync();
 app.listen(process.env.APP_PORT, () => {

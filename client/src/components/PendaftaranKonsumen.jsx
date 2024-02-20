@@ -33,7 +33,7 @@ function PendaftaranKonsumen() {
       {dataKonsumen.map((row, index) => (
         <div className="my-3" key={index}>
           {row.status_konsumen === "belum" && (
-            <div className="transition-all duration-1000 bg-lime-100 rounded-lg  flex justify-between items-center py-2 shadow hover:shadow-lg">
+            <div className="transition-all duration-1000 bg-lime-50 rounded-lg  flex justify-between items-center py-2 shadow hover:shadow-lg">
               <img
                 src={
                   row.gambar_profil === "belum"

@@ -92,7 +92,7 @@ function Produk() {
       <div className="grid grid-cols-4 gap-10">
         {filteredProduk.map((row, index) => (
           <div
-            className="bg-lime-100 shadow-md rounded-b-lg relative"
+            className="transition-all duration-1000 shadow-md rounded-b-lg relative hover:shadow-lg"
             key={index}
           >
             <img
@@ -102,7 +102,7 @@ function Produk() {
                   : row.gambar_produk
               }
               alt=""
-              className="rounded-t-lg brightness-90 hover:brightness-75 z-0 object-cover h-48 w-96"
+              className="transition-all duration-1000 rounded-t-lg brightness-90 hover:brightness-75 z-0 object-cover h-48 w-96"
             />
             {row.status_produk === "promo" && (
               <p className="bg-lime-400 rounded-b-lg p-2 w-16 absolute top-0 shadow">
