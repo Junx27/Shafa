@@ -2,6 +2,7 @@ import express from "express";
 import {
   getPembayaranTerbayar,
   getPembayaranBelumBayar,
+  getPembayaranSelesai,
   getPembayaranById,
   createPembayaran,
   updatePembayaran,
@@ -13,6 +14,7 @@ const router = express.Router();
 
 router.get("/pembayaran/sudah", getPembayaranTerbayar);
 router.get("/pembayaran/belum", getPembayaranBelumBayar);
+router.get("/pembayaran/penerimaan/selesai", getPembayaranSelesai);
 router.get("/pembayaran/:id", getPembayaranById);
 router.post("/pembayaran", verifyUser, createPembayaran);
 router.patch("/pembayaran/:id", updatePembayaran);

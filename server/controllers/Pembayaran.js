@@ -47,6 +47,39 @@ export const getPembayaranTerbayar = async (req, res) => {
     response = await Pembayaran.findAll({
       where: {
         status_pembayaran: "sudah",
+        status_penerimaan: "belum",
+      },
+      attributes: [
+        "id",
+        "uuid",
+        "nama",
+        "total",
+        "status_pembayaran",
+        "bukti_pembayaran",
+        "alamat",
+        "status_pengiriman",
+        "status_penerimaan",
+        "user_id",
+      ],
+      include: [
+        {
+          model: Users,
+          attributes: ["nama"],
+        },
+      ],
+    });
+
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+};
+export const getPembayaranSelesai = async (req, res) => {
+  try {
+    let response;
+    response = await Pembayaran.findAll({
+      where: {
+        status_penerimaan: "sudah",
       },
       attributes: [
         "id",
@@ -162,79 +195,6 @@ export const createPembayaran = async (req, res) => {
     });
   }
 };
-// export const createTransaksiArray = async (req, res) => {
-//   const transaksiData = req.body;
-
-//   // Buat array untuk menampung hasil pesan untuk setiap transaksi
-//   const results = [];
-
-//   // Loop melalui setiap objek transaksi dalam data array
-//   for (let i = 0; i < transaksiData.length; i++) {
-//     const {
-//       nama_produk,
-//       harga_produk,
-//       jumlah_produk,
-//       total_transaksi,
-//       status_pengiriman,
-//       status_penerimaan,
-//       admin_id,
-//       user_id,
-//       produk_id,
-//     } = transaksiData[i];
-
-//     let bukti_transfer = "belum";
-
-//     if (req.files && req.files[i] && req.files[i].bukti_transfer) {
-//       const file = req.files[i].bukti_transfer;
-//       const fileSize = file.data.length;
-//       const ext = path.extname(file.name);
-//       const fileName = file.md5 + ext;
-//       const url = `${req.protocol}://${req.get("host")}/images/${fileName}`;
-//       const allowedType = [".png", ".jpg", ".jpeg"];
-
-//       if (!allowedType.includes(ext.toLowerCase())) {
-//         results.push({ msg: `Gambar salah untuk transaksi ${i + 1}` });
-//         continue; // Lanjutkan ke transaksi berikutnya
-//       }
-//       if (fileSize > 5000000) {
-//         results.push({ msg: `Gambar dibawah 5 Mb untuk transaksi ${i + 1}` });
-//         continue; // Lanjutkan ke transaksi berikutnya
-//       }
-
-//       try {
-//         await file.mv(`./public/images/${fileName}`);
-//         bukti_transfer = url;
-//       } catch (error) {
-//         results.push({
-//           msg: `Gagal menyimpan gambar untuk transaksi ${i + 1}`,
-//         });
-//         continue; // Lanjutkan ke transaksi berikutnya
-//       }
-//     }
-
-//     try {
-//       await Transaksi.create({
-//         nama_produk: nama_produk,
-//         harga_produk: harga_produk,
-//         jumlah_produk: jumlah_produk,
-//         total_transaksi: total_transaksi,
-//         bukti_transfer: bukti_transfer,
-//         status_pengiriman: status_pengiriman,
-//         status_penerimaan: status_penerimaan,
-//         admin_id: req.adminId,
-//         user_id: req.userId,
-//         produk_id: produk_id,
-//       });
-
-//       results.push({ msg: `Transaksi ${i + 1} berhasil ditambahkan` });
-//     } catch (error) {
-//       results.push({ msg: `Transaksi ${i + 1} gagal dibuat` });
-//     }
-//   }
-
-//   return res.status(201).json(results);
-// };
-
 export const updatePembayaran = async (req, res) => {
   try {
     const pembayaran = await Pembayaran.findOne({
@@ -245,59 +205,26 @@ export const updatePembayaran = async (req, res) => {
     if (!pembayaran) {
       return res.status(404).json({ msg: "Data tidak ditemukan" });
     }
-
-    const {
-      nama,
-      total,
-      bukti_pembayaran,
-      alamat,
-      status_pengiriman,
-      status_penerimaan,
-      user_id,
-    } = req.body;
-
-    let bukti_transfer = pembelian.bukti_pembayaran;
-    if (req.files && req.files.bukti_transfer) {
-      const file = req.files.bukti_transfer;
-      const fileSize = file.data.length;
-      const ext = path.extname(file.name);
-      const fileName = file.md5 + ext;
-      const url = `${req.protocol}://${req.get("host")}/images/${fileName}`;
-      const allowedType = [".png", ".jpg", ".jpeg"];
-
-      if (!allowedType.includes(ext.toLowerCase())) {
-        return res.status(422).json({ msg: "Gambar salah" });
+    const { status_pembayaran, status_pengiriman, status_penerimaan } =
+      req.body;
+    await Pembayaran.update(
+      {
+        status_pembayaran,
+        status_pengiriman,
+        status_penerimaan,
+      },
+      {
+        where: {
+          id: pembayaran.id,
+        },
       }
-      if (fileSize > 5000000) {
-        return res.status(422).json({ msg: "Gambar kurang dari 5 Mb" });
-      }
-
-      try {
-        await file.mv(`./public/images/${fileName}`);
-        bukti_transfer = url;
-      } catch (error) {
-        return res.status(500).json({ msg: error.message });
-      }
-    }
-
-    await Pembayaran.update({
-      nama,
-      total,
-      bukti_pembayaran,
-      alamat,
-      status_pengiriman,
-      status_penerimaan,
-      admin_id,
-      user_id,
-      produk_id,
-    });
+    );
 
     return res.status(200).json({ msg: "Pembayaran berhasil diupdate" });
   } catch (error) {
     return res.status(500).json({ msg: error.message });
   }
 };
-
 export const deletePembayaran = async (req, res) => {
   try {
     const pembayaran = await Pembayaran.findOne({

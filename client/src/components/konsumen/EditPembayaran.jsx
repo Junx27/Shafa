@@ -27,11 +27,23 @@ function EditPembayaran() {
     e.preventDefault();
     try {
       const status = "belum";
-      const formData = new FormData();
-      formData.append("pembayaran_id", pembayaranId);
+      const formDataPembelian = new FormData();
+      formDataPembelian.append("pembayaran_id", pembayaranId);
       await axios.patch(
         `http://localhost:5000/pembelian/status/${status}`,
-        formData,
+        formDataPembelian,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      const status_pembayaran = "sudah";
+      const formDataPembayaran = new FormData();
+      formDataPembayaran.append("status_pembayaran", status_pembayaran);
+      await axios.patch(
+        `http://localhost:5000/pembayaran/${uuid}`,
+        formDataPembayaran,
         {
           headers: {
             "Content-Type": "multipart/form-data",

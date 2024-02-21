@@ -26,6 +26,7 @@ import ViewKonsumen from "../src/pages/admin/EditKonsumen.jsx";
 import Transaksi from "./pages/konsumen/Transaksi.jsx";
 import Pembayaran from "./pages/konsumen/EditPembayaran.jsx";
 import EditPembayaran from "./components/konsumen/EditPembayaran.jsx";
+import ViewPembelian from "./pages/konsumen/ViewPembelian.jsx";
 
 function App() {
   return (
@@ -52,6 +53,7 @@ function App() {
         <Route path="/keranjang" Component={Keranjang} />
         <Route path="/transaksi/:id" Component={Transaksi} />
         <Route path="/pembayaran/:id" Component={EditPembayaran} />
+        <Route path="/pembelian/:id" Component={ViewPembelian} />
         <Route path="/faq" Component={Faq} />
         <Route path="/profile" Component={Profile} />
         <Route path="/produkkonsumen" Component={ProdukKonsumen} />
