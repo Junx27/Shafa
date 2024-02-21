@@ -77,49 +77,69 @@ export const createPembelaian = async (req, res) => {
 
 export const updatePembelian = async (req, res) => {
   try {
-    const pembelian = await Pembelian.findOne({
+    // Ambil semua data pembelian dengan status 'belum'
+    const pembelianBelum = await Pembelian.findAll({
       where: {
-        uuid: req.params.id,
+        status: "belum",
       },
     });
-    if (!pembelian)
-      return res.status(404).json({ msg: "Data tidak ditemukan" });
-    const { nama_produk } = req.body;
+
+    if (!pembelianBelum || pembelianBelum.length === 0) {
+      return res
+        .status(404)
+        .json({ msg: "Tidak ada data pembelian dengan status 'belum'" });
+    }
+
+    const { pembayaran_id } = req.body;
+
     try {
+      // Update semua data pembelian yang memiliki status 'belum' menjadi 'sudah'
       await Pembelian.update(
         {
-          nama_produk: nama_produk,
+          pembayaran_id: pembayaran_id, // Update pembayaran_id dengan nilai yang diberikan
+          status: "sudah", // Ubah status menjadi 'sudah'
         },
         {
           where: {
-            id: data.id,
+            status: "belum", // Filter data dengan status 'belum'
           },
         }
       );
-      res.status(200).json({ msg: "Pembelian berhasil diupdate" });
+
+      res.status(200).json({ msg: "Status pembelian berhasil diupdate" });
     } catch (error) {
-      res.status(400).json({ msg: "Pembelian gagal diupdate" });
+      res
+        .status(400)
+        .json({
+          msg: "Gagal mengupdate status pembelian",
+          error: error.message,
+        });
     }
   } catch (error) {
     res.status(500).json({ msg: error.message });
   }
 };
 export const deletePembelian = async (req, res) => {
+  const userId = req.params.user_id;
+
   try {
-    const pembelian = await Pembelian.findOne({
+    // Hapus transaksi berdasarkan nama_produk
+    const deletedTransaksiCount = await Pembelian.destroy({
       where: {
-        uuid: req.params.id,
+        user_id: userId,
       },
     });
-    if (!pembelian)
-      return res.status(404).json({ msg: "Data tidak ditemukan" });
-    await Pembelian.destroy({
-      where: {
-        id: pembelian.id,
-      },
-    });
-    res.status(200).json({ msg: "pembelian telah dihapus" });
+
+    if (deletedTransaksiCount > 0) {
+      return res.status(200).json({
+        msg: `Transaksi dengan nama produk ${productName} berhasil dihapus`,
+      });
+    } else {
+      return res.status(404).json({
+        msg: `Transaksi dengan nama produk ${productName} tidak ditemukan`,
+      });
+    }
   } catch (error) {
-    res.status(500).json({ msg: "tidak dapat menghapus" });
+    return res.status(500).json({ msg: error.message });
   }
 };

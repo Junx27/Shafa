@@ -52,10 +52,6 @@ const Pembelian = db.define(
     },
     pembayaran_id: {
       type: DataTypes.INTEGER,
-      allowNull: true,
-      validate: {
-        notEmpty: true,
-      },
     },
     user_id: {
       type: DataTypes.INTEGER,

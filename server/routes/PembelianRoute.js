@@ -14,7 +14,7 @@ const router = express.Router();
 router.get("/pembelian", getPembelian);
 router.get("/pembelian/:id", getPembelianById);
 router.post("/pembelian", verifyUser, createPembelaian);
-router.patch("/pembelian", updatePembelian);
-router.delete("/pembelian/:id", deletePembelian);
+router.patch("/pembelian/status/:status", updatePembelian);
+router.delete("/pembelian/user/:user_id", deletePembelian);
 
 export default router;

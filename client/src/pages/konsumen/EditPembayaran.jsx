@@ -1,4 +1,3 @@
-import React from "react";
 import EditPembayaran from "../../components/konsumen/EditPembayaran";
 
 function EditTransaksi() {

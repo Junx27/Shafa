@@ -9,15 +9,51 @@ import Pembayaran from "../models/PembayaranModel.js";
 
 const { ForeignKeyConstraintError } = Sequelize;
 
-export const getPembayaran = async (req, res) => {
+export const getPembayaranBelumBayar = async (req, res) => {
   try {
     let response;
     response = await Pembayaran.findAll({
+      where: {
+        status_pembayaran: "belum",
+      },
       attributes: [
         "id",
         "uuid",
         "nama",
         "total",
+        "status_pembayaran",
+        "bukti_pembayaran",
+        "alamat",
+        "status_pengiriman",
+        "status_penerimaan",
+        "user_id",
+      ],
+      include: [
+        {
+          model: Users,
+          attributes: ["nama"],
+        },
+      ],
+    });
+
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+};
+export const getPembayaranTerbayar = async (req, res) => {
+  try {
+    let response;
+    response = await Pembayaran.findAll({
+      where: {
+        status_pembayaran: "sudah",
+      },
+      attributes: [
+        "id",
+        "uuid",
+        "nama",
+        "total",
+        "status_pembayaran",
         "bukti_pembayaran",
         "alamat",
         "status_pengiriman",
@@ -63,12 +99,37 @@ export const getPembayaranById = async (req, res) => {
   }
 };
 export const createPembayaran = async (req, res) => {
-  const { nama, total, alamat, status_pengiriman, status_penerimaan, user_id } =
-    req.body;
+  const {
+    nama,
+    total,
+    alamat,
+    status_pembayaran,
+    status_pengiriman,
+    status_penerimaan,
+    bukti_pembayaran,
+    user_id,
+  } = req.body;
 
-  let bukti_pembayaran = "belum";
+  let bukti_pembayaran_sementara = "belum";
 
-  if (req.files && req.files.bukti_pembayaran) {
+  if (req.files === null) {
+    try {
+      await Pembayaran.create({
+        nama: nama,
+        total: total,
+        bukti_pembayaran: bukti_pembayaran_sementara,
+        alamat: alamat,
+        status_pembayaran: status_pembayaran,
+        status_pengiriman: status_pengiriman,
+        status_penerimaan: status_penerimaan,
+        user_id: req.userId,
+      });
+
+      return res.status(201).json({ msg: "Pembelian berhasil ditambahkan" });
+    } catch (error) {
+      return res.status(400).json({ msg: "Pembelian gagal dibuat" });
+    }
+  } else {
     const file = req.files.bukti_pembayaran;
     const fileSize = file.data.length;
     const ext = path.extname(file.name);
@@ -76,35 +137,29 @@ export const createPembayaran = async (req, res) => {
     const url = `${req.protocol}://${req.get("host")}/images/${fileName}`;
     const allowedType = [".png", ".jpg", ".jpeg"];
 
-    if (!allowedType.includes(ext.toLowerCase())) {
+    if (!allowedType.includes(ext.toLowerCase()))
       return res.status(422).json({ msg: "Gambar salah" });
-    }
-    if (fileSize > 5000000) {
+    if (fileSize > 5000000)
       return res.status(422).json({ msg: "Gambar dibawah 5 Mb" });
-    }
 
-    try {
-      await file.mv(`./public/images/${fileName}`);
-      bukti_pembayaran = url;
-    } catch (error) {
-      return res.status(500).json({ msg: error.message });
-    }
-  }
-
-  try {
-    await Pembayaran.create({
-      nama: nama,
-      total: total,
-      bukti_pembayaran: bukti_pembayaran,
-      alamat: alamat,
-      status_pengiriman: status_pengiriman,
-      status_penerimaan: status_penerimaan,
-      user_id: req.userId,
+    file.mv(`./public/images/${fileName}`, async (err) => {
+      if (err) return res.status(500).json({ msg: err.message });
+      try {
+        await Pembayaran.create({
+          nama: nama,
+          total: total,
+          bukti_pembayaran: url,
+          alamat: alamat,
+          status_pembayaran: status_pembayaran,
+          status_pengiriman: status_pengiriman,
+          status_penerimaan: status_penerimaan,
+          user_id: req.userId,
+        });
+        return res.status(201).json({ msg: "Pembelian berhasil ditambahkan" });
+      } catch (error) {
+        return res.status(400).json({ msg: "Pembelian gagal dibuat" });
+      }
     });
-
-    return res.status(201).json({ msg: "Pembelian berhasil ditambahkan" });
-  } catch (error) {
-    return res.status(400).json({ msg: "Pembelian gagal dibuat" });
   }
 };
 // export const createTransaksiArray = async (req, res) => {

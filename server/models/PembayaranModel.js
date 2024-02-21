@@ -28,6 +28,13 @@ const Pembayaran = db.define(
         notEmpty: true,
       },
     },
+    status_pembayaran: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
     bukti_pembayaran: {
       type: DataTypes.STRING,
       allowNull: false,

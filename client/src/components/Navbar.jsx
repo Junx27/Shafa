@@ -53,7 +53,7 @@ function Navbar() {
             to={row.link}
             className={({ isActive }) =>
               isActive
-                ? "bg-lime-300 hover:bg-lime-400 py-2 rounded-md"
+                ? "bg-lime-300 hover:bg-lime-400 py-2 rounded-md shadow"
                 : "py-2 rounded-md hover:text-lime-400 hover-saturete-200"
             }
           >

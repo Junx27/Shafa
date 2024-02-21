@@ -2,15 +2,15 @@ import Navbar from "../../components/Navbar";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { meUser } from "../../features/AuthSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Footer from "../../components/Footer";
-import Pembelian from "../../components/konsumen/Pembelian";
+import axios from "axios";
+import Pembayaran from "../../components/konsumen/Pembayaran";
 
 function History() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isError } = useSelector((state) => state.auth);
-
   useEffect(() => {
     dispatch(meUser());
   }, [dispatch]);
@@ -27,7 +27,7 @@ function History() {
         <Navbar />
       </div>
       <div className="m-32">
-        <Pembelian />
+        <Pembayaran />
       </div>
       <div>
         <Footer />

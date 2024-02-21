@@ -1,6 +1,7 @@
 import express from "express";
 import {
-  getPembayaran,
+  getPembayaranTerbayar,
+  getPembayaranBelumBayar,
   getPembayaranById,
   createPembayaran,
   updatePembayaran,
@@ -10,7 +11,8 @@ import { verifyUser } from "../middleware/Auth.js";
 
 const router = express.Router();
 
-router.get("/pembayaran", getPembayaran);
+router.get("/pembayaran/sudah", getPembayaranTerbayar);
+router.get("/pembayaran/belum", getPembayaranBelumBayar);
 router.get("/pembayaran/:id", getPembayaranById);
 router.post("/pembayaran", verifyUser, createPembayaran);
 router.patch("/pembayaran/:id", updatePembayaran);
