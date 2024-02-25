@@ -16,18 +16,6 @@ export const getPembayaranBelumBayar = async (req, res) => {
       where: {
         status_pembayaran: "belum",
       },
-      attributes: [
-        "id",
-        "uuid",
-        "nama",
-        "total",
-        "status_pembayaran",
-        "bukti_pembayaran",
-        "alamat",
-        "status_pengiriman",
-        "status_penerimaan",
-        "user_id",
-      ],
       include: [
         {
           model: Users,
@@ -49,18 +37,6 @@ export const getPembayaranTerbayar = async (req, res) => {
         status_pembayaran: "sudah",
         status_penerimaan: "belum",
       },
-      attributes: [
-        "id",
-        "uuid",
-        "nama",
-        "total",
-        "status_pembayaran",
-        "bukti_pembayaran",
-        "alamat",
-        "status_pengiriman",
-        "status_penerimaan",
-        "user_id",
-      ],
       include: [
         {
           model: Users,
@@ -81,18 +57,6 @@ export const getPembayaranSelesai = async (req, res) => {
       where: {
         status_penerimaan: "sudah",
       },
-      attributes: [
-        "id",
-        "uuid",
-        "nama",
-        "total",
-        "status_pembayaran",
-        "bukti_pembayaran",
-        "alamat",
-        "status_pengiriman",
-        "status_penerimaan",
-        "user_id",
-      ],
       include: [
         {
           model: Users,

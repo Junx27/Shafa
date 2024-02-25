@@ -58,10 +58,8 @@ function Konsumen() {
       <div className="mt-5 ms-80 pl-6 mr-10">
         <hr className="h-px border-0 bg-lime-200 mb-5" />
         <div className="flex justify-between items-center">
-          <div className="flex flex-row">
-            <span className="material-symbols-outlined text-lime-500">
-              person_check
-            </span>
+          <div className="flex bg-lime-400 p-2 rounded w-64 shadow">
+            <span className="material-symbols-outlined">person_check</span>
             <h1 className="ml-5">Managemen konsumen</h1>
           </div>
           <div className="mr-5 flex flex-row">

@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import BelumAdaData from "../BelumAdaData";
 
 function Keranjang() {
   const navigate = useNavigate();
@@ -13,6 +14,7 @@ function Keranjang() {
   const [alamat, setAlamat] = useState([]);
   const [data, setData] = useState([]);
   const [productQuantity, setProductQuantity] = useState({});
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -29,19 +31,29 @@ function Keranjang() {
     setImage(null);
     setGambarPembayaran(null);
   };
+
   const fetchProfile = async () => {
-    const response = await axios.get("http://localhost:5000/me");
-    setId(response.data.id);
-    setNama(response.data.nama);
-    setAlamat(response.data.alamat);
+    try {
+      const response = await axios.get("http://localhost:5000/me");
+      setId(response.data.id);
+      setNama(response.data.nama);
+      setAlamat(response.data.alamat);
+    } catch (error) {
+      console.error("Error fetching profile:", error);
+    }
   };
+
   useEffect(() => {
     fetchProfile();
   }, []);
 
   const fetchData = async () => {
-    const response = await axios.get("http://localhost:5000/transaksis");
-    setData(response.data);
+    try {
+      const response = await axios.get("http://localhost:5000/transaksis");
+      setData(response.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   };
 
   useEffect(() => {
@@ -52,13 +64,23 @@ function Keranjang() {
     const productQuantityMap = {};
 
     data.forEach((transaksi) => {
-      const { nama_produk } = transaksi;
+      const { nama_produk, produk_id, harga_produk, gambar_produk } = transaksi;
       if (
         Object.prototype.hasOwnProperty.call(productQuantityMap, nama_produk)
       ) {
-        productQuantityMap[nama_produk] += 1;
+        productQuantityMap[nama_produk] = {
+          jumlah_produk: productQuantityMap[nama_produk].jumlah_produk + 1,
+          produk_id: produk_id,
+          harga_produk: harga_produk,
+          gambar_produk: gambar_produk,
+        };
       } else {
-        productQuantityMap[nama_produk] = 1;
+        productQuantityMap[nama_produk] = {
+          jumlah_produk: 1,
+          produk_id: produk_id,
+          harga_produk: harga_produk,
+          gambar_produk: gambar_produk,
+        };
       }
     });
 
@@ -70,7 +92,10 @@ function Keranjang() {
       (transaksi) => transaksi.nama_produk === nama_produk
     );
     const totalPrice = filteredTransactions.reduce((total, transaksi) => {
-      return total + transaksi.harga_produk * productQuantity[nama_produk];
+      return (
+        total +
+        transaksi.harga_produk * productQuantity[nama_produk].jumlah_produk
+      );
     }, 0);
     return totalPrice;
   };
@@ -85,15 +110,21 @@ function Keranjang() {
   const incrementQuantity = (nama_produk) => {
     setProductQuantity((prevQuantity) => ({
       ...prevQuantity,
-      [nama_produk]: prevQuantity[nama_produk] + 1,
+      [nama_produk]: {
+        ...prevQuantity[nama_produk],
+        jumlah_produk: prevQuantity[nama_produk].jumlah_produk + 1,
+      },
     }));
   };
 
   const decrementQuantity = (nama_produk) => {
-    if (productQuantity[nama_produk] > 0) {
+    if (productQuantity[nama_produk].jumlah_produk > 0) {
       setProductQuantity((prevQuantity) => ({
         ...prevQuantity,
-        [nama_produk]: prevQuantity[nama_produk] - 1,
+        [nama_produk]: {
+          ...prevQuantity[nama_produk],
+          jumlah_produk: prevQuantity[nama_produk].jumlah_produk - 1,
+        },
       }));
     }
   };
@@ -111,7 +142,6 @@ function Keranjang() {
       .catch((error) => {
         console.error(`Gagal menghapus produk ${nama_produk}:`, error);
       });
-    navigate("/produkkonsumen");
   };
 
   const formatRupiah = (number) => {
@@ -122,6 +152,7 @@ function Keranjang() {
     });
     return formatter.format(number);
   };
+
   const savePembayaran = async () => {
     try {
       const formData = new FormData();
@@ -146,126 +177,130 @@ function Keranjang() {
   const handlePesanan = async (userId) => {
     try {
       await savePembayaran();
+
       const formattedData = Object.keys(productQuantity).map((nama_produk) => ({
+        produk_id: productQuantity[nama_produk].produk_id,
         nama_produk: nama_produk,
-        jumlah_produk: productQuantity[nama_produk],
-        harga_produk: calculateTotalPrice(nama_produk),
+        jumlah_produk: productQuantity[nama_produk].jumlah_produk,
+        harga_produk: productQuantity[nama_produk].harga_produk,
         total_pembelian: parseInt(
-          productQuantity[nama_produk] * calculateTotalPrice(nama_produk)
+          productQuantity[nama_produk].jumlah_produk *
+            productQuantity[nama_produk].harga_produk
         ),
       }));
+
       console.log(formattedData);
+
       await axios.post("http://localhost:5000/pembelian", formattedData, {
         headers: {
           "Content-Type": "application/json",
         },
       });
+
       console.log("Data berhasil dimasukkan ke dalam tabel:");
+
       await axios.delete(`http://localhost:5000/transaksis/user/${userId}`);
       navigate("/riwayatkonsumen");
     } catch (error) {
       console.error("Gagal memasukkan data ke dalam tabel:", error);
     }
   };
+
   return (
     <div>
-      <div className="flex mb-5">
-        <span className="material-symbols-outlined">info</span>
-        <h1 className="ml-3">Informasi keranjang</h1>
-      </div>
       <div className="">
         {data.length !== 0 ? (
-          <>
-            <div className="transition-all duration-1000 overflow-x-auto mt-5 rounded-lg shadow hover:shadow-lg">
-              <table className="table-auto w-full">
-                <thead className="bg-lime-300 rounded">
-                  <tr>
-                    <th className="border border-white px-4 py-2">No</th>
-                    <th className="border border-white px-4 py-2">
-                      Nama Produk
-                    </th>
-                    <th className="border border-white px-4 py-2">Jumlah</th>
-                    <th className="border border-white px-4 py-2">
-                      Total Harga
-                    </th>
-                    <th className="border border-white px-4 py-2">Aksi</th>{" "}
-                  </tr>
-                </thead>
-                <tbody className="bg-lime-50">
-                  {Object.keys(productQuantity).map((nama_produk, index) => (
-                    <tr
+          <div>
+            {open && (
+              <div className="flex mb-5 bg-lime-400 p-2 rounded w-64 shadow">
+                <span className="material-symbols-outlined">info</span>
+                <h1 className="ml-3">Informasi keranjang</h1>
+              </div>
+            )}
+            <div className="">
+              {open && (
+                <div>
+                  {Object.keys(productQuantity).map((row, index) => (
+                    <div
                       key={index}
-                      className="transition-all duration-500 text-center hover:bg-lime-300"
+                      className="py-5 px-10 transition-all duration-1000 flex justify-between items-center shadow mt-5 rounded-lg hover:shadow-lg"
                     >
-                      <td className="border border-white px-4 py-2">
-                        {index + 1}
-                      </td>
-                      <td className="border border-white px-4 py-2">
-                        {nama_produk}
-                      </td>
-                      <td className="border border-white px-4 py-2">
-                        {productQuantity[nama_produk]} Kg
+                      <p className="font-bold text-xs ml-5">{index + 1}.</p>
+                      <img
+                        src={productQuantity[row].gambar_produk}
+                        alt=""
+                        className="w-20 h-20 rounded-l shadow object-cover"
+                      />
+                      <h1 className="font-bold ml-5 text-xs">{row}</h1>
+                      <div className="border border-white px-4 py-2">
                         <button
-                          onClick={() => decrementQuantity(nama_produk)}
-                          className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded ml-2"
+                          onClick={() => decrementQuantity(row)}
+                          className={`text-xs border border-black p-1 px-2 mr-2 hover:bg-black hover:text-white rounded ${
+                            productQuantity[row].jumlah_produk === 1
+                              ? "invisible"
+                              : "visible"
+                          }`}
                         >
                           -
                         </button>
+                        <span className="text-xs">
+                          {productQuantity[row].jumlah_produk} Kg
+                        </span>
                         <button
-                          onClick={() => incrementQuantity(nama_produk)}
-                          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded ml-2"
+                          onClick={() => incrementQuantity(row)}
+                          className="text-xs border border-black p-1 px-2 ml-2 hover:bg-black hover:text-white rounded"
                         >
                           +
                         </button>
-                      </td>
-                      <td className="border border-white px-4 py-2">
-                        {formatRupiah(calculateTotalPrice(nama_produk))}
-                      </td>
-                      <td className="border border-white px-4 py-2">
-                        <button
-                          onClick={() => removeProduct(nama_produk)}
-                          className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
-                        >
-                          Hapus
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-                {totalKeseluruhan !== 0 && (
-                  <tfoot>
-                    <tr className="bg-lime-50">
-                      <td
-                        colSpan="4"
-                        className="border border-white px-4 py-2 text-end font-bold"
+                      </div>
+                      <p className="text-gray-400 text-xs">
+                        {formatRupiah(productQuantity[row].harga_produk)}
+                      </p>
+                      <p className="mx-3 text-gray-400 text-xs">=</p>
+                      <p className="mx-3 text-gray-400 text-xs">
+                        {formatRupiah(calculateTotalPrice(row))}
+                      </p>
+                      <span
+                        className="transition-all duration-1000 material-symbols-outlined text-sm cursor-pointer hover:bg-black hover:p-1 hover:text-white rounded"
+                        onClick={() => removeProduct(row)}
                       >
-                        Total bayar
-                      </td>
-                      <td className="border border-white px-4 py-2 font-bold text-center">
+                        delete
+                      </span>
+                    </div>
+                  ))}
+                  <div className="mt-20">
+                    <p className="text-gray-400 text-xs text-end mr-32">
+                      Jumlah total =
+                    </p>
+                    <hr className="h-px border-0 bg-lime-200 mt-3" />
+                  </div>
+                  {totalKeseluruhan !== 0 && (
+                    <div className="flex justify-end">
+                      <p className="border border-white p-4 font-bold text-center">
                         {formatRupiah(totalKeseluruhan)}
-                      </td>
-                    </tr>
-                  </tfoot>
-                )}
-              </table>
+                      </p>
+                    </div>
+                  )}
+                </div>
+              )}
               {!open && (
-                <div className="absolute top-32">
+                <div className="">
                   <form
                     action=""
                     className="w-[1185px] h-[450px] bg-white rounded-lg shadow"
                   >
-                    <div className="flex">
-                      <div className="flex mb-5 bg-lime-300 p-3 rounded-r-lg shadow">
+                    <div className="flex justify-between">
+                      <div className="flex mb-5 bg-lime-400 p-3 rounded-r-lg shadow">
                         <span className="material-symbols-outlined">info</span>
                         <h1 className="ml-3">Selsaikan pembayaran</h1>
                       </div>
-                      <div className="absolute right-0 top-0">
+                      <div className="">
                         <div
-                          className="bg-red-400 py-2 px-3 rounded-b-md hover:bg-red-500"
+                          className="cursor-pointer"
                           onClick={() => setOpen(!open)}
                           type="button"
                         >
-                          <span className="material-symbols-outlined">
+                          <span className="transition-all duration-1000 material-symbols-outlined hover:bg-black hover:text-white rounded p-1 ">
                             close
                           </span>
                         </div>
@@ -274,17 +309,23 @@ function Keranjang() {
                     <div className="grid grid-cols-2 gap-10">
                       <div>
                         <div className="flex flex-col mx-10 my-5">
-                          <h1 className="text-gray-500">Nama penerima:</h1>
+                          <h1 className="text-gray-400 text-xs">
+                            Nama penerima:
+                          </h1>
                           <hr className="h-px border-0 bg-lime-200 my-2" />
                           <p className="capitalize font-bold">{nama}</p>
                         </div>
                         <div className="flex flex-col mx-10 my-5">
-                          <h1 className="text-gray-500">Alamat pengiriman:</h1>
+                          <h1 className="text-gray-400 text-xs">
+                            Alamat pengiriman:
+                          </h1>
                           <hr className="h-px border-0 bg-lime-200 my-2" />
                           <p className="capitalize font-bold">{alamat}</p>
                         </div>
                         <div className="flex flex-col mx-10 my-5">
-                          <h1 className="text-gray-500">Total Belanja:</h1>
+                          <h1 className="text-gray-400 text-xs">
+                            Total Belanja:
+                          </h1>
                           <hr className="h-px border-0 bg-lime-200 my-2" />
                           <p className="capitalize font-bold">
                             {formatRupiah(totalKeseluruhan)}
@@ -292,20 +333,28 @@ function Keranjang() {
                         </div>
                       </div>
                       <div>
-                        <p className="text-gray-500">
+                        <p className="text-gray-400 text-xs mr-10 text-justify">
                           Selsaikan pembayaran dengan upload bukti transfer ke
                           No. Rek BRI 09087676564531444 a/n Shafa farm
-                          Hidroponik
+                          Hidroponik. Pastikan pembayaran sesuai dengan benar,
+                          proses pembayaran akan diproses 1 X 24 jam.{" "}
+                          <span
+                            className="text-black cursor-pointer underline"
+                            onClick={() => navigate("/faq")}
+                          >
+                            Dapatkan informasi lengkap disini!
+                          </span>
                         </p>
-                        <div className="flex flex-col my-2">
+                        <div className="flex flex-col">
                           <label htmlFor="gambar">
                             <input
                               type="file"
                               id="gambar"
                               onChange={handleImageChange}
                               className="invisible"
+                              required
                             />
-                            <p className="bg-lime-400 p-2 rounded-md w-20 text-center -mt-5 hover:bg-lime-500 hover:text-white">
+                            <p className="text-xs transition-all duration-1000 bg-lime-400 hover:bg-lime-300 w-20 text-center p-2 rounded shadow">
                               {image ? "Ganti" : "Pilih"}
                             </p>
                           </label>
@@ -316,11 +365,13 @@ function Keranjang() {
                                   src={image}
                                   alt="Preview"
                                   className={`mt-5 rounded-lg hover:shadow-lg ${
-                                    !view ? "w-full -mt-52 -ml-64" : ""
+                                    !view
+                                      ? "w-full -mt-[280px] -ml-64 relative z-20"
+                                      : ""
                                   }`}
                                 />
                                 <span
-                                  className={`transition-all duration-1000 material-symbols-outlined absolute top-0 left-[100px] text-white cursor-pointer ${
+                                  className={`transition-all duration-1000 material-symbols-outlined absolute top-0 left-[100px] text-white cursor-pointer z-30 ${
                                     !view ? "left-[280px] top-3" : "left-0"
                                   }`}
                                   onClick={() => setView(!view)}
@@ -332,7 +383,7 @@ function Keranjang() {
                             {image && (
                               <span
                                 onClick={removeImage}
-                                className={`transition-all duration-1000 text-white material-symbols-outlined absolute bottom-0 left-[100px] cursor-pointer hover:text-red-400 ${
+                                className={`transition-all duration-1000 text-white material-symbols-outlined absolute bottom-0 left-[100px] cursor-pointer hover:text-red-400 z-30 ${
                                   !view ? "left-[280px] bottom-2" : ""
                                 }`}
                               >
@@ -347,28 +398,30 @@ function Keranjang() {
                 </div>
               )}
             </div>
-            <div className="flex justify-end pr-10 pb-10 bg-lime-50">
+            {open && (
+              <div className="flex justify-end pb-10">
+                <button
+                  className="transition-all duration-1000 bg-lime-400 p-2 rounded mt-10 hover:bg-lime-500"
+                  onClick={() => setOpen(!open)}
+                >
+                  Pesan sekarang
+                </button>
+              </div>
+            )}
+            <div className="flex justify-end -mt-20 mr-5">
               <button
-                className="transition-all duration-1000 bg-lime-400 p-2 rounded mt-10 hover:bg-lime-500"
-                onClick={() => setOpen(!open)}
-              >
-                Pesan sekarang
-              </button>
-            </div>
-            <div className="flex justify-center mt-16">
-              <button
-                className={`bg-lime-400 p-2 rounded mt-5 hover:bg-lime-500 z-10 ${
-                  open ? "invisible" : "visible"
-                }`}
+                className={`bg-lime-400 p-2 rounded mt-5 hover:bg-lime-500 z-10 shadow ${
+                  image === null ? "invisible" : "visible"
+                } ${open ? "invisible" : "visible"}`}
                 type="submit"
                 onClick={() => handlePesanan(id)}
               >
                 Selsaikan pembayaran
               </button>
             </div>
-          </>
+          </div>
         ) : (
-          <h1 className="text-center">Belum ada data</h1>
+          <BelumAdaData />
         )}
       </div>
     </div>

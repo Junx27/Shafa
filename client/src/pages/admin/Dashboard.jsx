@@ -12,8 +12,6 @@ import JumlahProduk from "../../components/JumlahProduk";
 import JumlahKonsumen from "../../components/JumlahKonsumen";
 import JumlahPromo from "../../components/JumlahPromo";
 import JUmlahPesanan from "../../components/JumlahPesanan";
-import Table from "../../components/Table";
-import { data, konsumen } from "../../data/data.js";
 import PendaftaranKonsumen from "../../components/PendaftaranKonsumen.jsx";
 
 function Dashboard() {
@@ -37,47 +35,47 @@ function Dashboard() {
       <Admin />
       <div className="mt-5 ms-80 pl-6 mr-10">
         <hr className="h-px border-0 bg-lime-200 mb-5" />
-        <div className="flex">
+        <div className="flex bg-lime-400 p-2 rounded w-64 shadow">
           <span className="material-symbols-outlined">grid_view</span>
           <h1 className="ml-2">Dashboard Admin</h1>
         </div>
-        <div className="grid grid-cols-4 gap-16 mt-5">
+        <div className="grid grid-cols-4 gap-16 mt-10">
           <div
-            className="transition-all duration-1000 p-5 rounded-lg bg-lime-50 shadow-md cursor-pointer hover:shadow-lg"
+            className="border transition-all duration-1000 p-5 rounded-lg shadow-md cursor-pointer hover:shadow-lg"
             onClick={() => navigate("/produk")}
           >
             <div className="flex flex-row items-center">
               <img src={produkIcon} alt="" className="w-10 mr-5" />
               <h2>Produk</h2>
             </div>
-            <div className="transition-all duration-1000 mt-5 text-center font-bold text-xl hover:bg-lime-300 p-2 rounded-lg">
+            <div className="mt-5 text-center font-bold text-xl">
               <JumlahProduk />
             </div>
           </div>
-          <div className="transition-all duration-1000 p-5 rounded-lg bg-lime-50 shadow-md cursor-pointer hover:shadow-lg">
+          <div className="border transition-all duration-1000 p-5 rounded-lg shadow-md cursor-pointer hover:shadow-lg">
             <div className="flex flex-row items-center">
               <img src={konsumenIcon} alt="" className="w-10 mr-5" />
               <h2>Konsumen</h2>
             </div>
-            <div className="transition-all duration-1000 mt-5 text-center font-bold text-xl hover:bg-lime-300 p-2 rounded-lg">
+            <div className="mt-5 text-center font-bold text-xl">
               <JumlahKonsumen />
             </div>
           </div>
-          <div className="transition-all duration-1000 p-5 rounded-lg bg-lime-50 shadow-md cursor-pointer hover:shadow-lg">
+          <div className="border transition-all duration-1000 p-5 rounded-lg shadow-md cursor-pointer hover:shadow-lg">
             <div className="flex flex-row items-center">
               <img src={promoIcon} alt="" className="w-10 mr-5" />
               <h2>Promo</h2>
             </div>
-            <div className="transition-all duration-1000 mt-5 text-center font-bold text-xl hover:bg-lime-300 p-2 rounded-lg">
+            <div className="mt-5 text-center font-bold text-xl">
               <JumlahPromo />
             </div>
           </div>
-          <div className="transition-all duration-1000 p-5 rounded-lg bg-lime-50 shadow-md cursor-pointer hover:shadow-lg">
+          <div className="border transition-all duration-1000 p-5 rounded-lg shadow-md cursor-pointer hover:shadow-lg">
             <div className="flex flex-row items-center">
               <img src={pesananIcon} alt="" className="w-10 mr-5" />
               <h2>Pesanan</h2>
             </div>
-            <div className="transition-all duration-1000 mt-5 text-center font-bold text-xl hover:bg-lime-300 p-2 rounded-lg">
+            <div className="mt-5 text-center font-bold text-xl">
               <JUmlahPesanan />
             </div>
           </div>
@@ -85,14 +83,13 @@ function Dashboard() {
       </div>
       <div className="grid grid-cols-2 gap-20 mt-16 ms-80 pl-6 mr-10">
         <div>
-          <div className="flex">
+          <div className="flex bg-lime-400 p-2 rounded w-64 shadow">
             <span className="material-symbols-outlined">mail</span>
             <h1 className="text ml-2">Pesanan Masuk</h1>
           </div>
-          <Table data={data} />
         </div>
         <div>
-          <div className="flex">
+          <div className="flex bg-lime-400 p-2 rounded w-64 shadow">
             <span className="material-symbols-outlined">verified_user</span>
             <h1 className="text ml-2">Konfirmasi Pengguna Baru</h1>
           </div>

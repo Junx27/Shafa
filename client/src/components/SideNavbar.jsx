@@ -16,7 +16,7 @@ function SideNavbar() {
     navigate("/admin");
   };
   return (
-    <div className="sidebar fixed top-0">
+    <div className="w-[320px] h-[820px] rounded-r-[30px] shadow-lg fixed top-0">
       <div className="flex flex-col">
         <div className="w-16 mx-auto mt-8">
           <img src={Logo} alt="" className="saturate-200" />
@@ -30,7 +30,7 @@ function SideNavbar() {
                 className={({ isActive }) =>
                   isActive
                     ? "transition-all duration-1000 bg-lime-400 py-4 px-5 hover:bg-lime-500 hover:shadow-lg ml-10 rounded-l-lg shadow"
-                    : "py-4 px-5 ml-10 hover:text-lime-500"
+                    : "py-4 px-5 ml-10 hover:text-lime-400"
                 }
               >
                 <div className="flex flex-row items-center">

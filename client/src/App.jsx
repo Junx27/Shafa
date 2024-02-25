@@ -24,9 +24,8 @@ import Register from "./pages/konsumen/Register.jsx";
 import Page404 from "./pages/Page404.jsx";
 import ViewKonsumen from "../src/pages/admin/EditKonsumen.jsx";
 import Transaksi from "./pages/konsumen/Transaksi.jsx";
-import Pembayaran from "./pages/konsumen/EditPembayaran.jsx";
-import EditPembayaran from "./components/konsumen/EditPembayaran.jsx";
 import ViewPembelian from "./pages/konsumen/ViewPembelian.jsx";
+import EditPembayaran from "./pages/konsumen/EditPembayaran.jsx";
 
 function App() {
   return (

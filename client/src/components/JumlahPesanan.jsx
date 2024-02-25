@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 function JUmlahPesanan() {
   const [hasil, setHasil] = useState([]);
   const fetchData = async () => {
-    const response = await axios.get("http://localhost:5000/pembelians");
+    const response = await axios.get("http://localhost:5000/pembayaran/sudah");
     setHasil(response.data);
   };
   useEffect(() => {

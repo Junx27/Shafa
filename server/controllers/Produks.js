@@ -30,6 +30,35 @@ export const getProduks = async (req, res) => {
     res.status(500).json({ msg: error.message });
   }
 };
+export const getProdukByStatus = async (req, res) => {
+  try {
+    let response;
+    response = await Produks.findAll({
+      where: {
+        status_produk: "promo",
+      },
+      attributes: [
+        "id",
+        "uuid",
+        "nama_produk",
+        "harga_produk",
+        "deskripsi_produk",
+        "gambar_produk",
+        "status_produk",
+        "admin_id",
+      ],
+      include: [
+        {
+          model: Admin,
+          attributes: ["nama", "email", "uuid"],
+        },
+      ],
+    });
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+};
 export const getProduksById = async (req, res) => {
   try {
     const produk = await Produks.findOne({

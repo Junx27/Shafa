@@ -33,30 +33,31 @@ function Produk() {
 
   return (
     <div>
-      <div className="absolute top-24 left-32">
-        <div className="flex items-center">
+      <div className="-mt-5">
+        <div className="flex items-center justify-center">
           <input
             type="text"
             placeholder="Cari produk..."
             value={searchQuery}
             onChange={handleSearchChange}
-            className="p-2 border border-lime-300 rounded-lg outline-lime-400 text-xs"
+            className="p-2 border border-lime-300 rounded-lg text-xs w-[300px] outline-none"
           />
           <button onClick={() => window.location.reload()}>
-            <span className="material-symbols-outlined ml-2 bg-lime-300 p-2 rounded-full text-[17px]">
+            <span className="material-symbols-outlined -ml-8 bg-lime-400 p-2 rounded-r-lg text-[17px] hover:bg-lime-300">
               autorenew
             </span>
           </button>
         </div>
+        <hr className="h-px border-0 bg-lime-200 my-5" />
       </div>
-      <div className="grid grid-cols-4 gap-10">
+      <div className="grid grid-cols-5 gap-10">
         {produk
           .filter((row) =>
             row.nama_produk.toLowerCase().includes(searchQuery.toLowerCase())
           )
           .map((row, index) => (
             <div
-              className="transition-all duration-1000 shadow-md hover:shadow-lg rounded-b-lg relative mt-10"
+              className="transition-all duration-1000 shadow-md hover:shadow-lg rounded-b-lg relative"
               key={index}
             >
               <img
@@ -68,37 +69,38 @@ function Produk() {
                 alt=""
                 className="rounded-t-lg brightness-90 transition-all duration-1000 hover:brightness-75 z-0 object-cover h-48 w-96"
               />
-              {row.status_produk === "promo" && (
-                <p className="bg-lime-300 rounded-b-lg p-2 w-16 absolute top-0 shadow-lg">
-                  {row.status_produk}
-                </p>
-              )}
-
-              <h1 className="font-bold ml-5 mt-2 capitalize">
-                {row.nama_produk}
-              </h1>
+              <div className="flex items-center">
+                <h1 className="font-bold ml-5 mt-2 capitalize mr-3">
+                  {row.nama_produk}
+                </h1>
+                {row.status_produk === "promo" && (
+                  <p className="absolute right-2 top-2 text-xs bg-lime-400 p-1 rounded shadow">
+                    {row.status_produk}
+                  </p>
+                )}
+              </div>
               <div className="flex justify-between items-center py-2">
                 <p
-                  className={`ml-5 my-3 ${
-                    row.status_produk === "promo" ? "text-red-500" : ""
+                  className={`ml-5 my-3 text-xs ${
+                    row.status_produk === "promo" ? "text-lime-600" : ""
                   }`}
                 >
                   {formatRupiah(row.harga_produk)},00/Kg
                 </p>
                 <Link
                   to={`/transaksi/${row.uuid}`}
-                  className="transition-all duration-1000 bg-lime-300 hover:bg-lime-400 py-2 rounded-md px-5 mx-auto text-xs"
+                  className="transition-all duration-1000 bg-lime-400 hover:bg-lime-300 py-2 rounded-md px-5 mx-auto shadow"
                 >
                   <div className="flex items-center">
-                    <span className="material-symbols-outlined mr-2 text-sm">
+                    <p className="mr-2 text-sm font-bold">+</p>
+                    <span className="material-symbols-outlined text-sm">
                       shopping_cart
                     </span>
-                    <p>Pesan</p>
                   </div>
                 </Link>
               </div>
               {row.status_produk === "promo" && (
-                <div className="bg-red-600 w-2 h-2 rounded-full animate-pulse absolute top-52 left-2"></div>
+                <div className="bg-lime-400 w-2 h-2 rounded-full animate-pulse absolute top-52 left-2"></div>
               )}
             </div>
           ))}

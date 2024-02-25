@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-function EditPembayaran() {
+function KonfirmasiPembayaran() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [nama, setNama] = useState([]);
@@ -59,18 +59,30 @@ function EditPembayaran() {
     }
   };
   return (
-    <div>
-      {uuid}
-      {nama}
-      {alamat}
-      {total}
+    <div className="text-center">
+      <hr className="h-px border-0 bg-lime-200" />
+      <div className="flex justify-center">
+        <h1 className="font-bold mb-20 text-xl bg-lime-400 w-32 p-2 rounded-b-lg shadow text-center">
+          Konfirmasi
+        </h1>
+      </div>
+      <span className="material-symbols-outlined text-6xl bg-lime-400 p-2 shadow rounded-full animate-bounce">
+        check
+      </span>
+      <p className="text-red-400 w-96 mx-auto mt-5">
+        Untuk melakukan pembelian berikutnya mohon untuk mengkonfimasi pembelian
+        sebelumnya terlebih dahulu
+      </p>
       <form action="" onSubmit={updatePembelian}>
-        <button className="bg-lime-400 p-2 rounded" type="submit">
-          Pesan sekarang
+        <button
+          className="transition-all duration-1000 bg-lime-400 p-2 rounded mt-10 shadow hover:bg-lime-300"
+          type="submit"
+        >
+          Konfirmasi pembayaran
         </button>
       </form>
     </div>
   );
 }
 
-export default EditPembayaran;
+export default KonfirmasiPembayaran;

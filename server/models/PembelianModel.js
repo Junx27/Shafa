@@ -2,6 +2,7 @@ import { Sequelize } from "sequelize";
 import db from "../config/Database.js";
 import User from "./UserModel.js";
 import Pembayaran from "./PembayaranModel.js";
+import Produks from "./ProdukModel.js";
 const { DataTypes } = Sequelize;
 
 const Pembelian = db.define(
@@ -53,6 +54,10 @@ const Pembelian = db.define(
     pembayaran_id: {
       type: DataTypes.INTEGER,
     },
+    produk_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
     user_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -74,6 +79,12 @@ Pembelian.belongsTo(User, {
 Pembayaran.hasMany(Pembelian, { onDelete: "CASCADE", onUpdate: "CASCADE" });
 Pembelian.belongsTo(Pembayaran, {
   foreignKey: "pembayaran_id",
+  onDelete: "CASCADE",
+  onUpdate: "CASCADE",
+});
+Produks.hasMany(Pembelian, { onDelete: "CASCADE", onUpdate: "CASCADE" });
+Pembelian.belongsTo(Produks, {
+  foreignKey: "produk_id",
   onDelete: "CASCADE",
   onUpdate: "CASCADE",
 });

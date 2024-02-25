@@ -1,5 +1,6 @@
 import Pembayaran from "../models/PembayaranModel.js";
 import Pembelian from "../models/PembelianModel.js";
+import Produks from "../models/ProdukModel.js";
 import User from "../models/UserModel.js";
 
 export const getPembelian = async (req, res) => {
@@ -12,6 +13,33 @@ export const getPembelian = async (req, res) => {
         },
         {
           model: Pembayaran,
+        },
+        {
+          model: Produks,
+        },
+      ],
+    });
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+};
+export const getPembelianByStatus = async (req, res) => {
+  try {
+    let response;
+    response = await Pembelian.findAll({
+      where: {
+        status: "belum",
+      },
+      include: [
+        {
+          model: User,
+        },
+        {
+          model: Pembayaran,
+        },
+        {
+          model: Produks,
         },
       ],
     });
@@ -38,6 +66,12 @@ export const getPembelianById = async (req, res) => {
         {
           model: User,
         },
+        {
+          model: Pembayaran,
+        },
+        {
+          model: Produks,
+        },
       ],
     });
     res.status(200).json(response);
@@ -45,6 +79,39 @@ export const getPembelianById = async (req, res) => {
     res.status(500).json({ msg: error.message });
   }
 };
+export const getPembelianByPembayaranId = async (req, res) => {
+  const pembayaranId = req.params.pembayaran_id;
+
+  try {
+    const pembelian = await Pembelian.findAll({
+      where: {
+        pembayaran_id: pembayaranId,
+      },
+      include: [
+        {
+          model: User,
+        },
+        {
+          model: Pembayaran,
+        },
+        {
+          model: Produks,
+        },
+      ],
+    });
+
+    if (!pembelian || pembelian.length === 0) {
+      return res
+        .status(404)
+        .json({ msg: "Tidak ada data pembelian untuk pembayaran_id ini" });
+    }
+
+    res.status(200).json(pembelian);
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+};
+
 export const createPembelaian = async (req, res) => {
   const pembelianArray = req.body;
 
@@ -56,6 +123,7 @@ export const createPembelaian = async (req, res) => {
         jumlah_produk,
         total_pembelian,
         pembayaran_id,
+        produk_id,
       } = pembelianArray[i];
       const status = "belum";
       await Pembelian.create({
@@ -65,6 +133,7 @@ export const createPembelaian = async (req, res) => {
         total_pembelian: total_pembelian,
         status: status,
         pembayaran_id: pembayaran_id,
+        produk_id: produk_id,
         user_id: req.userId,
       });
     }
@@ -108,12 +177,10 @@ export const updatePembelian = async (req, res) => {
 
       res.status(200).json({ msg: "Status pembelian berhasil diupdate" });
     } catch (error) {
-      res
-        .status(400)
-        .json({
-          msg: "Gagal mengupdate status pembelian",
-          error: error.message,
-        });
+      res.status(400).json({
+        msg: "Gagal mengupdate status pembelian",
+        error: error.message,
+      });
     }
   } catch (error) {
     res.status(500).json({ msg: error.message });

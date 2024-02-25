@@ -47,10 +47,8 @@ function Promo() {
       <Admin />
       <div className="mt-5 ms-80 pl-6 mr-10">
         <hr className="h-px border-0 bg-lime-200 mb-5" />
-        <div className="flex items-center">
-          <span className="material-symbols-outlined text-lime-400">
-            add_circle
-          </span>
+        <div className="flex items-center bg-lime-400 p-2 rounded w-64 shadow">
+          <span className="material-symbols-outlined">add_circle</span>
           <h1 className="text ml-3">Ini halaman promo</h1>
         </div>
         <div className="mt-10 grid grid-cols-2 gap-32 mx-20">

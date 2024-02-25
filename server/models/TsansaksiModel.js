@@ -45,29 +45,12 @@ const Transaksi = db.define(
         notEmpty: true,
       },
     },
-    bukti_transfer: {
+    gambar_produk: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notEmpty: true,
       },
-    },
-    status_pengiriman: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
-    },
-    status_penerimaan: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
-    },
-    admin_id: {
-      type: DataTypes.INTEGER,
     },
     user_id: {
       type: DataTypes.INTEGER,
@@ -80,12 +63,6 @@ const Transaksi = db.define(
   { freezeTableName: true }
 );
 
-Admin.hasMany(Transaksi, { onDelete: "CASCADE", onUpdate: "CASCADE" });
-Transaksi.belongsTo(Admin, {
-  foreignKey: "admin_id",
-  onDelete: "CASCADE",
-  onUpdate: "CASCADE",
-});
 Users.hasMany(Transaksi, { onDelete: "CASCADE", onUpdate: "CASCADE" });
 Transaksi.belongsTo(Users, {
   foreignKey: "user_id",

@@ -18,15 +18,11 @@ export const getTransaksis = async (req, res) => {
         "harga_produk",
         "jumlah_produk",
         "total_transaksi",
-        "status_pengiriman",
-        "status_penerimaan",
+        "gambar_produk",
         "user_id",
+        "produk_id",
       ],
       include: [
-        {
-          model: Admin,
-          attributes: ["nama"],
-        },
         {
           model: Users,
           attributes: ["nama"],
@@ -57,11 +53,7 @@ export const getTransaksisById = async (req, res) => {
       where: {
         id: transaksi.id,
       },
-      include: [
-        {
-          model: Admin,
-        },
-      ],
+      include: [],
     });
     res.status(200).json(response);
   } catch (error) {
@@ -74,9 +66,7 @@ export const createTransaksis = async (req, res) => {
     harga_produk,
     jumlah_produk,
     total_transaksi,
-    status_pengiriman,
-    status_penerimaan,
-    admin_id,
+    gambar_produk,
     user_id,
     produk_id,
   } = req.body;
@@ -113,9 +103,7 @@ export const createTransaksis = async (req, res) => {
       jumlah_produk: jumlah_produk,
       total_transaksi: total_transaksi,
       bukti_transfer: bukti_transfer,
-      status_pengiriman: status_pengiriman,
-      status_penerimaan: status_penerimaan,
-      admin_id: req.adminId,
+      gambar_produk: gambar_produk,
       user_id: req.userId,
       produk_id: produk_id,
     });
@@ -138,9 +126,7 @@ export const createTransaksiArray = async (req, res) => {
       harga_produk,
       jumlah_produk,
       total_transaksi,
-      status_pengiriman,
-      status_penerimaan,
-      admin_id,
+      gambar_produk,
       user_id,
       produk_id,
     } = transaksiData[i];
@@ -182,9 +168,7 @@ export const createTransaksiArray = async (req, res) => {
         jumlah_produk: jumlah_produk,
         total_transaksi: total_transaksi,
         bukti_transfer: bukti_transfer,
-        status_pengiriman: status_pengiriman,
-        status_penerimaan: status_penerimaan,
-        admin_id: req.adminId,
+        gambar_produk: gambar_produk,
         user_id: req.userId,
         produk_id: produk_id,
       });
@@ -214,9 +198,7 @@ export const updateTransaksis = async (req, res) => {
       harga_produk,
       jumlah_produk,
       total_transaksi,
-      status_pengiriman,
-      status_penerimaan,
-      admin_id,
+      gambar_produk,
       user_id,
       produk_id,
     } = req.body;
@@ -251,9 +233,7 @@ export const updateTransaksis = async (req, res) => {
       jumlah_produk,
       total_transaksi,
       bukti_transfer,
-      status_pengiriman,
-      status_penerimaan,
-      admin_id,
+      gambar_produk,
       user_id,
       produk_id,
     });

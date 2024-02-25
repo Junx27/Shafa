@@ -62,7 +62,7 @@ function Produk() {
     <div>
       <button
         onClick={() => setShowDeskripsi(!showDeskripsi)}
-        className="text-lime-600 absolute top-40 right-10 hover:text-lime-700"
+        className="absolute top-40 right-10 hover:text-lime-400"
       >
         <div className="flex items-center">
           <span className="material-symbols-outlined mr-2">
@@ -119,7 +119,7 @@ function Produk() {
 
             {showDeskripsi && (
               <div>
-                <p className="text-xs mx-5 text-lime-600 mt-3 text-justify">
+                <p className="text-xs mx-5 text-lime-400 mt-3 text-justify">
                   {row.deskripsi_produk}
                 </p>
               </div>
@@ -127,7 +127,7 @@ function Produk() {
             <div className="flex justify-between items-center mx-5 pt-3 pb-5">
               <Link
                 to={`/produk/edit/${row.uuid}`}
-                className="bg-lime-400 hover:bg-lime-500 py-2 rounded-md px-5 flex text-xs"
+                className="transition-all duration-1000 bg-lime-400 hover:bg-lime-300 py-2 rounded-md px-5 flex text-xs"
               >
                 <span className="material-symbols-outlined mr-2 text-xs">
                   edit
@@ -135,7 +135,7 @@ function Produk() {
                 Edit
               </Link>
               <button
-                className="bg-red-400 hover:bg-red-500 py-2 rounded-md px-3 flex text-xs"
+                className="transition-all duration-1000 border border-red-400 hover:bg-red-500 hover:text-white text-red-400 py-2 rounded-md px-3 flex text-xs"
                 onClick={() => openPopHapus(row.uuid)}
               >
                 <span className="material-symbols-outlined mr-2 text-xs">
@@ -147,11 +147,11 @@ function Produk() {
           </div>
         ))}
         {deleteId && (
-          <div className="bg-lime-100 w-[400px] h-[130px] rounded-lg absolute right-96 top-32">
+          <div className="bg-white shadow-lg w-[400px] h-[130px] rounded-lg absolute right-96 top-32">
             <p className="p-5">Apakah anda ingin menghapus produk ini?</p>
             <div className="flex justify-end mr-10">
               <button
-                className="bg-red-400 hover:bg-red-500 text-white py-2 px-5 rounded-lg mr-8"
+                className="transition-all duration-1000 bg-lime-400 hover:bg-lime-300 py-2 rounded-md px-5 flex text-xs mr-5"
                 onClick={() => {
                   closePopHapus();
                 }}
@@ -159,7 +159,7 @@ function Produk() {
                 Tidak
               </button>
               <button
-                className="bg-lime-400 hover:bg-lime-500 py-2 px-5 rounded-lg"
+                className="transition-all duration-1000 border border-red-400 hover:bg-red-500 hover:text-white text-red-400 py-2 rounded-md px-3 flex text-xs"
                 onClick={() => {
                   hapus(deleteId);
                   closePopHapus();

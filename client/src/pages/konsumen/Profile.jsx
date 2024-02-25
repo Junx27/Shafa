@@ -22,6 +22,13 @@ function Profile() {
   const navigate = useNavigate();
   const { isError } = useSelector((state) => state.auth);
 
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -36,6 +43,7 @@ function Profile() {
 
   const openEdit = () => {
     setOpen(true);
+    scrollToTop();
   };
 
   const cancel = () => {
@@ -46,6 +54,7 @@ function Profile() {
 
   const openDelete = () => {
     setOpenPopUp(true);
+    scrollToTop();
   };
   const closeDelete = () => {
     setOpenPopUp(false);
@@ -110,68 +119,91 @@ function Profile() {
         <Navbar />
       </div>
       <div className="m-20 mt-32">
-        <div className="flex ml-20">
-          <span className="material-symbols-outlined text-lime-500">
-            manage_accounts
-          </span>
-          <h1 className="mb-8 ml-5">Informasi profil pengguna</h1>
+        <div className="flex ml-20 bg-lime-400 p-2 rounded w-64 shadow">
+          <span className="material-symbols-outlined">manage_accounts</span>
+          <h1 className="ml-5">Informasi profil pengguna</h1>
         </div>
-        <div className="relative flex flex-row mx-20 py-10 border border-lime-400 rounded-lg shadow transition-all duration-1000 hover:shadow-lg">
-          <div className="">
-            <img
-              src={
-                profile.gambar_profil === "belum"
-                  ? "http://localhost:5000/images/defaultProfile.png"
-                  : profile.gambar_profil
-              }
-              alt=""
-              className="w-96 w-96 rounded-full p-20"
-            />
+        {!open && (
+          <div className="w-[600px] h-[700px] mt-10 relative flex flex-col mx-auto rounded-lg shadow transition-all duration-1000 hover:shadow-lg">
+            <div className="">
+              <div className="bg-lime-400 w-full h-[150px] absolute z-0 rounded-t-lg shadow"></div>
+              <img
+                src={
+                  profile.gambar_profil === "belum"
+                    ? "http://localhost:5000/images/defaultProfile.png"
+                    : profile.gambar_profil
+                }
+                alt=""
+                className="relative w-[200px] w-[200px] rounded-full mx-auto mt-10 shadow z-10"
+              />
+            </div>
+            <div className="mt-5 mx-16">
+              <h1 className="font-bold text-2xl text-center capitalize">
+                {profile.nama}
+              </h1>
+              <hr className="h-px border-0 bg-lime-400 mt-3" />
+              <div className="mt-5 flex flex-col">
+                <label htmlFor="" className="font-light text-gray-500 mr-20">
+                  Email
+                </label>
+                <p className="mt-2">{profile.email}</p>
+              </div>
+              <div className="mt-3 flex flex-col">
+                <label htmlFor="" className="font-light text-gray-500 mr-20">
+                  Alamat
+                </label>
+                <p className="mt-2">{profile.alamat}</p>
+              </div>
+              <div className="mt-3 flex flex-col">
+                <label htmlFor="" className="font-light text-gray-500 mr-20">
+                  No. Tlp
+                </label>
+                <p className="mt-2">{profile.no_tlp}</p>
+              </div>
+              <div className="absolute bottom-10 right-10 text-xs">
+                <button
+                  className="transition-all duration-1000 bg-lime-300 w-20 p-2 rounded hover:bg-lime-400"
+                  onClick={openEdit}
+                >
+                  Edit
+                </button>
+                <button
+                  className="transition-all duration-1000 bg-black text-white hover:text-black hover:bg-lime-400 w-20 p-2 rounded ml-5"
+                  onClick={openDelete}
+                >
+                  Hapus
+                </button>
+              </div>
+            </div>
           </div>
-          <div className="mt-10 ml-32 ">
-            <h1 className="font-bold text-2xl capitalize">{profile.nama}</h1>
-            <hr className="h-px border-0 bg-lime-400 mt-3" />
-            <div className="mt-5 flex flex-col">
-              <label htmlFor="" className="font-light text-gray-500 mr-20">
-                Email
-              </label>
-              <p className="mt-2">{profile.email}</p>
-            </div>
-            <div className="mt-3 flex flex-col">
-              <label htmlFor="" className="font-light text-gray-500 mr-20">
-                Alamat
-              </label>
-              <p className="mt-2">{profile.alamat}</p>
-            </div>
-            <div className="mt-3 flex flex-col">
-              <label htmlFor="" className="font-light text-gray-500 mr-20">
-                No. Tlp
-              </label>
-              <p className="mt-2">{profile.no_tlp}</p>
-            </div>
-            <div className="absolute bottom-10 right-10">
-              <button
-                className="transition-all duration-1000 bg-lime-300 py-3 px-5 rounded hover:bg-lime-400"
-                onClick={openEdit}
-              >
-                Edit
-              </button>
-              <button
-                className="transition-all duration-1000 bg-red-400 py-3 px-5 rounded ml-5 hover:bg-red-500"
-                onClick={openDelete}
-              >
-                Hapus
-              </button>
-            </div>
-          </div>
-        </div>
+        )}
         {open && (
           <form
             onSubmit={updateProfile}
-            className="relative -mt-[467px] bg-white flex flex-row mx-20 py-10 border border-lime-400 rounded-lg shadow transition-all duration-1000 hover:shadow-lg"
+            className="w-[600px] h-[750px] mt-10 relative flex flex-col mx-auto rounded-lg shadow transition-all duration-1000 hover:shadow-lg"
           >
             <div className="flex flex-col mx-10">
-              <label htmlFor="gambar">
+              <img
+                src={
+                  profile.gambar_profil === "belum"
+                    ? "http://localhost:5000/images/defaultProfile.png"
+                    : profile.gambar_profil
+                }
+                alt=""
+                className={`relative w-[200px] w-[200px] rounded-full mx-auto mt-10 shadow z-10 ${
+                  image ? "invisible" : "visible"
+                }`}
+              />
+              <div className="">
+                {image && (
+                  <img
+                    src={image}
+                    alt="Preview"
+                    className="absolute top-0 right-[33%] w-[200px] w-[200px] rounded-full mx-auto mt-10 shadow z-10"
+                  />
+                )}
+              </div>
+              <label htmlFor="gambar" className="flex justify-end text-xs">
                 <input
                   type="file"
                   id="gambar"
@@ -182,96 +214,93 @@ function Profile() {
                   {image ? "Ganti" : "Pilih"}
                 </p>
               </label>
-              <div className="relative">
-                {image && (
-                  <img
-                    src={image}
-                    alt="Preview"
-                    className="mt-5 rounded-lg w-96"
-                  />
-                )}
-              </div>
             </div>
-            <div className="ml-32 -mt-5">
+            <div className="mx-16">
               <div className="flex flex-col">
                 <label
                   htmlFor="nama"
-                  className="font-light text-gray-500 mr-20"
+                  className="font-light text-gray-500 mr-20 text-xs"
                 >
                   Nama
                 </label>
+                <hr className="h-px border-0 bg-lime-200 my-3" />
                 <input
                   id="nama"
                   type="text"
                   value={nama}
                   maxLength={15}
                   onChange={(e) => setNama(e.target.value)}
-                  className=" mt-2 p-2 border border-lime-400 rounded"
+                  className="border-0 outline-none"
                 />
               </div>
               <div className="flex flex-col">
                 <label
                   htmlFor="email"
-                  className="font-light text-gray-500 mr-20 mt-2"
+                  className="font-light text-gray-500 mr-20 mt-2 text-xs"
                 >
                   Email
                 </label>
+                <hr className="h-px border-0 bg-lime-200 my-3" />
                 <input
                   id="email"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className=" mt-2 p-2 border border-lime-400 rounded"
+                  className="border-0 outline-none"
                 />
               </div>
               <div className="flex flex-col">
                 <label
                   htmlFor="password"
-                  className="font-light text-gray-500 mr-20 mt-2"
+                  className="font-light text-gray-500 mr-20 mt-2 text-xs"
                 >
                   New Password
                 </label>
+                <hr className="h-px border-0 bg-lime-200 my-3" />
                 <input
                   id="password"
                   type="password"
                   value={password}
+                  placeholder="******"
                   onChange={(e) => setPassword(e.target.value)}
-                  className=" mt-2 p-2 border border-lime-400 rounded"
+                  className="border-0 outline-none"
                 />
               </div>
               <div className="flex flex-col">
                 <label
                   htmlFor="alamat"
-                  className="font-light text-gray-500 mr-20 mt-2"
+                  className="font-light text-gray-500 mr-20 mt-2 text-xs"
                 >
                   Alamat
                 </label>
-                <input
+                <hr className="h-px border-0 bg-lime-200 my-3" />
+                <textarea
                   id="alamat"
                   type="text"
                   value={alamat}
                   onChange={(e) => setAlamat(e.target.value)}
-                  className=" mt-2 p-2 border border-lime-400 rounded"
+                  className="border-0 outline-none"
                 />
               </div>
               <div className="flex flex-col pb-5">
                 <label
                   htmlFor="noTlp"
-                  className="font-light text-gray-500 mr-20 mt-2"
+                  className="font-light text-gray-500 mr-20 mt-2 text-xs"
                 >
                   No. Tlp
                 </label>
+                <hr className="h-px border-0 bg-lime-200 my-3" />
                 <input
                   id="noTlp"
                   type="number"
                   value={no_tlp}
                   onChange={(e) => setNoTlp(e.target.value)}
-                  className="mt-2 p-2 border border-lime-400 rounded"
+                  className="border-0 outline-none"
                 />
               </div>
               <div className="absolute bottom-10 right-10">
                 <button
-                  className="transition-all duration-1000 bg-lime-300 py-2 px-3 rounded hover:bg-lime-400"
+                  className="transition-all duration-1000 bg-lime-300 py-2 px-3 rounded hover:bg-lime-400 text-xs"
                   type="submit"
                 >
                   Submit
@@ -279,7 +308,7 @@ function Profile() {
               </div>
               <div className="absolute top-0 right-0">
                 <div
-                  className="transition-all duration-1000 bg-red-400 py-2 px-3 rounded-b-md hover:bg-red-500"
+                  className="transition-all duration-1000 hover:bg-black hover:text-white p-1 mt-1 rounded cursor-pointer"
                   onClick={cancel}
                   type="button"
                 >
@@ -292,24 +321,24 @@ function Profile() {
       </div>
 
       <div
-        className={`absolute top-32 left-[40%] ${
+        className={`absolute top-32 left-[40%] z-20 ${
           openPopUp ? "visible" : "invisible"
         }`}
       >
-        <div className="bg-lime-50 mx-auto w-96">
+        <div className="bg-white rounded-lg border shadow-lg mx-auto w-96">
           <p className="text-center p-10">
             Apa anda ingin menghapus akun ini, semua data akan dihapus dari
             sistem ini!
           </p>
-          <div className="flex justify-end pb-5">
+          <div className="flex justify-end pb-5 text-xs">
             <button
-              className="transition-all duration-1000 bg-red-400 hover:bg-red-500 p-2 rounded w-20"
+              className=" bg-black text-white hover:text-black hover:bg-lime-400 p-2 rounded w-20"
               onClick={closeDelete}
             >
               Tidak
             </button>
             <button
-              className="transition-all duration-1000 bg-lime-400 hover:bg-lime-500 p-2 rounded w-20 mx-5"
+              className="bg-lime-400 hover:bg-lime-500 p-2 rounded w-20 mx-5"
               onClick={deleteKonsumen}
             >
               ya

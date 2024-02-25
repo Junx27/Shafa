@@ -11,6 +11,14 @@ function Navbar() {
   const navigate = useNavigate();
   useSelector((state) => state.auth);
   const [data, setData] = useState([]);
+  const [pembayaranBelum, setPembayaranBelum] = useState([]);
+  useEffect(() => {
+    const fetchPembayaranBelum = async () => {
+      const response = await axios("http://localhost:5000/pembayaran/belum");
+      setPembayaranBelum(response.data);
+    };
+    fetchPembayaranBelum();
+  }, []);
 
   const fetchData = async () => {
     const response = await axios.get("http://localhost:5000/transaksis");
@@ -53,7 +61,7 @@ function Navbar() {
             to={row.link}
             className={({ isActive }) =>
               isActive
-                ? "bg-lime-300 hover:bg-lime-400 py-2 rounded-md shadow"
+                ? "transition-all duration-1000 bg-lime-400 hover:bg-lime-300 py-2 rounded-md shadow"
                 : "py-2 rounded-md hover:text-lime-400 hover-saturete-200"
             }
           >
@@ -62,13 +70,22 @@ function Navbar() {
         ))}
       </div>
       <div
-        className={`bg-red-400 p-1 rounded-full absolute right-[725px] top-7 animate-pulse ${
+        className={`bg-black text-white absolute right-[727px] top-7 text-xs px-1 rounded-full ${
           data.length !== 0 ? "visible" : "invisible"
         }`}
-      ></div>
+      >
+        {data.length}
+      </div>
+      <div
+        className={`bg-black text-white absolute right-[620px] top-7 text-xs px-1 rounded-full ${
+          pembayaranBelum.length !== 0 ? "visible" : "invisible"
+        }`}
+      >
+        {pembayaranBelum.length}
+      </div>
 
       <button
-        className="bg-lime-300 hover:bg-lime-400 py-2 px-4 rounded-md"
+        className="bg-lime-400 hover:bg-lime-300 py-2 px-4 rounded-md shadow"
         onClick={logout}
       >
         Logout

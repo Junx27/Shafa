@@ -26,25 +26,8 @@ function Home() {
       <div className="">
         <Navbar />
       </div>
-      <div className="absolute z-20 mt-20 mx-32">
-        <div>
-          <h1 className="text-4xl font-bold mt-20 bg-lime-400 rounded-t-lg p-5 px-10">
-            Selamat Datang <br />
-            di Shafa Farm Hidroponik
-          </h1>
-          <p className="w-[600px] indent-7 text-justify bg-lime-50 rounded-b-lg border border-lime-300 p-10 shadow-lg">
-            Kami berkomitmen memberikan melon berkualitas terbaik yang
-            dihasilkan melalui metode hidroponik yang mengutamakan kualitas,
-            kebersihan, dan kesegaran. Shafa Farm Hidroponik adalah sebuah usaha
-            pertanian yang mengkhususkan diri dalam budidaya buah melon
-            menggunakan sistem hidroponik.
-            <p className="text-xl text-end mt-5">...............</p>
-            <p className="text-xs text-end">Shafa Farm Hidrponik</p>
-          </p>
-        </div>
-      </div>
-      <div className=" bg-[url('http://localhost:5000/images/bghero.jpg')] bg-no-repeat bg-cover bg-center w-[100%] h-[1000px] z-0 bg-fixed top-0 z-0"></div>
-      <div className="w-[100%] h-[1000px] bg-lime-50 absolute top-[650px] z-20">
+      <div className=" bg-[url('http://localhost:5000/images/bghero.jpg')] bg-no-repeat bg-cover bg-center w-[100%] h-[450px] z-0 bg-fixed top-0 z-0 relative rounded-b-[20px]"></div>
+      <div className="relative -mt-32">
         <Promo />
       </div>
       <div>
