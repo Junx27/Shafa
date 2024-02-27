@@ -58,6 +58,14 @@ function Produk() {
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
+  // eslint-disable-next-line react/prop-types
+  const Popover = ({ children }) => {
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+        <div>{children}</div>
+      </div>
+    );
+  };
   return (
     <div>
       <button
@@ -105,7 +113,7 @@ function Produk() {
               className="transition-all duration-1000 rounded-t-lg brightness-90 hover:brightness-75 z-0 object-cover h-48 w-96"
             />
             {row.status_produk === "promo" && (
-              <p className="bg-lime-400 rounded-b-lg p-2 w-16 absolute top-0 shadow">
+              <p className="bg-lime-400 rounded text-center p-1 w-16 absolute top-2 right-2 shadow text-xs">
                 {row.status_produk}
               </p>
             )}
@@ -113,7 +121,7 @@ function Produk() {
             <h1 className="font-bold ml-5 mt-2 capitalize">
               {row.nama_produk}
             </h1>
-            <p className="ml-5 underline text-sm">
+            <p className="ml-5 mt-2 text-xs">
               {formatRupiah(row.harga_produk)}/Kg
             </p>
 
@@ -135,7 +143,7 @@ function Produk() {
                 Edit
               </Link>
               <button
-                className="transition-all duration-1000 border border-red-400 hover:bg-red-500 hover:text-white text-red-400 py-2 rounded-md px-3 flex text-xs"
+                className="transition-all duration-1000 bg-black hover:bg-lime-400 text-white py-2 rounded-md px-3 flex text-xs"
                 onClick={() => openPopHapus(row.uuid)}
               >
                 <span className="material-symbols-outlined mr-2 text-xs">
@@ -147,28 +155,30 @@ function Produk() {
           </div>
         ))}
         {deleteId && (
-          <div className="bg-white shadow-lg w-[400px] h-[130px] rounded-lg absolute right-96 top-32">
-            <p className="p-5">Apakah anda ingin menghapus produk ini?</p>
-            <div className="flex justify-end mr-10">
-              <button
-                className="transition-all duration-1000 bg-lime-400 hover:bg-lime-300 py-2 rounded-md px-5 flex text-xs mr-5"
-                onClick={() => {
-                  closePopHapus();
-                }}
-              >
-                Tidak
-              </button>
-              <button
-                className="transition-all duration-1000 border border-red-400 hover:bg-red-500 hover:text-white text-red-400 py-2 rounded-md px-3 flex text-xs"
-                onClick={() => {
-                  hapus(deleteId);
-                  closePopHapus();
-                }}
-              >
-                Ya
-              </button>
+          <Popover>
+            <div className="bg-white shadow-lg w-[400px] h-[130px] rounded-lg absolute right-96 top-32">
+              <p className="p-5">Apakah anda ingin menghapus produk ini?</p>
+              <div className="flex justify-end mr-10">
+                <button
+                  className="transition-all duration-1000 bg-black hover:bg-lime-400 text-white py-2 rounded-md px-5 flex text-xs mr-5"
+                  onClick={() => {
+                    closePopHapus();
+                  }}
+                >
+                  Tidak
+                </button>
+                <button
+                  className="transition-all duration-1000 bg-lime-400 hover:bg-lime-300 py-2 rounded-md px-3 flex text-xs"
+                  onClick={() => {
+                    hapus(deleteId);
+                    closePopHapus();
+                  }}
+                >
+                  Ya
+                </button>
+              </div>
             </div>
-          </div>
+          </Popover>
         )}
       </div>
     </div>

@@ -5,20 +5,13 @@ import { useNavigate, useParams } from "react-router-dom";
 function KonfirmasiPembayaran() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [nama, setNama] = useState([]);
   const [uuid, setUuid] = useState([]);
   const [pembayaranId, setPembayaranId] = useState([]);
-  const [alamat, setAlamat] = useState([]);
-  const [total, setTotal] = useState([]);
 
   const fetchData = async () => {
     const response = await axios.get(`http://localhost:5000/pembayaran/${id}`);
     setPembayaranId(response.data.id);
     setUuid(response.data.uuid);
-    setNama(response.data.nama);
-    setAlamat(response.data.alamat);
-    setAlamat(response.data.alamat);
-    setTotal(response.data.total);
   };
   useEffect(() => {
     fetchData();
@@ -69,13 +62,13 @@ function KonfirmasiPembayaran() {
       <span className="material-symbols-outlined text-6xl bg-lime-400 p-2 shadow rounded-full animate-bounce">
         check
       </span>
-      <p className="text-red-400 w-96 mx-auto mt-5">
+      <p className="text-gray-400 w-96 mx-auto mt-5 text-xs">
         Untuk melakukan pembelian berikutnya mohon untuk mengkonfimasi pembelian
         sebelumnya terlebih dahulu
       </p>
       <form action="" onSubmit={updatePembelian}>
         <button
-          className="transition-all duration-1000 bg-lime-400 p-2 rounded mt-10 shadow hover:bg-lime-300"
+          className="text-xs transition-all duration-1000 bg-lime-400 p-2 rounded mt-10 shadow hover:bg-lime-300"
           type="submit"
         >
           Konfirmasi pembayaran

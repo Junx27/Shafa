@@ -14,7 +14,6 @@ function Keranjang() {
   const [alamat, setAlamat] = useState([]);
   const [data, setData] = useState([]);
   const [productQuantity, setProductQuantity] = useState({});
-
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -158,7 +157,7 @@ function Keranjang() {
       const formData = new FormData();
       formData.append("nama", nama);
       formData.append("alamat", alamat);
-      formData.append("total", totalKeseluruhan);
+      formData.append("total", totalKeseluruhan + 20000);
       formData.append("bukti_pembayaran", bukti_pembayaran);
       formData.append("status_pembayaran", "belum");
       formData.append("status_pengiriman", "belum");
@@ -204,6 +203,14 @@ function Keranjang() {
     } catch (error) {
       console.error("Gagal memasukkan data ke dalam tabel:", error);
     }
+  };
+  // eslint-disable-next-line react/prop-types
+  const Popover = ({ children }) => {
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+        <div>{children}</div>
+      </div>
+    );
   };
 
   return (
@@ -269,15 +276,15 @@ function Keranjang() {
                     </div>
                   ))}
                   <div className="mt-20">
-                    <p className="text-gray-400 text-xs text-end mr-32">
-                      Jumlah total =
+                    <p className="text-gray-400 text-xs text-end">
+                      Biaya pengiriman = Rp. 20.000,00
                     </p>
                     <hr className="h-px border-0 bg-lime-200 mt-3" />
                   </div>
                   {totalKeseluruhan !== 0 && (
                     <div className="flex justify-end">
-                      <p className="border border-white p-4 font-bold text-center">
-                        {formatRupiah(totalKeseluruhan)}
+                      <p className="border border-white mt-5 font-bold text-center">
+                        Jumlah total = {formatRupiah(totalKeseluruhan + 20000)}
                       </p>
                     </div>
                   )}
@@ -328,7 +335,7 @@ function Keranjang() {
                           </h1>
                           <hr className="h-px border-0 bg-lime-200 my-2" />
                           <p className="capitalize font-bold">
-                            {formatRupiah(totalKeseluruhan)}
+                            {formatRupiah(totalKeseluruhan + 20000)}
                           </p>
                         </div>
                       </div>
@@ -364,31 +371,42 @@ function Keranjang() {
                                 <img
                                   src={image}
                                   alt="Preview"
-                                  className={`mt-5 rounded-lg hover:shadow-lg ${
-                                    !view
-                                      ? "w-full -mt-[280px] -ml-64 relative z-20"
-                                      : ""
-                                  }`}
+                                  className="mt-5 rounded-lg hover:shadow-lg w-32 h-32 object-cover"
                                 />
-                                <span
-                                  className={`transition-all duration-1000 material-symbols-outlined absolute top-0 left-[100px] text-white cursor-pointer z-30 ${
-                                    !view ? "left-[280px] top-3" : "left-0"
-                                  }`}
-                                  onClick={() => setView(!view)}
-                                >
-                                  {view ? "open_in_full" : "fullscreen_exit"}
-                                </span>
+                                {!view && (
+                                  <Popover>
+                                    <div className="relative">
+                                      <img
+                                        src={image}
+                                        alt=""
+                                        className="w-[600px]"
+                                      />
+                                      <button
+                                        onClick={() => setView(!view)}
+                                        className="absolute top-2 right-3 text-xl text-white"
+                                      >
+                                        X
+                                      </button>
+                                    </div>
+                                  </Popover>
+                                )}
+                                <div className="mt-5 flex">
+                                  <button
+                                    className="bg-black text-white p-2 text-xs rounded mr-5 hover:bg-lime-400"
+                                    onClick={removeImage}
+                                    type="button"
+                                  >
+                                    Hapus
+                                  </button>
+                                  <button
+                                    className="bg-lime-400 p-2 px-4 text-xs rounded hover:bg-lime-300"
+                                    onClick={() => setView(!view)}
+                                    type="button"
+                                  >
+                                    Lihat
+                                  </button>
+                                </div>
                               </div>
-                            )}
-                            {image && (
-                              <span
-                                onClick={removeImage}
-                                className={`transition-all duration-1000 text-white material-symbols-outlined absolute bottom-0 left-[100px] cursor-pointer hover:text-red-400 z-30 ${
-                                  !view ? "left-[280px] bottom-2" : ""
-                                }`}
-                              >
-                                delete
-                              </span>
                             )}
                           </div>
                         </div>
@@ -410,7 +428,7 @@ function Keranjang() {
             )}
             <div className="flex justify-end -mt-20 mr-5">
               <button
-                className={`bg-lime-400 p-2 rounded mt-5 hover:bg-lime-500 z-10 shadow ${
+                className={`text-xs bg-lime-400 p-2 rounded mt-5 hover:bg-lime-500 z-10 shadow ${
                   image === null ? "invisible" : "visible"
                 } ${open ? "invisible" : "visible"}`}
                 type="submit"

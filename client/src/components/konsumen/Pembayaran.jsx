@@ -8,11 +8,11 @@ import { id } from "date-fns/locale";
 function Pembayaran() {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [pembayaran, setPembayaran] = useState([]);
   const [pembayaranBelum, setPembayaranBelum] = useState([]);
   const [penerimaan, setPenerimaan] = useState([]);
   const [pembelianByPembayaranId, setPembelianByPembayaranId] = useState([]);
-
   const scrollToTop = () => {
     window.scrollTo({
       top: 50,
@@ -91,6 +91,18 @@ function Pembayaran() {
       minimumFractionDigits: 2,
     });
     return formatter.format(number);
+  };
+  const deletePenerimaanSelesai = async (id) => {
+    await axios.delete(`http://localhost:5000/pembayaran/${id}`);
+    window.location.reload();
+  };
+  // eslint-disable-next-line react/prop-types
+  const Popover = ({ children }) => {
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+        <div>{children}</div>
+      </div>
+    );
   };
   return (
     <div>
@@ -208,9 +220,34 @@ function Pembayaran() {
                     </p>
                   </div>
                   <div className="flex items-center">
+                    {isOpen && (
+                      <Popover>
+                        <div className="-mt-56 w-[400px] h-[150px] bg-white rounded p-5">
+                          <p className="text-xs mb-10">
+                            Apakah anda ingin menghapus data pembelian ini?
+                            <br />
+                            Seluruh data transaksi akan dihapus!
+                          </p>
+                          <div className="flex justify-end">
+                            <button
+                              className="mr-3 transition-all duration-1000 bg-black text-white hover:bg-lime-400 hover:text-black p-2 rounded shadow text-xs"
+                              onClick={() => setIsOpen(!isOpen)}
+                            >
+                              Tidak
+                            </button>
+                            <button
+                              className="mr-3 transition-all duration-1000 bg-lime-400 hover:bg-lime-300 hover:text-black p-2 px-4 rounded shadow text-xs"
+                              onClick={() => deletePenerimaanSelesai(row.uuid)}
+                            >
+                              Ya
+                            </button>
+                          </div>
+                        </div>
+                      </Popover>
+                    )}
                     <button
-                      className="mr-3 transition-all duration-1000 bg-black text-white hover:bg-red-400 p-2 rounded shadow text-xs"
-                      onClick={() => handlePembayaranItemClick(row.id)}
+                      className="mr-3 transition-all duration-1000 bg-black text-white hover:bg-lime-400 hover:text-black p-2 rounded shadow text-xs"
+                      onClick={() => setIsOpen(!isOpen)}
                     >
                       hapus
                     </button>
@@ -262,9 +299,14 @@ function Pembayaran() {
           ))}
           <div>
             <div>
+              <p className="text-xs text-gray-400 text-end mt-5">
+                Biaya pengiriman = Rp.20.000,00
+              </p>
               <hr className="h-px border-0 bg-lime-200 my-5" />
               <div className="flex justify-end">
-                <p className="font-bold">{formatRupiah(totalKeseluruhan)}</p>
+                <p className="font-bold">
+                  {formatRupiah(totalKeseluruhan + 20000)}
+                </p>
               </div>
             </div>
           </div>
@@ -273,7 +315,7 @@ function Pembayaran() {
       {pembayaranBelum.length === 0 &&
         pembayaran.length === 0 &&
         penerimaan.length === 0 && (
-          <div className="-mt-32">
+          <div className="-mt-56">
             <BelumAdaData />
           </div>
         )}

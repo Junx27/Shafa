@@ -198,7 +198,7 @@ export const deletePembayaran = async (req, res) => {
     });
     if (!pembayaran)
       return res.status(404).json({ msg: "Data tidak ditemukan" });
-    const imagePath = transaksi.bukti_pembayaran;
+    const imagePath = pembayaran.bukti_pembayaran;
     const __dirname = path.dirname(fileURLToPath(import.meta.url));
     await Pembayaran.destroy({
       where: {
@@ -271,3 +271,22 @@ export const deletePembayaran = async (req, res) => {
 //     return res.status(500).json({ msg: error.message });
 //   }
 // };
+export const deletePembayaranById = async (req, res) => {
+  try {
+    const pembayaran = await Pembayaran.findOne({
+      where: {
+        uuid: req.params.id,
+      },
+    });
+    if (!pembayaran)
+      return res.status(404).json({ msg: "Data tidak ditemukan" });
+    await Pembayaran.destroy({
+      where: {
+        id: pembayaran.id,
+      },
+    });
+    res.status(200).json({ msg: "pembayaran telah dihapus" });
+  } catch (error) {
+    res.status(500).json({ msg: "pembayaran dapat menghapus" });
+  }
+};

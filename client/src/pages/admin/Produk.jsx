@@ -26,7 +26,14 @@ function Produk() {
   const showMenu = () => {
     setOpen(!open);
   };
-
+  // eslint-disable-next-line react/prop-types
+  const Popover = ({ children }) => {
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+        <div>{children}</div>
+      </div>
+    );
+  };
   return (
     <div className="">
       <SideNavbar />
@@ -52,9 +59,14 @@ function Produk() {
               {open ? "add_circle" : "cancel"}
             </span>
           </button>
-          <div className={open ? "invisible absolute" : "visible"}>
-            <CreateProduk />
-          </div>
+          {!open && (
+            <div>
+              <Popover>
+                <CreateProduk />
+                <button>close</button>
+              </Popover>
+            </div>
+          )}
         </div>
         <div className="mt-5">
           <h1 className="mb-5">Produk</h1>

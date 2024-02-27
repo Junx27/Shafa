@@ -28,26 +28,45 @@ function Promo() {
     return formatter.format(number);
   };
   const settings = {
-    className: "slider variable-width",
-    dots: false,
+    dots: true,
     infinite: true,
-    centerMode: false,
-    slidesToShow: 1,
-    slidesToScroll: 3,
-    variableWidth: true,
-    autoplay: true,
-    speed: 20000,
-    autoplaySpeed: 2000,
-    cssEase: "linear",
+    speed: 500,
+    slidesToShow: 5,
+    slidesToScroll: 1,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+          infinite: true,
+          dots: true,
+        },
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+          initialSlide: 2,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+        },
+      },
+    ],
   };
   return (
-    <div className="mx-20 bg-white rounded-[20px] mb-32 py-2">
-      <Slider {...settings} className="mt-5 mx-10 grid grid-cols-4 gap-10">
+    <div className="bg-white rounded-[20px] overflow-hidden">
+      <Slider {...settings} className="pt-3 md:mx-3 grid md:grid-cols-4">
         {data.map((row, index) => (
           <div
             key={index}
             className={`rounded rounded-lg mb-5 transition-all duration-1000 shadow-md hover:shadow-lg`}
-            onClick={() => navigate("/produkkonsumen")}
           >
             <div>
               <img
@@ -65,11 +84,14 @@ function Promo() {
                   {row.status_produk}
                 </h1>
               </div>
-              <div className="flex justify-between">
-                <p className="mx-5 text-justify mb-5 font-light text-sm">
+              <div className="flex justify-between items-center pb-5">
+                <p className="mx-5 text-justify font-light text-sm">
                   {formatRupiah(row.harga_produk)},00/Kg
                 </p>
-                <span className="material-symbols-outlined mr-5 cursor-pointer hover:text-lime-600">
+                <span
+                  className=" transition-all duration-1000 material-symbols-outlined mr-5 cursor-pointer p-1 rounded hover:bg-black hover:text-white text-sm"
+                  onClick={() => navigate("/produkkonsumen")}
+                >
                   read_more
                 </span>
               </div>

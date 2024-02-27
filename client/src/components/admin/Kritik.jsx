@@ -51,7 +51,7 @@ function Kritik() {
           {kritik.map((row, index) => (
             <div
               key={index}
-              className="transition-all duration-1000 bg-lime-50 rounded-lg p-5 shadow relative pb-10 hover:shadow-lg"
+              className="transition-all duration-1000 rounded-lg p-5 shadow relative pb-10 hover:shadow-lg"
             >
               <div className="absolute top-0 right-0">
                 <p className="text-xs bg-lime-300 p-1 rounded ml-10">
@@ -60,23 +60,27 @@ function Kritik() {
               </div>
               <div className="flex items-center">
                 <img
-                  src={row.user.gambar_profil}
+                  src={
+                    row.user.gambar_profil === "belum"
+                      ? "http://localhost:5000/images/defaultProfile.png"
+                      : row.user.gambar_profil
+                  }
                   alt=""
                   className="w-[60px] rounded-full"
                 />
                 <div className="ml-5">
                   <h1>{row.user.nama}</h1>
-                  <p className="text-xs text-gray-500 mt-1">
-                    {row.user.alamat}
-                  </p>
                 </div>
               </div>
-              <div className="bg-white p-2 rounded-lg mt-2 mb-5 text-justify">
+              <p className="text-xs text-gray-500 mt-2 truncate">
+                {row.user.alamat}
+              </p>
+              <div className="bg-white p-2 rounded-lg mt-2 mb-5 text-justify border">
                 <p className="text-xs">{row.kritik}</p>{" "}
               </div>
               <div className="absolute bottom-3 right-3">
                 <button
-                  className="transition-all duration-1000 bg-red-300 p-2 rounded text-xs hover:bg-red-400"
+                  className="transition-all duration-1000 bg-black text-white p-2 rounded text-xs hover:bg-lime-400"
                   onClick={() => openPopHapus(row.uuid)}
                 >
                   hapus

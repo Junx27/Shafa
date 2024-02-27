@@ -23,8 +23,6 @@ import EditProduk from "./pages/admin/EditProduk.jsx";
 import Register from "./pages/konsumen/Register.jsx";
 import Page404 from "./pages/Page404.jsx";
 import ViewKonsumen from "../src/pages/admin/EditKonsumen.jsx";
-import Transaksi from "./pages/konsumen/Transaksi.jsx";
-import ViewPembelian from "./pages/konsumen/ViewPembelian.jsx";
 import EditPembayaran from "./pages/konsumen/EditPembayaran.jsx";
 
 function App() {
@@ -50,9 +48,7 @@ function App() {
         <Route path="/home" Component={Home} />
         <Route path="/riwayatkonsumen" Component={RiwayatKonsumen} />
         <Route path="/keranjang" Component={Keranjang} />
-        <Route path="/transaksi/:id" Component={Transaksi} />
         <Route path="/pembayaran/:id" Component={EditPembayaran} />
-        <Route path="/pembelian/:id" Component={ViewPembelian} />
         <Route path="/faq" Component={Faq} />
         <Route path="/profile" Component={Profile} />
         <Route path="/produkkonsumen" Component={ProdukKonsumen} />

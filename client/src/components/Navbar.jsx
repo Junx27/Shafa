@@ -12,6 +12,15 @@ function Navbar() {
   useSelector((state) => state.auth);
   const [data, setData] = useState([]);
   const [pembayaranBelum, setPembayaranBelum] = useState([]);
+  const [profile, setProfile] = useState([]);
+  const [openLogout, setOpenLogout] = useState(false);
+  const fetchProfile = async () => {
+    const response = await axios.get("http://localhost:5000/me");
+    setProfile(response.data);
+  };
+  useEffect(() => {
+    fetchProfile();
+  }, []);
   useEffect(() => {
     const fetchPembayaranBelum = async () => {
       const response = await axios("http://localhost:5000/pembayaran/belum");
@@ -54,7 +63,7 @@ function Navbar() {
       }`}
     >
       <img src={Logo} alt="" className="saturate-200 w-10" />
-      <div className="flex flex-row justify-center mx-32">
+      <div className="hidden md:flex md:flex-row md:justify-center md:mx-32">
         {navbar.map((row, index) => (
           <NavLink
             key={index}
@@ -70,26 +79,44 @@ function Navbar() {
         ))}
       </div>
       <div
-        className={`bg-black text-white absolute right-[727px] top-7 text-xs px-1 rounded-full ${
+        className={`hidden md:block bg-black text-white absolute right-[720px] top-7 text-xs px-1 rounded-full ${
           data.length !== 0 ? "visible" : "invisible"
         }`}
       >
         {data.length}
       </div>
       <div
-        className={`bg-black text-white absolute right-[620px] top-7 text-xs px-1 rounded-full ${
+        className={`hidden md:block bg-black text-white absolute right-[615px] top-7 text-xs px-1 rounded-full ${
           pembayaranBelum.length !== 0 ? "visible" : "invisible"
         }`}
       >
         {pembayaranBelum.length}
       </div>
-
-      <button
-        className="bg-lime-400 hover:bg-lime-300 py-2 px-4 rounded-md shadow"
-        onClick={logout}
-      >
-        Logout
-      </button>
+      <div className="flex flex-row items-center">
+        <img
+          src={
+            profile.gambar_profil === "belum"
+              ? "http://localhost:5000/images/defaultProfile.png"
+              : profile.gambar_profil
+          }
+          alt=""
+          className="w-10 ml-5 rounded-full"
+        />
+        <span
+          className="font-bold text-xl ml-3 cursor-pointer"
+          onClick={() => setOpenLogout(!openLogout)}
+        >
+          :
+        </span>
+      </div>
+      {openLogout && (
+        <button
+          className="absolute right-10 top-20 bg-lime-400 hover:bg-lime-300 py-2 px-4 rounded-md shadow text-xs"
+          onClick={logout}
+        >
+          Logout
+        </button>
+      )}
     </div>
   );
 }

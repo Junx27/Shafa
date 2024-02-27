@@ -55,7 +55,7 @@ function CreateProduk() {
   };
 
   return (
-    <div className="bg-lime-100 w-6/12 rounded-lg z-30">
+    <div className="bg-white w-[500px] ml-64 rounded-lg z-30">
       <div className="">
         <h1 className="pl-5 py-2 bg-lime-400 mr-[60%] rounded-r-lg">
           Menambahkan Produk
@@ -142,33 +142,38 @@ function CreateProduk() {
                 onChange={handleImageChange}
                 className="invisible"
               />
-              <p className="bg-lime-400 p-2 rounded-md w-20 text-center -mt-5 hover:bg-lime-500 hover:text-white">
+              <p className="text-xs bg-lime-400 p-2 rounded-md w-20 text-center -mt-5 hover:bg-lime-500 hover:text-white">
                 {image ? "Ganti" : "Pilih"}
               </p>
             </label>
             <div className="relative">
               {image && (
-                <img src={image} alt="Preview" className="mt-5 rounded-lg" />
+                <img
+                  src={image}
+                  alt="Preview"
+                  className="mt-5 rounded-lg w-[100px]"
+                />
               )}
               {image && (
                 <p
                   onClick={removeImage}
-                  className="bg-red-400 py-2 px-5 rounded-b-md text-center absolute top-5 right-0 cursor-pointer"
+                  className="text-xs bg-black text-white py-2 px-5 rounded text-center absolute -top-8 left-24 cursor-pointer"
                 >
-                  X
+                  Hapus
                 </p>
               )}
             </div>
           </div>
           <div className="flex justify-end mx-10">
             <button
-              className="bg-red-400 p-2 rounded-md mr-5 hover:bg-red-300 hover:text-white"
+              className="transition-all duration-1000 text-xs bg-black text-white p-2 rounded-md mr-5 hover:bg-lime-400 hover:text-black"
+              type="button"
               onClick={cancel}
             >
               Cancel
             </button>
             <button
-              className="bg-lime-400 p-2 rounded-md hover:bg-lime-500 hover:text-white"
+              className="transition-all duration-1000 text-xs bg-lime-400 p-2 rounded-md hover:bg-lime-300"
               type="submit"
             >
               Submit
