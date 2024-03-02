@@ -1,27 +1,15 @@
-import Navbar from "../../components/Navbar";
-import ProdukList from "../../components/konsumen/Produk";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { meUser } from "../../features/AuthSlice";
-import { useEffect, useState } from "react";
-import Footer from "../../components/Footer";
-import LoadingSpinner from "../../components/layout/Loading";
+import { Suspense, lazy, useEffect } from "react";
+const ProdukList = lazy(() => import("../../components/konsumen/Produk"));
+const Navbar = lazy(() => import("../../components/Navbar"));
+const Footer = lazy(() => import("../../components/Footer"));
 
 function Produk() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isError } = useSelector((state) => state.auth);
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    const startLoading = () => {
-      setLoading(true);
-      setTimeout(() => {
-        setLoading(false);
-      }, 1000);
-    };
-    startLoading();
-  }, []);
 
   useEffect(() => {
     dispatch(meUser());
@@ -35,24 +23,17 @@ function Produk() {
 
   return (
     <div>
-      {loading ? (
-        <div className="mx-[45%] md:mx-[50%] my-[80%] md:my-[20%]">
-          <LoadingSpinner />
-          <p className="text-lime-400 text-xs mt-5">Loading...</p>
-        </div>
-      ) : (
+      <Suspense fallback={<div></div>}>
         <div>
-          <div>
-            <Navbar />
-          </div>
-          <div className="mt-32 mx-32 pb-20">
-            <ProdukList />
-          </div>
-          <div>
-            <Footer />
-          </div>
+          <Navbar />
         </div>
-      )}
+        <div className="mt-32 mx-5 md:mx-32 pb-20">
+          <ProdukList />
+        </div>
+        <div>
+          <Footer />
+        </div>
+      </Suspense>
     </div>
   );
 }

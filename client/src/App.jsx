@@ -1,60 +1,65 @@
 import { Route, Routes } from "react-router-dom";
-import LandingPage from "./pages/LandingPage";
-import HalamanProduk from "./pages/landingPage/HalamanProduk";
-import BantuanPendaftaran from "./pages/landingPage/Bantuan";
-import KeuntunganKonsumen from "./pages/landingPage/Keuntungan";
-import LoginAdmin from "./pages/admin/LoginAdmin";
-import Dashboard from "./pages/admin/Dashboard";
-import Konsumen from "./pages/admin/Konsumen";
-import Kritik from "./pages/admin/Kritik";
-import Pengaturan from "./pages/admin/Pengaturan";
-import Pesanan from "./pages/admin/Pesanan";
-import Produk from "./pages/admin/Produk";
-import Promo from "./pages/admin/Promo";
-import Riwayat from "./pages/admin/Riwayat";
-import ScrollToTop from "./components/layout/SrollToTop";
-import Home from "./pages/konsumen/Home";
-import RiwayatKonsumen from "./pages/konsumen/History";
-import Keranjang from "./pages/konsumen/Keranjang";
-import Faq from "./pages/konsumen/Faq";
-import Profile from "./pages/konsumen/Profile";
-import ProdukKonsumen from "./pages/konsumen/Produk";
-import EditProduk from "./pages/admin/EditProduk.jsx";
-import Register from "./pages/konsumen/Register.jsx";
-import Page404 from "./pages/Page404.jsx";
-import ViewKonsumen from "../src/pages/admin/EditKonsumen.jsx";
-import EditPembayaran from "./pages/konsumen/EditPembayaran.jsx";
+import { Suspense, lazy } from "react";
+const LandingPage = lazy(() => import("./pages/LandingPage"));
+const HalamanProduk = lazy(() => import("./pages/landingPage/HalamanProduk"));
+const BantuanPendaftaran = lazy(() => import("./pages/landingPage/Bantuan"));
+const KeuntunganKonsumen = lazy(() => import("./pages/landingPage/Keuntungan"));
+const LoginAdmin = lazy(() => import("./pages/admin/LoginAdmin"));
+const Dashboard = lazy(() => import("./pages/admin/Dashboard"));
+const Konsumen = lazy(() => import("./pages/admin/Konsumen"));
+const Kritik = lazy(() => import("./pages/admin/Kritik"));
+const Pengaturan = lazy(() => import("./pages/admin/Pengaturan"));
+const Pesanan = lazy(() => import("./pages/admin/Pesanan"));
+const Produk = lazy(() => import("./pages/admin/Produk"));
+const Promo = lazy(() => import("./pages/admin/Promo"));
+const Riwayat = lazy(() => import("./pages/admin/Riwayat"));
+const ScrollToTop = lazy(() => import("./components/layout/SrollToTop"));
+const Home = lazy(() => import("./pages/konsumen/Home"));
+const RiwayatKonsumen = lazy(() => import("./pages/konsumen/History"));
+const Keranjang = lazy(() => import("./pages/konsumen/Keranjang"));
+const Faq = lazy(() => import("./pages/konsumen/Faq"));
+const Profile = lazy(() => import("./pages/konsumen/Profile"));
+const ProdukKonsumen = lazy(() => import("./pages/konsumen/Produk"));
+const EditProduk = lazy(() => import("./pages/admin/EditProduk.jsx"));
+const Register = lazy(() => import("./pages/konsumen/Register.jsx"));
+const Page404 = lazy(() => import("./pages/Page404.jsx"));
+const ViewKonsumen = lazy(() => import("../src/pages/admin/EditKonsumen.jsx"));
+const EditPembayaran = lazy(() =>
+  import("./pages/konsumen/EditPembayaran.jsx")
+);
 
 function App() {
   return (
     <div>
       <ScrollToTop />
-      <Routes>
-        <Route path="/" Component={LandingPage} />
-        <Route path="/halamanproduk" Component={HalamanProduk} />
-        <Route path="/bantuanpendaftaran" Component={BantuanPendaftaran} />
-        <Route path="/keuntungankonsumen" Component={KeuntunganKonsumen} />
-        <Route path="/admin" Component={LoginAdmin} />
-        <Route path="/dashboard" Component={Dashboard} />
-        <Route path="/produk" Component={Produk} />
-        <Route path="/produk/edit/:id" Component={EditProduk} />
-        <Route path="/konsumen" Component={Konsumen} />
-        <Route path="/konsumen/:id" Component={ViewKonsumen} />
-        <Route path="/promo" Component={Promo} />
-        <Route path="/pesanan" Component={Pesanan} />
-        <Route path="/riwayat" Component={Riwayat} />
-        <Route path="/pengaturan" Component={Pengaturan} />
-        <Route path="/kritik" Component={Kritik} />
-        <Route path="/home" Component={Home} />
-        <Route path="/riwayatkonsumen" Component={RiwayatKonsumen} />
-        <Route path="/keranjang" Component={Keranjang} />
-        <Route path="/pembayaran/:id" Component={EditPembayaran} />
-        <Route path="/faq" Component={Faq} />
-        <Route path="/profile" Component={Profile} />
-        <Route path="/produkkonsumen" Component={ProdukKonsumen} />
-        <Route path="/register" Component={Register} />
-        <Route path="/*" Component={Page404} />
-      </Routes>
+      <Suspense fallback={<div></div>}>
+        <Routes>
+          <Route path="/" Component={LandingPage} />
+          <Route path="/halamanproduk" Component={HalamanProduk} />
+          <Route path="/bantuanpendaftaran" Component={BantuanPendaftaran} />
+          <Route path="/keuntungankonsumen" Component={KeuntunganKonsumen} />
+          <Route path="/admin" Component={LoginAdmin} />
+          <Route path="/dashboard" Component={Dashboard} />
+          <Route path="/produk" Component={Produk} />
+          <Route path="/produk/edit/:id" Component={EditProduk} />
+          <Route path="/konsumen" Component={Konsumen} />
+          <Route path="/konsumen/:id" Component={ViewKonsumen} />
+          <Route path="/promo" Component={Promo} />
+          <Route path="/pesanan" Component={Pesanan} />
+          <Route path="/riwayat" Component={Riwayat} />
+          <Route path="/pengaturan" Component={Pengaturan} />
+          <Route path="/kritik" Component={Kritik} />
+          <Route path="/home" Component={Home} />
+          <Route path="/riwayatkonsumen" Component={RiwayatKonsumen} />
+          <Route path="/keranjang" Component={Keranjang} />
+          <Route path="/pembayaran/:id" Component={EditPembayaran} />
+          <Route path="/faq" Component={Faq} />
+          <Route path="/profile" Component={Profile} />
+          <Route path="/produkkonsumen" Component={ProdukKonsumen} />
+          <Route path="/register" Component={Register} />
+          <Route path="/*" Component={Page404} />
+        </Routes>
+      </Suspense>
     </div>
   );
 }

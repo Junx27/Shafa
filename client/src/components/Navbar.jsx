@@ -1,10 +1,12 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { navbar } from "../data/navbarKonsumen";
-import Logo from "../assets/images/shafa.png";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser, reset } from "../features/AuthSlice.js";
 import axios from "axios";
+import PopOver from "./layout/PopOver.jsx";
+import { animated, useSpring } from "react-spring";
+import Logo from "./animate/Logo.jsx";
 
 function Navbar() {
   const dispatch = useDispatch();
@@ -14,6 +16,28 @@ function Navbar() {
   const [pembayaranBelum, setPembayaranBelum] = useState([]);
   const [profile, setProfile] = useState([]);
   const [openLogout, setOpenLogout] = useState(false);
+  const [openNavbar, setOpenNavbar] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const startLoading = () => {
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+      }, 500);
+    };
+    startLoading();
+  }, []);
+
+  const animation = useSpring({
+    opacity: loading ? 0 : 1,
+    marginTop: loading ? -10 : 0,
+  });
+  const animationSidebar = useSpring({
+    marginLeft: openNavbar ? 0 : -100,
+    config: { tension: 160, friction: 10 },
+  });
+
   const fetchProfile = async () => {
     const response = await axios.get("http://localhost:5000/me");
     setProfile(response.data);
@@ -57,65 +81,106 @@ function Navbar() {
     window.addEventListener("scroll", changeBackgroundColor);
   });
   return (
-    <div
-      className={`flex justify-between fixed w-full top-0 z-50 px-10 py-3 items-center backdrop-blur-md bg-white/10 transition-all duration-1000 ${
-        changeColor ? "bg-white/100 shadow-lg pt-3" : "pt-5"
-      }`}
-    >
-      <img src={Logo} alt="" className="saturate-200 w-10" />
-      <div className="hidden md:flex md:flex-row md:justify-center md:mx-32">
-        {navbar.map((row, index) => (
-          <NavLink
-            key={index}
-            to={row.link}
-            className={({ isActive }) =>
-              isActive
-                ? "transition-all duration-1000 bg-lime-400 hover:bg-lime-300 py-2 rounded-md shadow"
-                : "py-2 rounded-md hover:text-lime-400 hover-saturete-200"
-            }
+    <div>
+      <div
+        className={`flex justify-between fixed w-full top-0 z-50 px-10 py-3 items-center backdrop-blur-md bg-white/90 transition-all duration-1000 ${
+          changeColor ? "bg-white/100 shadow-lg pt-3" : "pt-5"
+        }`}
+      >
+        <Logo />
+        <div className="hidden md:flex md:flex-row md:justify-center md:mx-32">
+          {navbar.map((row, index) => (
+            <NavLink
+              key={index}
+              to={row.link}
+              className={({ isActive }) =>
+                isActive
+                  ? "transition-all duration-1000 bg-gradient-to-b from-green-400 to-green-500 hover:bg-green-300 py-2 rounded-md shadow"
+                  : "py-2 rounded-md hover:underline hover:underline-offset-8"
+              }
+            >
+              <div className="mx-7">{row.nama}</div>
+            </NavLink>
+          ))}
+        </div>
+        <div
+          className={`hidden md:block bg-orange-400 absolute right-[720px] top-7 text-xs px-1 rounded-full ${
+            data.length !== 0 ? "visible" : "invisible"
+          }`}
+        >
+          {data.length}
+        </div>
+        <div
+          className={`hidden md:block bg-orange-400 absolute right-[615px] top-7 text-xs px-1 rounded-full ${
+            pembayaranBelum.length !== 0 ? "visible" : "invisible"
+          }`}
+        >
+          {pembayaranBelum.length}
+        </div>
+        <div
+          className="flex flex-row items-center"
+          onClick={() => {
+            setOpenLogout(!openLogout), setOpenNavbar(!openNavbar);
+          }}
+        >
+          {" "}
+          {loading ? (
+            <div className="w-10 ml-5 rounded-full"></div>
+          ) : (
+            <animated.div style={animation}>
+              <img
+                src={
+                  profile.gambar_profil === "belum"
+                    ? "http://localhost:5000/images/defaultProfile.png"
+                    : profile.gambar_profil
+                }
+                alt=""
+                className="transition-all duration-1000 w-10 ml-5 rounded-full shadow hover:shadow-lg"
+              />
+            </animated.div>
+          )}
+          <span className="font-bold text-xl ml-3 cursor-pointer">:</span>
+        </div>
+        {openLogout && (
+          <button
+            className="hidden md:block absolute right-10 top-20 bg-green-400 hover:bg-green-300 py-2 px-4 rounded-md shadow text-xs"
+            onClick={logout}
           >
-            <div className="mx-7">{row.nama}</div>
-          </NavLink>
-        ))}
+            Logout
+          </button>
+        )}
       </div>
-      <div
-        className={`hidden md:block bg-black text-white absolute right-[720px] top-7 text-xs px-1 rounded-full ${
-          data.length !== 0 ? "visible" : "invisible"
-        }`}
-      >
-        {data.length}
-      </div>
-      <div
-        className={`hidden md:block bg-black text-white absolute right-[615px] top-7 text-xs px-1 rounded-full ${
-          pembayaranBelum.length !== 0 ? "visible" : "invisible"
-        }`}
-      >
-        {pembayaranBelum.length}
-      </div>
-      <div className="flex flex-row items-center">
-        <img
-          src={
-            profile.gambar_profil === "belum"
-              ? "http://localhost:5000/images/defaultProfile.png"
-              : profile.gambar_profil
-          }
-          alt=""
-          className="w-10 ml-5 rounded-full"
-        />
-        <span
-          className="font-bold text-xl ml-3 cursor-pointer"
-          onClick={() => setOpenLogout(!openLogout)}
-        >
-          :
-        </span>
-      </div>
-      {openLogout && (
-        <button
-          className="absolute right-10 top-20 bg-lime-400 hover:bg-lime-300 py-2 px-4 rounded-md shadow text-xs"
-          onClick={logout}
-        >
-          Logout
-        </button>
+      {openNavbar && (
+        <div className="md:hidden">
+          <PopOver>
+            <div className="flex">
+              <animated.div
+                style={animationSidebar}
+                className="w-64 bg-white h-[800px] py-10"
+              >
+                {navbar.map((row, index) => (
+                  <NavLink key={index} to={row.link}>
+                    <div className="transition-all duration-1000 my-10 hover:underline hover:underline-offset-8 mx-10">
+                      {row.nama}
+                    </div>
+                  </NavLink>
+                ))}
+                <button
+                  className="mx-10 bg-green-400 hover:bg-green-300 py-2 px-4 rounded-md shadow text-xs"
+                  onClick={logout}
+                >
+                  Logout
+                </button>
+              </animated.div>
+              <div
+                onClick={() => setOpenNavbar(!openNavbar)}
+                className="w-32 bg-black opacity-20 h-[800px] py-10"
+              >
+                close
+              </div>
+            </div>
+          </PopOver>
+        </div>
       )}
     </div>
   );

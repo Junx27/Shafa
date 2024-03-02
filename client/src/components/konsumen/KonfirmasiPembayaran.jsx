@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import Check from "../animate/Check";
 
 function KonfirmasiPembayaran() {
   const { id } = useParams();
@@ -53,25 +54,18 @@ function KonfirmasiPembayaran() {
   };
   return (
     <div className="text-center">
-      <hr className="h-px border-0 bg-lime-200" />
       <div className="flex justify-center">
-        <h1 className="font-bold mb-20 text-xl bg-lime-400 w-32 p-2 rounded-b-lg shadow text-center">
+        <h1 className="font-bold mb-10 text-md md:text-xl bg-yellow-400 w-32 p-2 rounded-b-lg shadow-lg text-center">
           Konfirmasi
         </h1>
       </div>
-      <span className="material-symbols-outlined text-6xl bg-lime-400 p-2 shadow rounded-full animate-bounce">
-        check
-      </span>
-      <p className="text-gray-400 w-96 mx-auto mt-5 text-xs">
+      <p className="text-gray-400 md:w-96 mx-5 md:mx-auto mt-5 text-[10px] md:text-xs">
         Untuk melakukan pembelian berikutnya mohon untuk mengkonfimasi pembelian
-        sebelumnya terlebih dahulu
+        sebelumnya terlebih dahulu <span className="text-black">,disini!</span>
       </p>
       <form action="" onSubmit={updatePembelian}>
-        <button
-          className="text-xs transition-all duration-1000 bg-lime-400 p-2 rounded mt-10 shadow hover:bg-lime-300"
-          type="submit"
-        >
-          Konfirmasi pembayaran
+        <button className="" type="submit">
+          <Check />
         </button>
       </form>
     </div>

@@ -2,6 +2,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BelumAdaData from "../BelumAdaData";
+import { animated, useSpring } from "react-spring";
+import LoadingSpinner from "../animate/Loading";
 
 function Keranjang() {
   const navigate = useNavigate();
@@ -14,6 +16,22 @@ function Keranjang() {
   const [alamat, setAlamat] = useState([]);
   const [data, setData] = useState([]);
   const [productQuantity, setProductQuantity] = useState({});
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const startLoading = () => {
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+      }, 800);
+    };
+    startLoading();
+  }, []);
+  const animation = useSpring({
+    opacity: loading ? 0 : 1,
+    marginTop: loading ? -10 : 0,
+  });
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -215,233 +233,270 @@ function Keranjang() {
 
   return (
     <div>
-      <div className="">
-        {data.length !== 0 ? (
-          <div>
-            {open && (
-              <div className="flex mb-5 bg-lime-400 p-2 rounded w-64 shadow">
-                <span className="material-symbols-outlined">info</span>
-                <h1 className="ml-3">Informasi keranjang</h1>
-              </div>
-            )}
-            <div className="">
+      {loading ? (
+        <div className="w-[100%] h-[800px]">
+          <div className="flex justify-center mt-64">
+            <LoadingSpinner />
+          </div>
+        </div>
+      ) : (
+        <animated.div style={animation} className="-mt-8 md:mt-0">
+          {data.length !== 0 ? (
+            <div>
               {open && (
-                <div>
-                  {Object.keys(productQuantity).map((row, index) => (
-                    <div
-                      key={index}
-                      className="py-5 px-10 transition-all duration-1000 flex justify-between items-center shadow mt-5 rounded-lg hover:shadow-lg"
-                    >
-                      <p className="font-bold text-xs ml-5">{index + 1}.</p>
-                      <img
-                        src={productQuantity[row].gambar_produk}
-                        alt=""
-                        className="w-20 h-20 rounded-l shadow object-cover"
-                      />
-                      <h1 className="font-bold ml-5 text-xs">{row}</h1>
-                      <div className="border border-white px-4 py-2">
-                        <button
-                          onClick={() => decrementQuantity(row)}
-                          className={`text-xs border border-black p-1 px-2 mr-2 hover:bg-black hover:text-white rounded ${
-                            productQuantity[row].jumlah_produk === 1
-                              ? "invisible"
-                              : "visible"
-                          }`}
-                        >
-                          -
-                        </button>
-                        <span className="text-xs">
-                          {productQuantity[row].jumlah_produk} Kg
-                        </span>
-                        <button
-                          onClick={() => incrementQuantity(row)}
-                          className="text-xs border border-black p-1 px-2 ml-2 hover:bg-black hover:text-white rounded"
-                        >
-                          +
-                        </button>
-                      </div>
-                      <p className="text-gray-400 text-xs">
-                        {formatRupiah(productQuantity[row].harga_produk)}
-                      </p>
-                      <p className="mx-3 text-gray-400 text-xs">=</p>
-                      <p className="mx-3 text-gray-400 text-xs">
-                        {formatRupiah(calculateTotalPrice(row))}
-                      </p>
-                      <span
-                        className="transition-all duration-1000 material-symbols-outlined text-sm cursor-pointer hover:bg-black hover:p-1 hover:text-white rounded"
-                        onClick={() => removeProduct(row)}
-                      >
-                        delete
-                      </span>
-                    </div>
-                  ))}
-                  <div className="mt-20">
-                    <p className="text-gray-400 text-xs text-end">
-                      Biaya pengiriman = Rp. 20.000,00
-                    </p>
-                    <hr className="h-px border-0 bg-lime-200 mt-3" />
-                  </div>
-                  {totalKeseluruhan !== 0 && (
-                    <div className="flex justify-end">
-                      <p className="border border-white mt-5 font-bold text-center">
-                        Jumlah total = {formatRupiah(totalKeseluruhan + 20000)}
-                      </p>
-                    </div>
-                  )}
+                <div className="text-[10px] md:text-xs flex mb-5 bg-green-400 p-2 rounded w-[150px] md:w-64 shadow items-center">
+                  <span className="text-[10px] md:text-xs material-symbols-outlined">
+                    info
+                  </span>
+                  <h1 className=" ml-1 md:ml-3">Informasi keranjang</h1>
                 </div>
               )}
-              {!open && (
-                <div className="">
-                  <form
-                    action=""
-                    className="w-[1185px] h-[450px] bg-white rounded-lg shadow"
-                  >
-                    <div className="flex justify-between">
-                      <div className="flex mb-5 bg-lime-400 p-3 rounded-r-lg shadow">
-                        <span className="material-symbols-outlined">info</span>
-                        <h1 className="ml-3">Selsaikan pembayaran</h1>
-                      </div>
-                      <div className="">
-                        <div
-                          className="cursor-pointer"
-                          onClick={() => setOpen(!open)}
-                          type="button"
-                        >
-                          <span className="transition-all duration-1000 material-symbols-outlined hover:bg-black hover:text-white rounded p-1 ">
-                            close
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-10">
-                      <div>
-                        <div className="flex flex-col mx-10 my-5">
-                          <h1 className="text-gray-400 text-xs">
-                            Nama penerima:
-                          </h1>
-                          <hr className="h-px border-0 bg-lime-200 my-2" />
-                          <p className="capitalize font-bold">{nama}</p>
-                        </div>
-                        <div className="flex flex-col mx-10 my-5">
-                          <h1 className="text-gray-400 text-xs">
-                            Alamat pengiriman:
-                          </h1>
-                          <hr className="h-px border-0 bg-lime-200 my-2" />
-                          <p className="capitalize font-bold">{alamat}</p>
-                        </div>
-                        <div className="flex flex-col mx-10 my-5">
-                          <h1 className="text-gray-400 text-xs">
-                            Total Belanja:
-                          </h1>
-                          <hr className="h-px border-0 bg-lime-200 my-2" />
-                          <p className="capitalize font-bold">
-                            {formatRupiah(totalKeseluruhan + 20000)}
-                          </p>
-                        </div>
-                      </div>
-                      <div>
-                        <p className="text-gray-400 text-xs mr-10 text-justify">
-                          Selsaikan pembayaran dengan upload bukti transfer ke
-                          No. Rek BRI 09087676564531444 a/n Shafa farm
-                          Hidroponik. Pastikan pembayaran sesuai dengan benar,
-                          proses pembayaran akan diproses 1 X 24 jam.{" "}
-                          <span
-                            className="text-black cursor-pointer underline"
-                            onClick={() => navigate("/faq")}
-                          >
-                            Dapatkan informasi lengkap disini!
-                          </span>
+              <div className="">
+                {open && (
+                  <div>
+                    {Object.keys(productQuantity).map((row, index) => (
+                      <div
+                        key={index}
+                        className="py-5 px-2 md:px-10 transition-all duration-1000 flex justify-between items-center shadow mt-5 rounded-lg hover:shadow-lg"
+                      >
+                        <p className="font-bold text-[10px] md:text-xs ml-1 md:ml-5">
+                          {index + 1}.
                         </p>
-                        <div className="flex flex-col">
-                          <label htmlFor="gambar">
-                            <input
-                              type="file"
-                              id="gambar"
-                              onChange={handleImageChange}
-                              className="invisible"
-                              required
-                            />
-                            <p className="text-xs transition-all duration-1000 bg-lime-400 hover:bg-lime-300 w-20 text-center p-2 rounded shadow">
-                              {image ? "Ganti" : "Pilih"}
-                            </p>
-                          </label>
-                          <div className="relative">
-                            {image && (
-                              <div className="relative">
-                                <img
-                                  src={image}
-                                  alt="Preview"
-                                  className="mt-5 rounded-lg hover:shadow-lg w-32 h-32 object-cover"
-                                />
-                                {!view && (
-                                  <Popover>
-                                    <div className="relative">
-                                      <img
-                                        src={image}
-                                        alt=""
-                                        className="w-[600px]"
-                                      />
-                                      <button
-                                        onClick={() => setView(!view)}
-                                        className="absolute top-2 right-3 text-xl text-white"
-                                      >
-                                        X
-                                      </button>
-                                    </div>
-                                  </Popover>
-                                )}
-                                <div className="mt-5 flex">
-                                  <button
-                                    className="bg-black text-white p-2 text-xs rounded mr-5 hover:bg-lime-400"
-                                    onClick={removeImage}
-                                    type="button"
-                                  >
-                                    Hapus
-                                  </button>
-                                  <button
-                                    className="bg-lime-400 p-2 px-4 text-xs rounded hover:bg-lime-300"
-                                    onClick={() => setView(!view)}
-                                    type="button"
-                                  >
-                                    Lihat
-                                  </button>
-                                </div>
-                              </div>
-                            )}
+                        <img
+                          src={productQuantity[row].gambar_produk}
+                          alt=""
+                          className="w-10 h-10 md:w-20 md:h-20 rounded-l shadow object-cover"
+                        />
+                        <h1 className="font-bold ml-1 md:ml-5 text-[10px] md:text-xs">
+                          {row}
+                        </h1>
+                        <div className="border border-white px-1 md:px-4 py-2">
+                          <button
+                            onClick={() => decrementQuantity(row)}
+                            className={`text-[10px] md:text-xs border border-black p-1 md:px-2 mr-1 md:m5-2 hover:bg-black hover:text-white rounded ${
+                              productQuantity[row].jumlah_produk === 1
+                                ? "invisible"
+                                : "visible"
+                            }`}
+                          >
+                            -
+                          </button>
+                          <span className="text-[10px] md:text-xs">
+                            {productQuantity[row].jumlah_produk} Kg
+                          </span>
+                          <button
+                            onClick={() => incrementQuantity(row)}
+                            className="text-[10px] md:text-xs border border-black p-1 md:px-2 ml-1 md:ml-2 hover:bg-black hover:text-white rounded"
+                          >
+                            +
+                          </button>
+                        </div>
+                        <p className="hidden md:block text-gray-400 text-xs">
+                          {formatRupiah(productQuantity[row].harga_produk)}
+                        </p>
+                        <p className="hidden md:block mx-3 text-gray-400 text-xs">
+                          =
+                        </p>
+                        <p className="mx-1 md:mx-3 text-gray-400 text-[10px] md:text-xs">
+                          {formatRupiah(calculateTotalPrice(row))}
+                        </p>
+                        <span
+                          className="mr-1 md:ml-0 transition-all duration-1000 material-symbols-outlined text-sm cursor-pointer hover:bg-black hover:p-1 hover:text-white rounded"
+                          onClick={() => removeProduct(row)}
+                        >
+                          delete
+                        </span>
+                      </div>
+                    ))}
+                    <div className="mt-10 md:mt-20">
+                      <p
+                        className={`text-gray-400 text-[10px] md:text-xs text-end ${
+                          totalKeseluruhan >= 20000 ? "block" : "hidden"
+                        }`}
+                      >
+                        Biaya pengiriman = Rp. 20.000,00
+                      </p>
+                      <hr
+                        className={`h-px border-0 bg-green-400 mt-3 ${
+                          totalKeseluruhan >= 20000 ? "block" : "hidden"
+                        }`}
+                      />
+                    </div>
+                    {totalKeseluruhan !== 0 && (
+                      <div className="flex justify-end">
+                        <p className="text-xs md:text-md border border-white mt-3 md:mt-5 font-bold text-center">
+                          Jumlah total ={" "}
+                          {formatRupiah(totalKeseluruhan + 20000)}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                )}
+                {!open && (
+                  <div className="-mt-8 md:mt-0 mb-10 md:mb-0">
+                    <form
+                      action=""
+                      className="md:w-[1185px] md:h-[450px] bg-white rounded-lg shadow"
+                    >
+                      <div className="flex justify-between">
+                        <div className="text-[10px] md:text-md flex mb-5 bg-green-400 p-2 rounded w-[150px] md:w-64 shadow items-center">
+                          <span className="text-[10px] md:text-md material-symbols-outlined">
+                            info
+                          </span>
+                          <h1 className=" ml-1 md:ml-3">
+                            Selsaikan pembayaran
+                          </h1>
+                        </div>
+                        <div className="">
+                          <div
+                            className="cursor-pointer"
+                            onClick={() => setOpen(!open)}
+                            type="button"
+                          >
+                            <span className="transition-all duration-1000 material-symbols-outlined hover:bg-black hover:text-white rounded p-1 ">
+                              close
+                            </span>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </form>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                        <div>
+                          <div className="flex flex-col mx-5 md:mx-10 my-5">
+                            <h1 className="text-gray-400 text-[10px] md:text-xs">
+                              Nama penerima:
+                            </h1>
+                            <hr className="h-px border-0 bg-green-400 my-2" />
+                            <p className="text-xs md:text-md capitalize font-bold">
+                              {nama}
+                            </p>
+                          </div>
+                          <div className="flex flex-col mx-5 md:mx-10 my-5">
+                            <h1 className="text-gray-400 text-[10px] md:text-xs">
+                              Alamat pengiriman:
+                            </h1>
+                            <hr className="h-px border-0 bg-green-400 my-2" />
+                            <p className="text-xs md:text-md capitalize font-bold">
+                              {alamat}
+                            </p>
+                          </div>
+                          <div className="flex flex-col mx-5 md:mx-10 my-5">
+                            <h1 className="text-gray-400 text-[10px] md:text-xs">
+                              Total belanja:
+                            </h1>
+                            <hr className="h-px border-0 bg-green-400 my-2" />
+                            <p className="text-xs md:text-md capitalize font-bold">
+                              {formatRupiah(totalKeseluruhan + 20000)}
+                            </p>
+                          </div>
+                        </div>
+                        <div>
+                          <p className="text-gray-400 text-[10px] md:text-xs mx-5 md:mx-0 md:mr-10 text-justify">
+                            Selsaikan pembayaran dengan upload bukti transfer ke
+                            No. Rek BRI 09087676564531444 a/n Shafa farm
+                            Hidroponik. Pastikan pembayaran sesuai dengan benar,
+                            proses pembayaran akan diproses 1 X 24 jam.{" "}
+                            <span
+                              className="text-black cursor-pointer hover:underline"
+                              onClick={() => navigate("/faq")}
+                            >
+                              Dapatkan informasi lengkap disini!
+                            </span>
+                          </p>
+                          <div className="flex flex-col mb-10 md:mb-0">
+                            <label htmlFor="gambar">
+                              <input
+                                type="file"
+                                id="gambar"
+                                onChange={handleImageChange}
+                                className="invisible"
+                                required
+                              />
+                              <p className="text-[10px] md:text-xs mx-5 md:mx-0 transition-all duration-1000 bg-green-400 hover:bg-green-300 w-20 text-center p-2 rounded shadow">
+                                {image ? "Ganti" : "Pilih"}
+                              </p>
+                            </label>
+                            <div className="relative">
+                              {image && (
+                                <div className="relative">
+                                  <img
+                                    src={image}
+                                    alt="Preview"
+                                    className="mx-5 md:mx-0 mt-5 rounded-lg hover:shadow-lg w-32 h-32 object-cover"
+                                  />
+                                  {!view && (
+                                    <Popover>
+                                      <div className="relative">
+                                        <img
+                                          src={image}
+                                          alt=""
+                                          className="w-[600px]"
+                                        />
+                                        <button
+                                          onClick={() => setView(!view)}
+                                          className="absolute top-2 right-3 text-xl text-white"
+                                        >
+                                          X
+                                        </button>
+                                      </div>
+                                    </Popover>
+                                  )}
+                                  <div className="mx-5 pb-10 md:pb-0 md:mx-0 mt-5 flex">
+                                    <button
+                                      className="bg-black text-white p-2 text-[10px] md:text-xs rounded mr-5 hover:bg-green-400"
+                                      onClick={removeImage}
+                                      type="button"
+                                    >
+                                      Hapus
+                                    </button>
+                                    <button
+                                      className="bg-green-400 p-2 px-4 text-[10px] md:text-xs rounded hover:bg-green-300"
+                                      onClick={() => setView(!view)}
+                                      type="button"
+                                    >
+                                      Lihat
+                                    </button>
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                )}
+              </div>
+              {open && (
+                <div className="flex justify-end pb-10">
+                  <button
+                    className={`text-[10px] md:text-xs transition-all duration-1000 bg-green-400 p-2 rounded mt-10 hover:bg-green-300 ${
+                      totalKeseluruhan >= 20000 ? "block" : "hidden"
+                    }`}
+                    onClick={() => setOpen(!open)}
+                  >
+                    Pesan sekarang
+                  </button>
                 </div>
               )}
-            </div>
-            {open && (
-              <div className="flex justify-end pb-10">
+              <div className="flex justify-end -mt-32 md:mb-0 mb-20 md:-mt-20 mr-5">
                 <button
-                  className="transition-all duration-1000 bg-lime-400 p-2 rounded mt-10 hover:bg-lime-500"
-                  onClick={() => setOpen(!open)}
+                  className={`text-xs bg-green-400 p-2 rounded mt-5 hover:bg-green-300 z-10 shadow ${
+                    image === null ? "invisible" : "visible"
+                  } ${open ? "invisible" : "visible"}`}
+                  type="submit"
+                  onClick={() => handlePesanan(id)}
                 >
-                  Pesan sekarang
+                  Selsaikan pembayaran
                 </button>
               </div>
-            )}
-            <div className="flex justify-end -mt-20 mr-5">
-              <button
-                className={`text-xs bg-lime-400 p-2 rounded mt-5 hover:bg-lime-500 z-10 shadow ${
-                  image === null ? "invisible" : "visible"
-                } ${open ? "invisible" : "visible"}`}
-                type="submit"
-                onClick={() => handlePesanan(id)}
-              >
-                Selsaikan pembayaran
-              </button>
             </div>
-          </div>
-        ) : (
-          <BelumAdaData />
-        )}
-      </div>
+          ) : (
+            <div className="mb-20">
+              <BelumAdaData />
+            </div>
+          )}
+        </animated.div>
+      )}
     </div>
   );
 }

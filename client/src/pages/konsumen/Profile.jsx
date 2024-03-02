@@ -1,11 +1,14 @@
-import Navbar from "../../components/Navbar";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { meUser } from "../../features/AuthSlice";
-import { useEffect, useState } from "react";
+import { Suspense, lazy, useEffect, useState } from "react";
 import axios from "axios";
-import Footer from "../../components/Footer";
-import LoadingSpinner from "../../components/layout/Loading";
+import { animated, useSpring } from "react-spring";
+import LoadingSpinner from "../../components/animate/Loading";
+import PopOver from "../../components/layout/PopOver";
+
+const Navbar = lazy(() => import("../../components/Navbar"));
+const Footer = lazy(() => import("../../components/Footer"));
 
 function Profile() {
   const [id, setId] = useState();
@@ -29,10 +32,14 @@ function Profile() {
       setLoading(true);
       setTimeout(() => {
         setLoading(false);
-      }, 1000);
+      }, 800);
     };
     startLoading();
   }, []);
+  const animation = useSpring({
+    opacity: loading ? 0 : 1,
+    marginTop: loading ? -10 : 0,
+  });
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -134,25 +141,28 @@ function Profile() {
   };
   return (
     <div>
-      {loading ? (
-        <div className="mx-[45%] md:mx-[50%] my-[80%] md:my-[20%]">
-          <LoadingSpinner />
-          <p className="text-lime-400 text-xs mt-5">Loading...</p>
-        </div>
-      ) : (
+      <Suspense fallback={<div></div>}>
         <div>
-          <div>
-            <Navbar />
-          </div>
-          <div className="m-20 mt-32">
-            <div className="flex ml-20 bg-lime-400 p-2 rounded w-64 shadow">
-              <span className="material-symbols-outlined">manage_accounts</span>
-              <h1 className="ml-5">Informasi profil pengguna</h1>
+          <Navbar />
+        </div>
+        {loading ? (
+          <div className="w-[100%] h-[800px]">
+            <div className="flex justify-center mt-64">
+              <LoadingSpinner />
             </div>
-            {!open && (
-              <div className="w-[600px] h-[700px] mt-10 relative flex flex-col mx-auto rounded-lg shadow transition-all duration-1000 hover:shadow-lg">
+          </div>
+        ) : (
+          <animated.div style={animation}>
+            <div className="mx-5 mt-32 md:m-32">
+              <div className="text-[10px] md:text-xs flex mb-5 bg-green-400 p-2 rounded w-[150px] md:w-64 shadow items-center">
+                <span className="text-[10px] md:text-xs material-symbols-outlined">
+                  manage_accounts
+                </span>
+                <h1 className=" ml-2 md:ml-3">Informasi profil</h1>
+              </div>
+              <div className="h-[500px] mb-5 md:w-[600px] md:h-[700px] mt-10 relative flex flex-col md:mx-auto rounded-lg shadow transition-all duration-1000 hover:shadow-lg">
                 <div className="">
-                  <div className="bg-lime-400 w-full h-[150px] absolute z-0 rounded-t-lg shadow"></div>
+                  <div className="bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% w-full h-[310px] absolute z-0 rounded-t-lg shadow"></div>
                   <img
                     src={
                       profile.gambar_profil === "belum"
@@ -160,237 +170,240 @@ function Profile() {
                         : profile.gambar_profil
                     }
                     alt=""
-                    className="relative w-[200px] w-[200px] rounded-full mx-auto mt-10 shadow z-10"
+                    className="relative w-[100px] h-[100px] md:w-[200px] md:h-[200px] rounded-full mx-auto mt-10 shadow z-10"
                   />
                 </div>
-                <div className="mt-5 mx-16">
-                  <h1 className="font-bold text-2xl text-center capitalize">
+                <div className="mt-3 mx-16 z-10">
+                  <h1 className="text-white font-bold md:text-2xl text-center capitalize">
                     {profile.nama}
                   </h1>
-                  <hr className="h-px border-0 bg-lime-400 mt-3" />
-                  <div className="mt-5 flex flex-col">
-                    <label
-                      htmlFor=""
-                      className="font-light text-gray-500 mr-20"
-                    >
-                      Email
-                    </label>
-                    <p className="mt-2">{profile.email}</p>
+                  <div className="absolute md:w-[600px] left-0 px-6 mt-3 bg-white rounded-t-lg">
+                    <div className="text-xs mt-5 flex flex-col">
+                      <label
+                        htmlFor=""
+                        className="font-light text-gray-500 mr-20"
+                      >
+                        Email
+                      </label>
+                      <p className="mt-2">{profile.email}</p>
+                    </div>
+                    <div className="text-xs mt-3 flex flex-col">
+                      <label
+                        htmlFor=""
+                        className="font-light text-gray-500 mr-20"
+                      >
+                        Alamat
+                      </label>
+                      <p className="mt-2">{profile.alamat}</p>
+                    </div>
+                    <div className="text-xs mt-3 flex flex-col">
+                      <label
+                        htmlFor=""
+                        className="font-light text-gray-500 mr-20"
+                      >
+                        No. Tlp
+                      </label>
+                      <p className="mt-2">{profile.no_tlp}</p>
+                    </div>
                   </div>
-                  <div className="mt-3 flex flex-col">
-                    <label
-                      htmlFor=""
-                      className="font-light text-gray-500 mr-20"
-                    >
-                      Alamat
-                    </label>
-                    <p className="mt-2">{profile.alamat}</p>
-                  </div>
-                  <div className="mt-3 flex flex-col">
-                    <label
-                      htmlFor=""
-                      className="font-light text-gray-500 mr-20"
-                    >
-                      No. Tlp
-                    </label>
-                    <p className="mt-2">{profile.no_tlp}</p>
-                  </div>
-                  <div className="absolute bottom-10 right-10 text-xs">
+                  <div className="absolute bottom-10 right-20 md:right-10 text-xs">
                     <button
-                      className="transition-all duration-1000 bg-lime-300 w-20 p-2 rounded hover:bg-lime-400"
-                      onClick={openEdit}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="transition-all duration-1000 bg-black text-white hover:text-black hover:bg-lime-400 w-20 p-2 rounded ml-5"
+                      className="transition-all duration-1000 bg-black text-white hover:text-black hover:bg-green-400 w-20 p-2 rounded mr-5"
                       onClick={openDelete}
                     >
                       Hapus
                     </button>
+                    <button
+                      className="transition-all duration-1000 bg-green-400 w-20 p-2 rounded hover:bg-green-300"
+                      onClick={openEdit}
+                    >
+                      Edit
+                    </button>
                   </div>
                 </div>
               </div>
-            )}
-            {open && (
-              <form
-                onSubmit={updateProfile}
-                className="w-[600px] h-[750px] mt-10 relative flex flex-col mx-auto rounded-lg shadow transition-all duration-1000 hover:shadow-lg"
-              >
-                <div className="flex flex-col mx-10">
-                  <img
-                    src={
-                      profile.gambar_profil === "belum"
-                        ? "http://localhost:5000/images/defaultProfile.png"
-                        : profile.gambar_profil
-                    }
-                    alt=""
-                    className={`relative w-[200px] w-[200px] rounded-full mx-auto mt-10 shadow z-10 ${
-                      image ? "invisible" : "visible"
-                    }`}
-                  />
-                  <div className="">
-                    {image && (
+              {open && (
+                <PopOver>
+                  <form
+                    onSubmit={updateProfile}
+                    className="bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% md:w-[600px] md:h-[750px] relative flex flex-col mx-auto rounded-lg shadow-lg transition-all duration-1000 hover:shadow-lg pb-5"
+                  >
+                    <div className="flex flex-col mx-10">
                       <img
-                        src={image}
-                        alt="Preview"
-                        className="absolute top-0 right-[33%] w-[200px] w-[200px] rounded-full mx-auto mt-10 shadow z-10"
+                        src={
+                          profile.gambar_profil === "belum"
+                            ? "http://localhost:5000/images/defaultProfile.png"
+                            : profile.gambar_profil
+                        }
+                        alt=""
+                        className={`relative w-[200px] w-[200px] rounded-full mx-auto mt-10 shadow z-10 ${
+                          image ? "invisible" : "visible"
+                        }`}
                       />
-                    )}
-                  </div>
-                  <label htmlFor="gambar" className="flex justify-end text-xs">
-                    <input
-                      type="file"
-                      id="gambar"
-                      onChange={handleImageChange}
-                      className="invisible"
-                    />
-                    <p className="transition-all duration-1000 bg-lime-400 p-2 rounded-md w-20 text-center -mt-5 hover:bg-lime-500 hover:text-white mb-5">
-                      {image ? "Ganti" : "Pilih"}
-                    </p>
-                  </label>
-                </div>
-                <div className="mx-16">
-                  <div className="flex flex-col">
-                    <label
-                      htmlFor="nama"
-                      className="font-light text-gray-500 mr-20 text-xs"
-                    >
-                      Nama
-                    </label>
-                    <hr className="h-px border-0 bg-lime-200 my-3" />
-                    <input
-                      id="nama"
-                      type="text"
-                      value={nama}
-                      maxLength={15}
-                      onChange={(e) => setNama(e.target.value)}
-                      className="border-0 outline-none"
-                    />
-                  </div>
-                  <div className="flex flex-col">
-                    <label
-                      htmlFor="email"
-                      className="font-light text-gray-500 mr-20 mt-2 text-xs"
-                    >
-                      Email
-                    </label>
-                    <hr className="h-px border-0 bg-lime-200 my-3" />
-                    <input
-                      id="email"
-                      type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="border-0 outline-none"
-                    />
-                  </div>
-                  <div className="flex flex-col">
-                    <label
-                      htmlFor="password"
-                      className="font-light text-gray-500 mr-20 mt-2 text-xs"
-                    >
-                      New Password
-                    </label>
-                    <hr className="h-px border-0 bg-lime-200 my-3" />
-                    <input
-                      id="password"
-                      type="password"
-                      value={password}
-                      placeholder="******"
-                      onChange={(e) => setPassword(e.target.value)}
-                      className="border-0 outline-none"
-                    />
-                  </div>
-                  <div className="flex flex-col">
-                    <label
-                      htmlFor="alamat"
-                      className="font-light text-gray-500 mr-20 mt-2 text-xs"
-                    >
-                      Alamat
-                    </label>
-                    <hr className="h-px border-0 bg-lime-200 my-3" />
-                    <textarea
-                      id="alamat"
-                      type="text"
-                      value={alamat}
-                      onChange={(e) => setAlamat(e.target.value)}
-                      className="border-0 outline-none"
-                    />
-                  </div>
-                  <div className="flex flex-col pb-5">
-                    <label
-                      htmlFor="noTlp"
-                      className="font-light text-gray-500 mr-20 mt-2 text-xs"
-                    >
-                      No. Tlp
-                    </label>
-                    <hr className="h-px border-0 bg-lime-200 my-3" />
-                    <input
-                      id="noTlp"
-                      type="number"
-                      value={no_tlp}
-                      onChange={(e) => setNoTlp(e.target.value)}
-                      className="border-0 outline-none"
-                    />
-                  </div>
-                  <div className="absolute bottom-10 right-10">
-                    <button
-                      className="transition-all duration-1000 bg-lime-300 py-2 px-3 rounded hover:bg-lime-400 text-xs"
-                      type="submit"
-                    >
-                      Submit
-                    </button>
-                  </div>
-                  <div className="absolute top-0 right-0">
-                    <div
-                      className="transition-all duration-1000 hover:bg-black hover:text-white p-1 mt-1 rounded cursor-pointer"
-                      onClick={cancel}
-                      type="button"
-                    >
-                      <span className="material-symbols-outlined">close</span>
+                      <div className="">
+                        {image && (
+                          <img
+                            src={image}
+                            alt="Preview"
+                            className="absolute top-0 right-[28%] md:right-[33%] md:w-[200px] h-[200px] rounded-full mx-auto mt-10 shadow z-10"
+                          />
+                        )}
+                      </div>
+                      <label
+                        htmlFor="gambar"
+                        className="-mt-5 flex justify-end text-xs"
+                      >
+                        <input
+                          type="file"
+                          id="gambar"
+                          onChange={handleImageChange}
+                          className="invisible"
+                        />
+                        <p className="transition-all duration-1000 bg-green-400 p-2 rounded-md w-20 text-center -mt-5 hover:bg-green-300 mb-5">
+                          {image ? "Ganti" : "Pilih"}
+                        </p>
+                      </label>
+                    </div>
+                    <div className="bg-white p-5 rounded-lg mx-10">
+                      <div className="flex flex-col">
+                        <label
+                          htmlFor="nama"
+                          className="font-light text-gray-500 mr-20 text-xs"
+                        >
+                          Nama
+                        </label>
+                        <input
+                          id="nama"
+                          type="text"
+                          value={nama}
+                          maxLength={15}
+                          onChange={(e) => setNama(e.target.value)}
+                          className="text-xs my-2 p-2 rounded border border-green-400 outline-none"
+                        />
+                      </div>
+                      <div className="flex flex-col">
+                        <label
+                          htmlFor="email"
+                          className="font-light text-gray-500 mr-20 mt-2 text-xs"
+                        >
+                          Email
+                        </label>
+                        <input
+                          id="email"
+                          type="email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          className="text-xs my-2 p-2 rounded border border-green-400 outline-none"
+                        />
+                      </div>
+                      <div className="flex flex-col">
+                        <label
+                          htmlFor="password"
+                          className="font-light text-gray-500 mr-20 mt-2 text-xs"
+                        >
+                          New Password
+                        </label>
+                        <input
+                          id="password"
+                          type="password"
+                          value={password}
+                          placeholder="******"
+                          onChange={(e) => setPassword(e.target.value)}
+                          className="text-xs my-2 p-2 rounded border border-green-400 outline-none"
+                        />
+                      </div>
+                      <div className="flex flex-col">
+                        <label
+                          htmlFor="alamat"
+                          className="font-light text-gray-500 mr-20 mt-2 text-xs"
+                        >
+                          Alamat
+                        </label>
+                        <textarea
+                          id="alamat"
+                          type="text"
+                          value={alamat}
+                          onChange={(e) => setAlamat(e.target.value)}
+                          className="text-xs my-2 p-2 rounded border border-green-400 outline-none"
+                        />
+                      </div>
+                      <div className="flex flex-col">
+                        <label
+                          htmlFor="noTlp"
+                          className="font-light text-gray-500 mr-20 mt-2 text-xs"
+                        >
+                          No. Tlp
+                        </label>
+                        <input
+                          id="noTlp"
+                          type="number"
+                          value={no_tlp}
+                          onChange={(e) => setNoTlp(e.target.value)}
+                          className="text-xs my-2 p-2 rounded border border-green-400 outline-none"
+                        />
+                      </div>
+                      <div className="flex justify-center mt-5">
+                        <button
+                          className="transition-all duration-1000 bg-black text-white py-2 px-5 rounded hover:bg-green-400 hover:text-black text-xs mr-5"
+                          type="button"
+                        >
+                          Batal
+                        </button>
+                        <button
+                          className="transition-all duration-1000 bg-green-400 py-2 px-3 rounded hover:bg-green-300 text-xs"
+                          type="submit"
+                        >
+                          Submit
+                        </button>
+                      </div>
+                      <div className="absolute right-6 top-3 md:right-3">
+                        <div className="" onClick={cancel} type="button">
+                          <span className="transition-all duration-1000 hover:bg-black text-white p-1 mt-1 rounded cursor-pointer material-symbols-outlined">
+                            close
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </PopOver>
+              )}
+            </div>
+            <div>
+              {openPopUp && (
+                <Popover onClose={openDelete}>
+                  <div
+                    className={`z-20 ${openPopUp ? "visible" : "invisible"}`}
+                  >
+                    <div className="bg-white rounded-lg border shadow-lg mx-auto w-96">
+                      <p className="text-xs text-center p-10">
+                        Apa anda ingin menghapus akun ini, semua data akan
+                        dihapus dari sistem ini!
+                      </p>
+                      <div className="flex justify-end pb-5 text-xs">
+                        <button
+                          className=" bg-black text-white hover:text-black hover:bg-green-400 p-2 rounded w-20"
+                          onClick={closeDelete}
+                        >
+                          Tidak
+                        </button>
+                        <button
+                          className="bg-green-400 hover:bg-green-300 p-2 rounded w-20 mx-5"
+                          onClick={deleteKonsumen}
+                        >
+                          ya
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </form>
-            )}
-          </div>
-          <div>
-            {openPopUp && (
-              <Popover onClose={openDelete}>
-                <div
-                  className={`absolute top-32 left-[40%] z-20 ${
-                    openPopUp ? "visible" : "invisible"
-                  }`}
-                >
-                  <div className="bg-white rounded-lg border shadow-lg mx-auto w-96">
-                    <p className="text-center p-10">
-                      Apa anda ingin menghapus akun ini, semua data akan dihapus
-                      dari sistem ini!
-                    </p>
-                    <div className="flex justify-end pb-5 text-xs">
-                      <button
-                        className=" bg-black text-white hover:text-black hover:bg-lime-400 p-2 rounded w-20"
-                        onClick={closeDelete}
-                      >
-                        Tidak
-                      </button>
-                      <button
-                        className="bg-lime-400 hover:bg-lime-500 p-2 rounded w-20 mx-5"
-                        onClick={deleteKonsumen}
-                      >
-                        ya
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </Popover>
-            )}
-          </div>
-          <div>
-            <Footer />
-          </div>
-        </div>
-      )}
+                </Popover>
+              )}
+            </div>
+            <div>
+              <Footer />
+            </div>
+          </animated.div>
+        )}
+      </Suspense>
     </div>
   );
 }

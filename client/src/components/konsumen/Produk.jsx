@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { animated, useSpring } from "react-spring";
+import LoadingSpinner from "../animate/Loading";
+import PaymentAnimate from "../animate/PaymentAnimate";
+import PromoAnimate from "../animate/PromoAnimate";
 
 function Produk() {
   const navigate = useNavigate();
@@ -17,6 +21,21 @@ function Produk() {
   const [deskripsi_produk, setDeskripsi] = useState();
   const [idProduk, setIdProduk] = useState();
   const [getPembelian, setGetPembelian] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const startLoading = () => {
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+      }, 800);
+    };
+    startLoading();
+  }, []);
+  const animation = useSpring({
+    opacity: loading ? 0 : 1,
+    marginTop: loading ? -10 : 0,
+  });
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -117,7 +136,7 @@ function Produk() {
             placeholder="Cari produk..."
             value={searchQueryProduk === null ? searchQuery : searchQueryProduk}
             onChange={handleSearchChange}
-            className="p-2 border border-lime-300 rounded-lg text-xs w-[300px] outline-none"
+            className="p-2 border border-green-400 rounded-lg text-xs w-64 md:w-[300px] outline-none"
           />
           <button
             onClick={() => {
@@ -125,7 +144,7 @@ function Produk() {
               navigate("/produkkonsumen");
             }}
           >
-            <span className="material-symbols-outlined -ml-8 bg-lime-400 p-2 rounded-r-lg text-[17px] hover:bg-lime-300">
+            <span className="material-symbols-outlined -ml-8 bg-green-400 p-2 rounded-r-lg text-[17px] hover:bg-green-300">
               autorenew
             </span>
           </button>
@@ -137,69 +156,78 @@ function Produk() {
         ) : (
           ""
         )}
-        <hr className="h-px border-0 bg-lime-200 my-5" />
+        <hr className="h-px border-0 bg-green-400 my-5" />
       </div>
-      <div className="grid grid-cols-5 gap-10">
-        {produk
-          .filter((row) =>
-            row.nama_produk
-              .toLowerCase()
-              .includes(
-                searchQueryProduk === null
-                  ? searchQuery
-                  : searchQueryProduk.toLowerCase()
-              )
-          )
-          .map((row, index) => (
-            <div
-              className="transition-all duration-1000 shadow-md hover:shadow-lg rounded-b-lg relative"
-              key={index}
-            >
-              <img
-                src={
-                  row.gambar_produk === "belum"
-                    ? "http://localhost:5000/images/defaultProductImage.jpg"
-                    : row.gambar_produk
-                }
-                alt=""
-                className="rounded-t-lg brightness-90 transition-all duration-1000 hover:brightness-75 z-0 object-cover h-48 w-96"
-              />
-              <div className="flex items-center">
-                <h1 className="font-bold ml-5 mt-2 capitalize mr-3">
-                  {row.nama_produk}
-                </h1>
-                {row.status_produk === "promo" && (
-                  <p className="absolute right-2 top-2 text-xs bg-lime-400 p-1 rounded shadow">
-                    {row.status_produk}
+      {loading ? (
+        <div className="w-[100%] h-[800px]">
+          <div className="flex justify-center mt-32">
+            <LoadingSpinner />
+          </div>
+        </div>
+      ) : (
+        <animated.div
+          style={animation}
+          className="grid grid-cols-2 gap-5 md:grid-cols-5 md:gap-10"
+        >
+          {produk
+            .filter((row) =>
+              row.nama_produk
+                .toLowerCase()
+                .includes(
+                  searchQueryProduk === null
+                    ? searchQuery
+                    : searchQueryProduk.toLowerCase()
+                )
+            )
+            .map((row, index) => (
+              <div
+                className="transition-all duration-1000 shadow-md hover:shadow-lg rounded-b-lg relative"
+                key={index}
+              >
+                <img
+                  src={
+                    row.gambar_produk === "belum"
+                      ? "http://localhost:5000/images/defaultProductImage.jpg"
+                      : row.gambar_produk
+                  }
+                  alt=""
+                  className="rounded-t-lg brightness-90 transition-all duration-1000 hover:brightness-75 z-0 object-cover w-64 h-32 md:h-48 md:w-96"
+                />
+                <div className="flex items-center">
+                  <h1 className="font-bold ml-5 text-[10px] md:text-sm md:ml-5 mt-2 capitalize mr-3">
+                    {row.nama_produk}
+                  </h1>
+                  {row.status_produk === "promo" && (
+                    <p className="absolute -left-5  top-[120px] md:top-[180px]">
+                      <PromoAnimate />
+                    </p>
+                  )}
+                </div>
+                <div className="flex justify-between items-center py-2">
+                  <p
+                    className={`ml-5 md:ml-5 my-2 md:my-3 text-[8px] md:text-xs ${
+                      row.status_produk === "promo" ? "text-red-400" : ""
+                    }`}
+                  >
+                    {formatRupiah(row.harga_produk)},00/Kg
                   </p>
-                )}
+                  <button
+                    onClick={() => getProdukById(row.uuid, popProduk())}
+                    className="transition-all duration-1000 bg-green-400 hover:bg-green-300 py-1 md:py-2 rounded-md px-2 md:px-5 mx-auto shadow"
+                  >
+                    <div className="flex items-center">
+                      <p className="mr-2 text-sm font-bold">+</p>
+                      <span className="material-symbols-outlined text-sm">
+                        shopping_cart
+                      </span>
+                    </div>
+                  </button>
+                </div>
               </div>
-              <div className="flex justify-between items-center py-2">
-                <p
-                  className={`ml-5 my-3 text-xs ${
-                    row.status_produk === "promo" ? "text-lime-600" : ""
-                  }`}
-                >
-                  {formatRupiah(row.harga_produk)},00/Kg
-                </p>
-                <button
-                  onClick={() => getProdukById(row.uuid, popProduk())}
-                  className="transition-all duration-1000 bg-lime-400 hover:bg-lime-300 py-2 rounded-md px-5 mx-auto shadow"
-                >
-                  <div className="flex items-center">
-                    <p className="mr-2 text-sm font-bold">+</p>
-                    <span className="material-symbols-outlined text-sm">
-                      shopping_cart
-                    </span>
-                  </div>
-                </button>
-              </div>
-              {row.status_produk === "promo" && (
-                <div className="bg-lime-400 w-2 h-2 rounded-full animate-pulse absolute top-52 left-2"></div>
-              )}
-            </div>
-          ))}
-      </div>
+            ))}
+        </animated.div>
+      )}
+
       {open && (
         <Popover>
           {getPembelian.length === 0 ? (
@@ -208,9 +236,9 @@ function Produk() {
                 onSubmit={pembelian}
                 className="bg-white mb-10 transition-all duration-1000 pb-10 shadow-md rounded-lg hover:shadow-lg"
               >
-                <div className="relative mt-20 w-[600px]">
+                <div className="relative w-[350px] mt-32 md:mt-20 md:w-[600px]">
                   <span
-                    className="absolute z-10 right-0 top-3 material-symbols-outlined mr-2 cursor-pointer hover:text-white hover:bg-black rounded"
+                    className="absolute z-10 right-0 top-3 material-symbols-outlined mr-2 cursor-pointer text-white hover:bg-black rounded"
                     onClick={() => setOpen(!open)}
                   >
                     close
@@ -218,18 +246,20 @@ function Produk() {
                   <img
                     src={gambar_produk}
                     alt=""
-                    className="w-[600px] h-[400px] transition-all duration-1000 rounded-t-lg object-cover hover:brightness-75"
+                    className="w-full h-[250px] md:w-[600px] md:h-[400px] transition-all duration-1000 rounded-t-lg object-cover hover:brightness-75"
                   />
-                  <div className="mt-2 mx-10 relative">
+                  <div className="mt-2 mx-5 md:mx-10 relative">
                     <div className="flex items-center">
-                      <h1 className="text-3xl font-bold">{nama_produk}</h1>
+                      <h1 className="text-xl md:text-3xl font-bold">
+                        {nama_produk}
+                      </h1>
                       {status_produk === "promo" && (
-                        <p className="w-20 ml-5 text-center text-xs bg-lime-400 p-1 rounded shadow">
+                        <p className="w-20 ml-5 text-center text-[10px] md:text-xs bg-green-400 p-1 rounded shadow">
                           {status_produk}
                         </p>
                       )}
                     </div>
-                    <div className="flex justify-between items-center my-3 text-xs text-gray-400">
+                    <div className="flex justify-between items-center my-3 text-[10px] md:text-xs text-gray-400">
                       <div className="flex items-center">
                         <span className="material-symbols-outlined mr-2">
                           person
@@ -243,25 +273,27 @@ function Produk() {
                         <p>{kontak}</p>
                       </div>
                     </div>
-                    <p className="text-xs text-gray-400">Deskripsi:</p>
-                    <p className="pt-1 pb-5 text-justify indent-8 text-xs">
+                    <p className="text-[10px] md:text-xs text-gray-400">
+                      Deskripsi:
+                    </p>
+                    <p className="pt-1 pb-5 text-justify indent-8 text-[10px] md:text-xs">
                       {deskripsi_produk}
                     </p>
-                    <p className="text-end pb-10 font-bold text-3xl">
+                    <p className="text-end pb-10 font-bold text-xl md:text-3xl">
                       {formatRupiah(harga_produk)},00/Kg
                     </p>
                   </div>
                 </div>
-                <div className="text-end mr-10 text-xs">
+                <div className="text-end mr-5 md:mr-10 text-[10px] md:text-xs">
                   <button
-                    className="shadow transition-all duration-1000 border bg-black text-white p-2 px-4 rounded mr-5 hover:bg-lime-400 hover:text-black"
+                    className="shadow transition-all duration-1000 border bg-black text-white p-2 px-4 rounded mr-5 hover:bg-green-400 hover:text-black"
                     type="button"
                     onClick={() => setOpen(!open)}
                   >
                     Batal
                   </button>
                   <button
-                    className="shadow transition-all duration-1000 bg-lime-300 p-2 px-4 rounded hover:bg-lime-400"
+                    className="shadow transition-all duration-1000 bg-green-400 p-2 px-4 rounded hover:bg-green-300"
                     type="submit"
                   >
                     Pesan
@@ -270,18 +302,20 @@ function Produk() {
               </form>
             </div>
           ) : (
-            <div className="w-[600px] text-center mb-32 bg-white p-10 rounded-lg">
-              <hr className="h-px border-0 bg-lime-200" />
+            <div className="relative w-[600px] text-center mb-32 bg-white p-10 rounded-lg">
+              <button
+                onClick={() => window.location.reload()}
+                className="absolute top-3 right-4 hover:bg-black hover:text-white px-1 rounded"
+              >
+                X
+              </button>
               <div className="flex justify-center">
-                <h1 className="font-bold mb-20 text-xl bg-lime-400 w-32 p-2 rounded-b-lg shadow text-center">
+                <h1 className="font-bold mb-10 text-md md:text-xl bg-yellow-400 w-32 p-2 rounded-b-lg shadow text-center">
                   <span className="z-10">Perhatian!</span>
                 </h1>
               </div>
-              <span className="material-symbols-outlined text-6xl p-2 rounded-full bg-lime-400 animate-bounce shadow">
-                credit_card_gear
-              </span>
-
-              <h1 className="mt-5 text-gray-400 text-xs">
+              <PaymentAnimate />
+              <h1 className="mt-5 text-gray-400 text-[10px] md:text-xs">
                 Selsaikan pembayaran sebelumnya <br /> terlebih dahulu,
                 <button
                   className="text-black hover:underline ml-2 cursor-pointer"

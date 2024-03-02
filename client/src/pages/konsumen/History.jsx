@@ -1,27 +1,16 @@
-import Navbar from "../../components/Navbar";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { meUser } from "../../features/AuthSlice";
-import { useEffect, useState } from "react";
-import Footer from "../../components/Footer";
-import Pembayaran from "../../components/konsumen/Pembayaran";
-import LoadingSpinner from "../../components/layout/Loading";
+import { Suspense, useEffect } from "react";
+import { lazy } from "react";
+const Navbar = lazy(() => import("../../components/Navbar"));
+const Footer = lazy(() => import("../../components/Footer"));
+const Pembayaran = lazy(() => import("../../components/konsumen/Pembayaran"));
 
 function History() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isError } = useSelector((state) => state.auth);
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    const startLoading = () => {
-      setLoading(true);
-      setTimeout(() => {
-        setLoading(false);
-      }, 1000);
-    };
-    startLoading();
-  }, []);
 
   useEffect(() => {
     dispatch(meUser());
@@ -35,24 +24,17 @@ function History() {
 
   return (
     <div>
-      {loading ? (
-        <div className="mx-[45%] md:mx-[50%] my-[80%] md:my-[20%]">
-          <LoadingSpinner />
-          <p className="text-lime-400 text-xs mt-5">Loading...</p>
-        </div>
-      ) : (
+      <Suspense fallback={<div></div>}>
         <div>
-          <div>
-            <Navbar />
-          </div>
-          <div className="m-32">
-            <Pembayaran />
-          </div>
-          <div>
-            <Footer />
-          </div>
+          <Navbar />
         </div>
-      )}
+        <div className="mx-5 mt-32 md:m-32">
+          <Pembayaran />
+        </div>
+        <div>
+          <Footer />
+        </div>
+      </Suspense>
     </div>
   );
 }

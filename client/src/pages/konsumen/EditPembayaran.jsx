@@ -5,7 +5,7 @@ import { meUser } from "../../features/AuthSlice";
 import { useEffect, useState } from "react";
 import Footer from "../../components/Footer";
 import KonfirmasiPembayaran from "../../components/konsumen/KonfirmasiPembayaran";
-import LoadingSpinner from "../../components/layout/Loading";
+import LoadingSpinner from "../../components/animate/Loading";
 
 function EditPembayaran() {
   const dispatch = useDispatch();
@@ -36,16 +36,15 @@ function EditPembayaran() {
   return (
     <div>
       {loading ? (
-        <div className="mx-[45%] md:mx-[50%] my-[80%] md:my-[20%]">
+        <div className="flex justify-center mt-64">
           <LoadingSpinner />
-          <p className="text-lime-400 text-xs mt-5">Loading...</p>
         </div>
       ) : (
         <div>
           <div>
             <Navbar />
           </div>
-          <div className="m-32 mb-10">
+          <div className="mx-5 mt-32 md:m-32 mb-10">
             <KonfirmasiPembayaran />
           </div>
           <div>

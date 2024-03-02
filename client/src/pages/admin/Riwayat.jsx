@@ -39,12 +39,8 @@ function Riwayat() {
       <div className="mt-20 ms-80 pl-6 mr-10">
         <hr className="h-px border-0 bg-lime-200 mb-5" />
         <h1 className="text-xl">Ini halaman riwayat</h1>
-        <div>
-          {loading ? (
-            <p className="w-96 bg-gray-400 animate-pulse p-3 rounded"></p>
-          ) : (
-            <p>Klik tombol untuk memulai loading</p>
-          )}
+        <div className={`loader-container ${loading ? "loading" : ""}`}>
+          Loading...
         </div>
       </div>
     </div>
