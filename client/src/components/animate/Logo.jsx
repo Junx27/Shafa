@@ -1,19 +1,14 @@
-import Lottie from "react-lottie";
 import animationData from "../../assets/animate/shafa.json";
-
+import { Player } from "@lottiefiles/react-lottie-player";
 function Logo() {
-  const defaultOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: animationData,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice",
-    },
-  };
-
   return (
     <div>
-      <Lottie options={defaultOptions} height={40} width={40} />
+      <Player
+        autoplay
+        loop
+        src={animationData}
+        style={{ height: "40px", width: "40px" }}
+      />
     </div>
   );
 }

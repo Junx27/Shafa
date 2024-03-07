@@ -1,19 +1,15 @@
-import Lottie from "react-lottie";
+import { Player } from "@lottiefiles/react-lottie-player";
 import animationData from "../../assets/animate/paymentAnimate.json";
 
 function PaymentAnimateHistory() {
-  const defaultOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: animationData,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice",
-    },
-  };
-
   return (
     <div>
-      <Lottie options={defaultOptions} height={100} width={100} />
+      <Player
+        autoplay
+        loop
+        src={animationData}
+        style={{ height: "100px", width: "100px" }}
+      />
     </div>
   );
 }

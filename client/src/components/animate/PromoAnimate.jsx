@@ -1,19 +1,15 @@
-import Lottie from "react-lottie";
+import { Player } from "@lottiefiles/react-lottie-player";
 import animationData from "../../assets/animate/Promo.json";
 
 function PromoAnimate() {
-  const defaultOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: animationData,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice",
-    },
-  };
-
   return (
     <div>
-      <Lottie options={defaultOptions} height={60} width={60} />
+      <Player
+        autoplay
+        loop
+        src={animationData}
+        style={{ height: "60px", width: "60px" }}
+      />
     </div>
   );
 }

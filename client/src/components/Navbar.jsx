@@ -13,6 +13,7 @@ function Navbar() {
   const navigate = useNavigate();
   useSelector((state) => state.auth);
   const [data, setData] = useState([]);
+  const [userId, setUserId] = useState([]);
   const [pembayaranBelum, setPembayaranBelum] = useState([]);
   const [profile, setProfile] = useState([]);
   const [openLogout, setOpenLogout] = useState(false);
@@ -41,17 +42,24 @@ function Navbar() {
   const fetchProfile = async () => {
     const response = await axios.get("http://localhost:5000/me");
     setProfile(response.data);
+    setUserId(response.data.id);
   };
   useEffect(() => {
     fetchProfile();
   }, []);
   useEffect(() => {
     const fetchPembayaranBelum = async () => {
-      const response = await axios("http://localhost:5000/pembayaran/belum");
-      setPembayaranBelum(response.data);
+      try {
+        const response = await axios.get(
+          "http://localhost:5000/pembayaran/belum"
+        );
+        setPembayaranBelum(response.data);
+      } catch (error) {
+        console.error("gagal mengambil data");
+      }
     };
     fetchPembayaranBelum();
-  }, []);
+  }, [userId]);
 
   const fetchData = async () => {
     const response = await axios.get("http://localhost:5000/transaksis");
@@ -96,26 +104,30 @@ function Navbar() {
               className={({ isActive }) =>
                 isActive
                   ? "transition-all duration-1000 bg-gradient-to-b from-green-400 to-green-500 hover:bg-green-300 py-2 rounded-md shadow"
-                  : "py-2 rounded-md hover:underline hover:underline-offset-8"
+                  : "py-2 text-gray-400 hover:text-black rounded-md hover:underline hover:underline-offset-8"
               }
             >
-              <div className="mx-7">{row.nama}</div>
+              <div className="mx-5">{row.nama}</div>
             </NavLink>
           ))}
         </div>
         <div
           className={`hidden md:block bg-orange-400 absolute right-[720px] top-7 text-xs px-1 rounded-full ${
-            data.length !== 0 ? "visible" : "invisible"
+            data.filter((row) => row.user_id === userId).length !== 0
+              ? "visible"
+              : "invisible"
           }`}
         >
-          {data.length}
+          {data.filter((row) => row.user_id === userId).length}
         </div>
         <div
           className={`hidden md:block bg-orange-400 absolute right-[615px] top-7 text-xs px-1 rounded-full ${
-            pembayaranBelum.length !== 0 ? "visible" : "invisible"
+            pembayaranBelum.filter((row) => row.user_id === userId).length !== 0
+              ? "visible"
+              : "invisible"
           }`}
         >
-          {pembayaranBelum.length}
+          {pembayaranBelum.filter((row) => row.user_id === userId).length}
         </div>
         <div
           className="flex flex-row items-center"
@@ -127,7 +139,7 @@ function Navbar() {
           {loading ? (
             <div className="w-10 ml-5 rounded-full"></div>
           ) : (
-            <animated.div style={animation}>
+            <animated.div style={animation} className="flex items-center">
               <img
                 src={
                   profile.gambar_profil === "belum"

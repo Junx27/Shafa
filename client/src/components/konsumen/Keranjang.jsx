@@ -7,6 +7,7 @@ import LoadingSpinner from "../animate/Loading";
 
 function Keranjang() {
   const navigate = useNavigate();
+  const [userId, setUserId] = useState([]);
   const [view, setView] = useState(true);
   const [image, setImage] = useState(null);
   const [bukti_pembayaran, setGambarPembayaran] = useState(null);
@@ -76,44 +77,48 @@ function Keranjang() {
   useEffect(() => {
     fetchData();
   }, []);
+  useEffect(() => {
+    const fetchProfil = async () => {
+      const response = await axios("http://localhost:5000/me");
+      setUserId(response.data.id);
+    };
+    fetchProfil();
+  }, []);
 
   useEffect(() => {
     const productQuantityMap = {};
 
-    data.forEach((transaksi) => {
-      const { nama_produk, produk_id, harga_produk, gambar_produk } = transaksi;
-      if (
-        Object.prototype.hasOwnProperty.call(productQuantityMap, nama_produk)
-      ) {
-        productQuantityMap[nama_produk] = {
-          jumlah_produk: productQuantityMap[nama_produk].jumlah_produk + 1,
-          produk_id: produk_id,
-          harga_produk: harga_produk,
-          gambar_produk: gambar_produk,
-        };
-      } else {
-        productQuantityMap[nama_produk] = {
-          jumlah_produk: 1,
-          produk_id: produk_id,
-          harga_produk: harga_produk,
-          gambar_produk: gambar_produk,
-        };
-      }
-    });
+    data
+      .filter((row) => row.user_id === userId)
+      .forEach((transaksi) => {
+        const { nama_produk, produk_id, harga_produk, gambar_produk } =
+          transaksi;
+        if (
+          Object.prototype.hasOwnProperty.call(productQuantityMap, nama_produk)
+        ) {
+          productQuantityMap[nama_produk] = {
+            jumlah_produk: productQuantityMap[nama_produk].jumlah_produk + 1,
+            produk_id: produk_id,
+            harga_produk: harga_produk,
+            gambar_produk: gambar_produk,
+          };
+        } else {
+          productQuantityMap[nama_produk] = {
+            jumlah_produk: 1,
+            produk_id: produk_id,
+            harga_produk: harga_produk,
+            gambar_produk: gambar_produk,
+          };
+        }
+      });
 
     setProductQuantity(productQuantityMap);
-  }, [data]);
+  }, [data, userId]);
 
   const calculateTotalPrice = (nama_produk) => {
-    const filteredTransactions = data.filter(
-      (transaksi) => transaksi.nama_produk === nama_produk
-    );
-    const totalPrice = filteredTransactions.reduce((total, transaksi) => {
-      return (
-        total +
-        transaksi.harga_produk * productQuantity[nama_produk].jumlah_produk
-      );
-    }, 0);
+    const totalPrice =
+      productQuantity[nama_produk].jumlah_produk *
+      productQuantity[nama_produk].harga_produk;
     return totalPrice;
   };
 
@@ -205,19 +210,13 @@ function Keranjang() {
             productQuantity[nama_produk].harga_produk
         ),
       }));
-
-      console.log(formattedData);
-
       await axios.post("http://localhost:5000/pembelian", formattedData, {
         headers: {
           "Content-Type": "application/json",
         },
       });
-
-      console.log("Data berhasil dimasukkan ke dalam tabel:");
-
       await axios.delete(`http://localhost:5000/transaksis/user/${userId}`);
-      navigate("/riwayatkonsumen");
+      navigate("/konfirmasipembelian");
     } catch (error) {
       console.error("Gagal memasukkan data ke dalam tabel:", error);
     }
@@ -241,7 +240,7 @@ function Keranjang() {
         </div>
       ) : (
         <animated.div style={animation} className="-mt-8 md:mt-0">
-          {data.length !== 0 ? (
+          {data.filter((row) => row.user_id === userId).length !== 0 ? (
             <div>
               {open && (
                 <div className="text-[10px] md:text-xs flex mb-5 bg-green-400 p-2 rounded w-[150px] md:w-64 shadow items-center">

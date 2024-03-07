@@ -12,11 +12,10 @@ function Produk() {
   const [produk, setProduk] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const jumlah = 1;
-  const [kontak, setKontak] = useState();
   const [nama_produk, setNamaProduk] = useState("");
   const [status_produk, setStatusProduk] = useState("");
   const [harga_produk, setHargaProduk] = useState("");
-  const [admin, setAdmin] = useState("");
+  const [userId, setUserId] = useState([]);
   const [gambar_produk, setGambarProduk] = useState(null);
   const [deskripsi_produk, setDeskripsi] = useState();
   const [idProduk, setIdProduk] = useState();
@@ -42,12 +41,12 @@ function Produk() {
   const searchQueryProduk = searchParams.get("search");
 
   useEffect(() => {
-    console.log("Hasil pencarian:", searchQueryProduk);
-  }, [searchQueryProduk]);
-
-  const popProduk = () => {
-    setOpen(!open);
-  };
+    const fetchProfil = async () => {
+      const response = await axios("http://localhost:5000/me");
+      setUserId(response.data.id);
+    };
+    fetchProfil();
+  }, []);
   useEffect(() => {
     const fetchPembelian = async () => {
       const response = await axios.get(
@@ -89,8 +88,6 @@ function Produk() {
       setNamaProduk(response.data.nama_produk);
       setStatusProduk(response.data.status_produk);
       setHargaProduk(response.data.harga_produk);
-      setAdmin(response.data.admin.nama);
-      setKontak(response.data.admin.email);
       setGambarProduk(response.data.gambar_produk);
       setDeskripsi(response.data.deskripsi_produk);
       setIdProduk(response.data.id);
@@ -198,9 +195,9 @@ function Produk() {
                     {row.nama_produk}
                   </h1>
                   {row.status_produk === "promo" && (
-                    <p className="absolute -left-5  top-[120px] md:top-[180px]">
+                    <div className="absolute -left-5  top-[120px] md:top-[180px]">
                       <PromoAnimate />
-                    </p>
+                    </div>
                   )}
                 </div>
                 <div className="flex justify-between items-center py-2">
@@ -212,7 +209,9 @@ function Produk() {
                     {formatRupiah(row.harga_produk)},00/Kg
                   </p>
                   <button
-                    onClick={() => getProdukById(row.uuid, popProduk())}
+                    onClick={() => {
+                      getProdukById(row.uuid), setOpen(!open);
+                    }}
                     className="transition-all duration-1000 bg-green-400 hover:bg-green-300 py-1 md:py-2 rounded-md px-2 md:px-5 mx-auto shadow"
                   >
                     <div className="flex items-center">
@@ -230,13 +229,13 @@ function Produk() {
 
       {open && (
         <Popover>
-          {getPembelian.length === 0 ? (
+          {getPembelian.filter((row) => row.user_id === userId).length === 0 ? (
             <div className="-mt-20">
               <form
                 onSubmit={pembelian}
                 className="bg-white mb-10 transition-all duration-1000 pb-10 shadow-md rounded-lg hover:shadow-lg"
               >
-                <div className="relative w-[350px] mt-32 md:mt-20 md:w-[600px]">
+                <div className="relative w-[350px] mt-32 md:mt-20 md:w-[400px] h-[450px] md:h-[480px]">
                   <span
                     className="absolute z-10 right-0 top-3 material-symbols-outlined mr-2 cursor-pointer text-white hover:bg-black rounded"
                     onClick={() => setOpen(!open)}
@@ -246,58 +245,48 @@ function Produk() {
                   <img
                     src={gambar_produk}
                     alt=""
-                    className="w-full h-[250px] md:w-[600px] md:h-[400px] transition-all duration-1000 rounded-t-lg object-cover hover:brightness-75"
+                    className="w-full h-[200px] md:w-[400px] md:h-[200px] transition-all duration-1000 rounded-t-lg object-cover hover:brightness-75"
                   />
-                  <div className="mt-2 mx-5 md:mx-10 relative">
+                  <div className="mx-5 md:mx-10 relative">
                     <div className="flex items-center">
-                      <h1 className="text-xl md:text-3xl font-bold">
+                      {status_produk === "promo" && (
+                        <div className="-ml-8 md:-ml-14">
+                          <PromoAnimate />
+                        </div>
+                      )}
+                      <h1 className="-ml-5 text-xl md:text-3xl font-bold">
                         {nama_produk}
                       </h1>
-                      {status_produk === "promo" && (
-                        <p className="w-20 ml-5 text-center text-[10px] md:text-xs bg-green-400 p-1 rounded shadow">
-                          {status_produk}
+                    </div>
+                    <div className="grid grid-cols-1 gap-5 content-between">
+                      <div className="h-24">
+                        <p className="text-[10px] md:text-xs text-gray-400">
+                          Deskripsi:
                         </p>
-                      )}
-                    </div>
-                    <div className="flex justify-between items-center my-3 text-[10px] md:text-xs text-gray-400">
-                      <div className="flex items-center">
-                        <span className="material-symbols-outlined mr-2">
-                          person
-                        </span>
-                        <p>Diterbitkan oleh {admin}</p>
+                        <p className="pt-1 pb-5 text-justify indent-8 text-[10px] md:text-xs">
+                          {deskripsi_produk}
+                        </p>
                       </div>
-                      <div className="flex items-center">
-                        <span className="material-symbols-outlined mr-2">
-                          email
-                        </span>
-                        <p>{kontak}</p>
-                      </div>
+                      <p className="text-end pb-10 font-bold text-sm md:text-xl hover:underline cursor-pointer">
+                        {formatRupiah(harga_produk)},00/Kg
+                      </p>
                     </div>
-                    <p className="text-[10px] md:text-xs text-gray-400">
-                      Deskripsi:
-                    </p>
-                    <p className="pt-1 pb-5 text-justify indent-8 text-[10px] md:text-xs">
-                      {deskripsi_produk}
-                    </p>
-                    <p className="text-end pb-10 font-bold text-xl md:text-3xl">
-                      {formatRupiah(harga_produk)},00/Kg
-                    </p>
                   </div>
-                </div>
-                <div className="text-end mr-5 md:mr-10 text-[10px] md:text-xs">
-                  <button
-                    className="shadow transition-all duration-1000 border bg-black text-white p-2 px-4 rounded mr-5 hover:bg-green-400 hover:text-black"
-                    type="button"
-                    onClick={() => setOpen(!open)}
-                  >
-                    Batal
-                  </button>
-                  <button
-                    className="shadow transition-all duration-1000 bg-green-400 p-2 px-4 rounded hover:bg-green-300"
-                    type="submit"
-                  >
-                    Pesan
-                  </button>
+                  <div className="text-end mr-5 md:mr-10 text-[10px] md:text-xs">
+                    <button
+                      className="shadow transition-all duration-1000 border bg-black text-white p-2 px-4 rounded mr-5 hover:bg-green-400 hover:text-black"
+                      type="button"
+                      onClick={() => setOpen(!open)}
+                    >
+                      Batal
+                    </button>
+                    <button
+                      className="shadow transition-all duration-1000 bg-green-400 p-2 px-4 rounded hover:bg-green-300"
+                      type="submit"
+                    >
+                      Pesan
+                    </button>
+                  </div>
                 </div>
               </form>
             </div>

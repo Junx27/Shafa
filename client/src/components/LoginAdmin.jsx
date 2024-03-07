@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
-import Logo from "../assets/images/shafa.png";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { loginAdmin, reset } from "../features/AuthSlice.js";
+import Logo from "../components/animate/LogoLogin.jsx";
 
-function Login() {
+function LoginAdmin() {
+  const navigate = useNavigate();
   const [passwordVisible, setPasswordVisible] = useState(false);
 
   const togglePasswordVisibility = () => {
@@ -14,7 +15,6 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { user, isError, isSuccess, isLoading, message } = useSelector(
     (state) => state.auth
   );
@@ -32,19 +32,23 @@ function Login() {
 
   return (
     <form
-      className="mx-auto p-10 box-login border border-lime-400 shadow-lg shadow-lime-600"
       onSubmit={Auth}
+      className="text-xs border p-5 md:p-10 md:mx-auto w-[350px] md:w-[400px] md:h-[500px] bg-white rounded-[20px] shadow-lg"
     >
-      <img src={Logo} className="w-16 mx-auto saturate-200" alt="" />
-      {isError && <p className="text-red-500 absolute mt-7">{message}</p>}
-      <div className="grid grid-flow-row auto-rows-max mt-16">
+      <Logo />
+
+      {isError && (
+        <p className="text-[10px] text-red-500 absolute mt-1">{message}</p>
+      )}
+      <div className="grid grid-flow-row auto-rows-max mt-5">
         <label htmlFor="email">Email</label>
         <input
           id="email"
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="mt-3 p-4 rounded-lg border border-lime-500"
+          className="mt-3 p-3 rounded-lg border border-green-400"
+          placeholder="Masukan email"
           required
         />
       </div>
@@ -55,21 +59,23 @@ function Login() {
           type={passwordVisible ? "text" : "password"}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="mt-3 p-4 rounded-lg border border-lime-500"
+          className="mt-3 p-3 rounded-lg border border-green-400"
+          placeholder="*****"
           required
         />
-        <div
+        <button
           onClick={togglePasswordVisibility}
-          className="absolute top-14 right-5 cursor-pointer"
+          className="absolute top-10 right-5"
+          type="button"
         >
-          <span className="material-symbols-outlined text-lime-300">
+          <span className="material-symbols-outlined text-gray-400 text-xs">
             {passwordVisible ? "visibility_off" : "visibility"}
           </span>
-        </div>
+        </button>
       </div>
-      <div className="flex justify-center">
+      <div className="mt-5 flex justify-center">
         <button
-          className="bg-lime-300 py-3 px-8 rounded-md mt-10 mx-auto hover:bg-lime-400"
+          className="transition-all duration-1000 bg-green-400 hover:bg-green-300 py-3 px-8 rounded-md mt-10 mx-auto text-[8px] md:text-xs"
           type="submit"
         >
           {isLoading ? "Loading.." : "Login"}
@@ -79,4 +85,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default LoginAdmin;

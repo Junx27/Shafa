@@ -160,9 +160,9 @@ function Profile() {
                 </span>
                 <h1 className=" ml-2 md:ml-3">Informasi profil</h1>
               </div>
-              <div className="h-[500px] mb-5 md:w-[600px] md:h-[700px] mt-10 relative flex flex-col md:mx-auto rounded-lg shadow transition-all duration-1000 hover:shadow-lg">
+              <div className="h-[500px] mb-5 md:w-[600px] md:h-[700px] mt-10 relative flex flex-col md:mx-auto rounded-[20px] shadow transition-all duration-1000 hover:shadow-lg">
                 <div className="">
-                  <div className="bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% w-full h-[310px] absolute z-0 rounded-t-lg shadow"></div>
+                  <div className="bg-gradient-to-r from-sky-500 to-emerald-500  w-full h-[310px] absolute z-0 rounded-t-[20px] shadow"></div>
                   <img
                     src={
                       profile.gambar_profil === "belum"
@@ -170,39 +170,24 @@ function Profile() {
                         : profile.gambar_profil
                     }
                     alt=""
-                    className="relative w-[100px] h-[100px] md:w-[200px] md:h-[200px] rounded-full mx-auto mt-10 shadow z-10"
+                    className="border border-4 md:border-8 relative w-[100px] h-[100px] md:w-[200px] md:h-[200px] rounded-full mx-auto mt-10 shadow z-10"
                   />
                 </div>
                 <div className="mt-3 mx-16 z-10">
                   <h1 className="text-white font-bold md:text-2xl text-center capitalize">
                     {profile.nama}
                   </h1>
-                  <div className="absolute md:w-[600px] left-0 px-6 mt-3 bg-white rounded-t-lg">
+                  <div className="absolute w-full md:w-[600px] left-0 px-6 mt-3 bg-white rounded-t-[20px]">
                     <div className="text-xs mt-5 flex flex-col">
-                      <label
-                        htmlFor=""
-                        className="font-light text-gray-500 mr-20"
-                      >
-                        Email
-                      </label>
+                      <p className="font-light text-gray-500 mr-20">Email</p>
                       <p className="mt-2">{profile.email}</p>
                     </div>
                     <div className="text-xs mt-3 flex flex-col">
-                      <label
-                        htmlFor=""
-                        className="font-light text-gray-500 mr-20"
-                      >
-                        Alamat
-                      </label>
+                      <p className="font-light text-gray-500 mr-20">Alamat</p>
                       <p className="mt-2">{profile.alamat}</p>
                     </div>
                     <div className="text-xs mt-3 flex flex-col">
-                      <label
-                        htmlFor=""
-                        className="font-light text-gray-500 mr-20"
-                      >
-                        No. Tlp
-                      </label>
+                      <p className="font-light text-gray-500 mr-20">No. Tlp</p>
                       <p className="mt-2">{profile.no_tlp}</p>
                     </div>
                   </div>
@@ -226,7 +211,7 @@ function Profile() {
                 <PopOver>
                   <form
                     onSubmit={updateProfile}
-                    className="bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% md:w-[600px] md:h-[750px] relative flex flex-col mx-auto rounded-lg shadow-lg transition-all duration-1000 hover:shadow-lg pb-5"
+                    className="bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% md:w-[600px] md:h-[750px] relative flex flex-col mx-auto rounded-[20px] shadow-lg transition-all duration-1000 hover:shadow-lg pb-5"
                   >
                     <div className="flex flex-col mx-10">
                       <img

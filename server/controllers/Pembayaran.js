@@ -9,6 +9,23 @@ import Pembayaran from "../models/PembayaranModel.js";
 
 const { ForeignKeyConstraintError } = Sequelize;
 
+export const getPembayaran = async (req, res) => {
+  try {
+    let response;
+    response = await Pembayaran.findAll({
+      include: [
+        {
+          model: Users,
+          attributes: ["nama"],
+        },
+      ],
+    });
+
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+};
 export const getPembayaranBelumBayar = async (req, res) => {
   try {
     let response;
@@ -29,6 +46,7 @@ export const getPembayaranBelumBayar = async (req, res) => {
     res.status(500).json({ msg: error.message });
   }
 };
+
 export const getPembayaranTerbayar = async (req, res) => {
   try {
     let response;
@@ -40,7 +58,6 @@ export const getPembayaranTerbayar = async (req, res) => {
       include: [
         {
           model: Users,
-          attributes: ["nama"],
         },
       ],
     });
@@ -60,7 +77,6 @@ export const getPembayaranSelesai = async (req, res) => {
       include: [
         {
           model: Users,
-          attributes: ["nama"],
         },
       ],
     });

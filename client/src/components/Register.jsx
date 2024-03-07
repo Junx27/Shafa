@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function Register() {
@@ -13,19 +13,6 @@ function Register() {
   const [msg, setMsg] = useState();
 
   const navigate = useNavigate();
-  const [changeColor, setChangeColor] = useState(false);
-  const changeBackgroundColor = () => {
-    let scroll = window.scrollY;
-    if (scroll > 10) {
-      setChangeColor(true);
-    } else {
-      setChangeColor(false);
-    }
-  };
-  useEffect(() => {
-    changeBackgroundColor();
-    window.addEventListener("scroll", changeBackgroundColor);
-  });
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -57,7 +44,7 @@ function Register() {
           "Content-Type": "multipart/form-data",
         },
       });
-      navigate("/");
+      navigate("/registerberhasil");
     } catch (error) {
       if (error.response) {
         setMsg(error.response.data.msg);
@@ -66,34 +53,14 @@ function Register() {
   };
   return (
     <div>
-      <button
-        className={
-          changeColor
-            ? "sticky top-5 left-5 z-20 bg-lime-300 hover:bg-lime-400 p-2 rounded-md transition duration-1000"
-            : "sticky top-5 left-5 z-20 bg-white p-2 rounded-md hover:bg-lime-200 hover:p-2 hover:rounded-md"
-        }
-        onClick={() => navigate("/")}
-      >
-        <div className="flex intems-center">
-          <span className="material-symbols-outlined text-sm">arrow_back</span>
-          <p className="text-sm">Kembali</p>
-        </div>
-      </button>
-      <hr className="h-px border-0 bg-lime-400 mx-32" />
-      <div className=" flex justify-center mx-auto w-32">
-        <h1 className="font-bold text-3xl text-center bg-lime-400 p-4 rounded-b-lg shadow-lg">
-          Registration
-        </h1>
-      </div>
-      <p className="text-center mt-5">
-        Silahkan mendaftar untuk dapat menggunakan aplikasi Shafa Farm
-        Hidroponik <br />
-        dapatkan kemudahan menemukan produk berkualitas.
-      </p>
-      {msg && <p className="text-red-500">{msg}</p>}
-      <div className="mt-10 bg-lime-50 p-10 pb-20 rounded-lg relative mx-32 shadow-lg">
-        <form action="" className="flex flex-row " onSubmit={handleRegister}>
-          <div className="w-96">
+      {msg && <p className="text-[10px] text-red-500">{msg}</p>}
+      <div className="border p-5 md:p-10 md:mx-auto w-[350px] h-[610px] md:w-[500px] md:h-[730px] bg-white rounded-[20px] shadow-lg">
+        <form
+          action=""
+          className="relative flex flex-col"
+          onSubmit={handleRegister}
+        >
+          <div className="text-xs">
             <div className="grid grid-flow-row auto-rows-max mt-2">
               <label htmlFor="nama">Nama</label>
               <input
@@ -101,7 +68,9 @@ function Register() {
                 type="text"
                 value={nama}
                 onChange={(e) => setNama(e.target.value)}
-                className="mt-3 p-2 rounded-lg border border-lime-500"
+                placeholder="Masukan nama"
+                className="mt-3 p-3 rounded-lg border border-green-400"
+                required
               />
             </div>
             <div className="grid grid-flow-row auto-rows-max mt-2">
@@ -111,7 +80,9 @@ function Register() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="mt-3 p-2 rounded-lg border border-lime-500"
+                placeholder="Masukan email"
+                className="mt-3 p-3 rounded-lg border border-green-400"
+                required
               />
             </div>
             <div className="grid grid-flow-row auto-rows-max mt-2">
@@ -121,7 +92,9 @@ function Register() {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="mt-3 p-2 rounded-lg border border-lime-500"
+                placeholder="Masukan password"
+                className="mt-3 p-3 rounded-lg border border-green-400"
+                required
               />
             </div>
             <div className="grid grid-flow-row auto-rows-max mt-2">
@@ -131,7 +104,9 @@ function Register() {
                 type="text"
                 value={alamat}
                 onChange={(e) => setAlamat(e.target.value)}
-                className="mt-3 p-2 rounded-lg border border-lime-500"
+                placeholder="Masukan alamat"
+                className="mt-3 p-3 rounded-lg border border-green-400"
+                required
               />
             </div>
             <div className="grid grid-flow-row auto-rows-max mt-2">
@@ -141,51 +116,56 @@ function Register() {
                 type="number"
                 value={no_tlp}
                 onChange={(e) => setNoTlp(e.target.value)}
-                className="mt-3 p-2 rounded-lg border border-lime-500"
+                placeholder="Masukan nomor telepon"
+                className="mt-3 p-3 rounded-lg border border-green-400"
+                required
               />
             </div>
           </div>
-          <div className="w-96 mx-32">
-            <div className="flex flex-col my-2">
-              Gambar
-              <label htmlFor="gambar">
-                <input
-                  type="file"
-                  id="gambar"
-                  onChange={handleImageChange}
-                  className="invisible"
-                />
-                <p className="bg-lime-400 p-2 rounded-md w-20 text-center -mt-5 hover:bg-lime-500 hover:text-white">
-                  {preview ? "Ganti" : "Pilih"}
-                </p>
-              </label>
+          <div className="flex justify-center my-2 text-xs">
+            <label htmlFor="gambar">
+              <input
+                type="file"
+                id="gambar"
+                onChange={handleImageChange}
+                className="invisible"
+              />
+              <div
+                className={`bg-gray-100 text-center ml-[70px] md:ml-10 w-[100px] h-[100px] md:w-[150px] md:h-[150px] rounded-full ${
+                  preview ? "hidden" : "block"
+                }`}
+              >
+                <span className="mt-9 md:mt-16 material-symbols-outlined">
+                  photo_camera
+                </span>
+                <p className="text-[8px] md:text-xs">Upload gambar</p>
+              </div>
+
               <div className="relative">
                 {preview && (
                   <img
                     src={preview}
                     alt="Preview"
-                    className="mt-5 mx-20 rounded-lg w-[500px] h-[300px]"
+                    className="ml-[70px] md:ml-10 w-[100px] h-[100px] md:w-[150px] md:h-[150px] rounded-full"
                   />
                 )}
-                {preview && (
-                  <p
-                    onClick={removeImage}
-                    className="bg-red-400 py-2 px-5 rounded-b-md text-center absolute top-5 -right-20 cursor-pointer"
-                  >
-                    X
-                  </p>
-                )}
               </div>
-            </div>
-            <div className="flex justify-end mt-10 absolute right-32 bottom-10">
-              <button
-                className="bg-lime-300 p-2 rounded hover:bg-lime-400"
-                type="submit"
+            </label>
+            {preview && (
+              <p
+                onClick={removeImage}
+                className="bg-black text-white p-2 rounded absolute bottom-20 right-0 cursor-pointer"
               >
-                Submit
-              </button>
-            </div>
+                Hapus
+              </p>
+            )}
           </div>
+          <button
+            className="text-xs transition-all duration-1000 bg-green-400 hover:bg-green-300 p-3 rounded-lg mt-2 md:mt-10 shadow"
+            type="submit"
+          >
+            Mendaftar
+          </button>
         </form>
       </div>
     </div>

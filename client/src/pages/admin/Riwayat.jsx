@@ -1,9 +1,9 @@
-import Admin from "../../components/Admin";
 import SideNavbar from "../../components/SideNavbar";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { meAdmin } from "../../features/AuthSlice";
 import { useEffect, useState } from "react";
+import ViewRiwayat from "../../components/admin/Riwayat";
 
 function Riwayat() {
   const dispatch = useDispatch();
@@ -35,12 +35,9 @@ function Riwayat() {
   return (
     <div className="">
       <SideNavbar />
-      <Admin />
-      <div className="mt-20 ms-80 pl-6 mr-10">
-        <hr className="h-px border-0 bg-lime-200 mb-5" />
-        <h1 className="text-xl">Ini halaman riwayat</h1>
-        <div className={`loader-container ${loading ? "loading" : ""}`}>
-          Loading...
+      <div className="mt-20 md:mt-16 md:ms-80 md:pl-6 mx-5 md:mx-0 md:mr-10">
+        <div>
+          <ViewRiwayat />
         </div>
       </div>
     </div>

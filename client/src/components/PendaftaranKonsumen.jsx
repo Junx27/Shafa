@@ -33,7 +33,7 @@ function PendaftaranKonsumen() {
       {dataKonsumen.map((row, index) => (
         <div className="my-3" key={index}>
           {row.status_konsumen === "belum" && (
-            <div className="transition-all duration-1000 bg-lime-50 rounded-lg  flex justify-between items-center py-2 shadow hover:shadow-lg">
+            <div className="transition-all duration-1000 bg-green-50 rounded-lg  flex justify-between items-center py-2 shadow hover:shadow-lg">
               <img
                 src={
                   row.gambar_profil === "belum"
@@ -46,7 +46,7 @@ function PendaftaranKonsumen() {
               <h1 className="basis-1/2">{row.nama}</h1>
               <form action="" onSubmit={(e) => updateProfile(e, row.uuid)}>
                 <button
-                  className="basis-1/4 bg-lime-300 p-3 rounded-lg mr-5 hover:bg-lime-400"
+                  className="text-xs basis-1/4 bg-green-400 p-2 rounded mr-5 hover:bg-green-300"
                   type="submit"
                 >
                   Submit

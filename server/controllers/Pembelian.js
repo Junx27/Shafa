@@ -145,32 +145,30 @@ export const createPembelaian = async (req, res) => {
 };
 
 export const updatePembelian = async (req, res) => {
+  const user_id = req.params.user_id;
   try {
-    // Ambil semua data pembelian dengan status 'belum'
     const pembelianBelum = await Pembelian.findAll({
       where: {
         status: "belum",
+        user_id: user_id,
       },
     });
-
     if (!pembelianBelum || pembelianBelum.length === 0) {
       return res
         .status(404)
         .json({ msg: "Tidak ada data pembelian dengan status 'belum'" });
     }
-
     const { pembayaran_id } = req.body;
-
     try {
-      // Update semua data pembelian yang memiliki status 'belum' menjadi 'sudah'
       await Pembelian.update(
         {
-          pembayaran_id: pembayaran_id, // Update pembayaran_id dengan nilai yang diberikan
-          status: "sudah", // Ubah status menjadi 'sudah'
+          pembayaran_id: pembayaran_id,
+          status: "sudah",
         },
         {
           where: {
-            status: "belum", // Filter data dengan status 'belum'
+            status: "belum",
+            user_id: user_id,
           },
         }
       );

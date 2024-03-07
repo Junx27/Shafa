@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import { Suspense, lazy } from "react";
 const LandingPage = lazy(() => import("./pages/LandingPage"));
-const HalamanProduk = lazy(() => import("./pages/landingPage/HalamanProduk"));
+const HalamanProduk = lazy(() => import("./pages/RegisterPage.jsx"));
 const BantuanPendaftaran = lazy(() => import("./pages/landingPage/Bantuan"));
 const KeuntunganKonsumen = lazy(() => import("./pages/landingPage/Keuntungan"));
 const LoginAdmin = lazy(() => import("./pages/admin/LoginAdmin"));
@@ -11,7 +11,6 @@ const Kritik = lazy(() => import("./pages/admin/Kritik"));
 const Pengaturan = lazy(() => import("./pages/admin/Pengaturan"));
 const Pesanan = lazy(() => import("./pages/admin/Pesanan"));
 const Produk = lazy(() => import("./pages/admin/Produk"));
-const Promo = lazy(() => import("./pages/admin/Promo"));
 const Riwayat = lazy(() => import("./pages/admin/Riwayat"));
 const ScrollToTop = lazy(() => import("./components/layout/SrollToTop"));
 const Home = lazy(() => import("./pages/konsumen/Home"));
@@ -21,11 +20,13 @@ const Faq = lazy(() => import("./pages/konsumen/Faq"));
 const Profile = lazy(() => import("./pages/konsumen/Profile"));
 const ProdukKonsumen = lazy(() => import("./pages/konsumen/Produk"));
 const EditProduk = lazy(() => import("./pages/admin/EditProduk.jsx"));
-const Register = lazy(() => import("./pages/konsumen/Register.jsx"));
 const Page404 = lazy(() => import("./pages/Page404.jsx"));
 const ViewKonsumen = lazy(() => import("../src/pages/admin/EditKonsumen.jsx"));
 const EditPembayaran = lazy(() =>
   import("./pages/konsumen/EditPembayaran.jsx")
+);
+const KonfirmasiPembelian = lazy(() =>
+  import("./pages/konsumen/KonfirmasiPembelian.jsx")
 );
 
 function App() {
@@ -35,7 +36,7 @@ function App() {
       <Suspense fallback={<div></div>}>
         <Routes>
           <Route path="/" Component={LandingPage} />
-          <Route path="/halamanproduk" Component={HalamanProduk} />
+          <Route path="/registerberhasil" Component={HalamanProduk} />
           <Route path="/bantuanpendaftaran" Component={BantuanPendaftaran} />
           <Route path="/keuntungankonsumen" Component={KeuntunganKonsumen} />
           <Route path="/admin" Component={LoginAdmin} />
@@ -44,8 +45,7 @@ function App() {
           <Route path="/produk/edit/:id" Component={EditProduk} />
           <Route path="/konsumen" Component={Konsumen} />
           <Route path="/konsumen/:id" Component={ViewKonsumen} />
-          <Route path="/promo" Component={Promo} />
-          <Route path="/pesanan" Component={Pesanan} />
+          <Route path="/pesanan/:pesananId" Component={Pesanan} />
           <Route path="/riwayat" Component={Riwayat} />
           <Route path="/pengaturan" Component={Pengaturan} />
           <Route path="/kritik" Component={Kritik} />
@@ -53,10 +53,10 @@ function App() {
           <Route path="/riwayatkonsumen" Component={RiwayatKonsumen} />
           <Route path="/keranjang" Component={Keranjang} />
           <Route path="/pembayaran/:id" Component={EditPembayaran} />
+          <Route path="/konfirmasipembelian" Component={KonfirmasiPembelian} />
           <Route path="/faq" Component={Faq} />
           <Route path="/profile" Component={Profile} />
           <Route path="/produkkonsumen" Component={ProdukKonsumen} />
-          <Route path="/register" Component={Register} />
           <Route path="/*" Component={Page404} />
         </Routes>
       </Suspense>

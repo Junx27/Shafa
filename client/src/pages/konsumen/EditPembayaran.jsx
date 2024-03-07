@@ -1,9 +1,7 @@
-import Navbar from "../../components/Navbar";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { meUser } from "../../features/AuthSlice";
 import { useEffect, useState } from "react";
-import Footer from "../../components/Footer";
 import KonfirmasiPembayaran from "../../components/konsumen/KonfirmasiPembayaran";
 import LoadingSpinner from "../../components/animate/Loading";
 
@@ -41,14 +39,8 @@ function EditPembayaran() {
         </div>
       ) : (
         <div>
-          <div>
-            <Navbar />
-          </div>
           <div className="mx-5 mt-32 md:m-32 mb-10">
             <KonfirmasiPembayaran />
-          </div>
-          <div>
-            <Footer />
           </div>
         </div>
       )}

@@ -18,7 +18,7 @@ router.get("/pembelian/status", getPembelianByStatus);
 router.get("/pembelian/pembayaran/:pembayaran_id", getPembelianByPembayaranId);
 router.get("/pembelian/:id", getPembelianById);
 router.post("/pembelian", verifyUser, createPembelaian);
-router.patch("/pembelian/status/:status", updatePembelian);
+router.patch("/pembelian/status/:user_id", updatePembelian);
 router.delete("/pembelian/user/:user_id", deletePembelian);
 
 export default router;

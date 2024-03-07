@@ -1,19 +1,15 @@
-import Lottie from "react-lottie";
+import { Player } from "@lottiefiles/react-lottie-player";
 import animationData from "../../assets/animate/Plants.json";
 
 function PlantsMobile() {
-  const defaultOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: animationData,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice",
-    },
-  };
-
   return (
     <div>
-      <Lottie options={defaultOptions} height={300} width={300} />
+      <Player
+        autoplay
+        loop
+        src={animationData}
+        style={{ height: "300px", width: "300px" }}
+      />
     </div>
   );
 }

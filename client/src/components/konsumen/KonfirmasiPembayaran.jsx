@@ -2,29 +2,39 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Check from "../animate/Check";
+import PaymentAnimateHistory from "../animate/PaymentAnimateHistory";
 
 function KonfirmasiPembayaran() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [uuid, setUuid] = useState([]);
   const [pembayaranId, setPembayaranId] = useState([]);
+  const [userId, setUserId] = useState([]);
+
+  useEffect(() => {
+    const fetchProfil = async () => {
+      const response = await axios("http://localhost:5000/me");
+      setUserId(response.data.id);
+    };
+    fetchProfil();
+  }, []);
 
   const fetchData = async () => {
     const response = await axios.get(`http://localhost:5000/pembayaran/${id}`);
     setPembayaranId(response.data.id);
     setUuid(response.data.uuid);
   };
+
   useEffect(() => {
     fetchData();
   }, []);
-  const updatePembelian = async (e) => {
-    e.preventDefault();
+
+  const updatePembelian = async () => {
     try {
-      const status = "belum";
       const formDataPembelian = new FormData();
       formDataPembelian.append("pembayaran_id", pembayaranId);
       await axios.patch(
-        `http://localhost:5000/pembelian/status/${status}`,
+        `http://localhost:5000/pembelian/status/${userId}`,
         formDataPembelian,
         {
           headers: {
@@ -32,6 +42,7 @@ function KonfirmasiPembayaran() {
           },
         }
       );
+
       const status_pembayaran = "sudah";
       const formDataPembayaran = new FormData();
       formDataPembayaran.append("status_pembayaran", status_pembayaran);
@@ -44,27 +55,32 @@ function KonfirmasiPembayaran() {
           },
         }
       );
+
       navigate("/riwayatkonsumen");
-      console.log("berhasil mengupdate pembelian");
     } catch (error) {
-      if (error.response) {
-        console.error("Gagal memperbarui data:", error);
-      }
+      console.error("Gagal memperbarui data:", error);
     }
   };
+
+  useEffect(() => {
+    const konfirmasi = setTimeout(() => {
+      updatePembelian();
+    }, 4000);
+    return () => clearTimeout(konfirmasi);
+  });
+
   return (
     <div className="text-center">
       <div className="flex justify-center">
-        <h1 className="font-bold mb-10 text-md md:text-xl bg-yellow-400 w-32 p-2 rounded-b-lg shadow-lg text-center">
-          Konfirmasi
-        </h1>
+        <PaymentAnimateHistory />
       </div>
       <p className="text-gray-400 md:w-96 mx-5 md:mx-auto mt-5 text-[10px] md:text-xs">
-        Untuk melakukan pembelian berikutnya mohon untuk mengkonfimasi pembelian
-        sebelumnya terlebih dahulu <span className="text-black">,disini!</span>
+        Untuk melakukan pembelian berikutnya mohon untuk mengkonfirmasi
+        pembelian sebelumnya terlebih dahulu{" "}
+        <span className="text-black">, disini!</span>
       </p>
-      <form action="" onSubmit={updatePembelian}>
-        <button className="" type="submit">
+      <form action="" onSubmit={(e) => e.preventDefault()}>
+        <button type="button" onClick={updatePembelian}>
           <Check />
         </button>
       </form>
