@@ -56,13 +56,21 @@ function CreateProduk() {
 
   return (
     <div className="bg-white w-[500px] ml-64 rounded-lg z-30">
-      <div className="">
-        <h1 className="pl-5 py-2 bg-lime-400 mr-[60%] rounded-r-lg">
-          Menambahkan Produk
-        </h1>
+      <div className="text-xs">
+        <div className="flex justify-between items-center">
+          <h1 className="p-2 ml-3 mt-3 bg-green-400 rounded shadow">
+            Menambahkan produk
+          </h1>
+          <span
+            className="material-symbols-outlined cursor-pointer mr-3 mt-3"
+            onClick={cancel}
+          >
+            cancel
+          </span>
+        </div>
         {msg && (
           <div className="relative">
-            <p className=" mt-2 px-5 py-5 bg-red-300">
+            <p className=" mt-2 px-5 py-5 bg-red-400">
               Menambahkan produk gagal, mungkin kesalahan pada nama, nama tidak
               boleh sama dengan yang sudah ada!
               <button
@@ -86,7 +94,7 @@ function CreateProduk() {
               id="nama"
               value={nama_produk}
               onChange={(e) => setNamaProduk(e.target.value)}
-              className="p-2 rounded-lg outline-lime-400 border border-lime-400"
+              className="p-2 rounded-lg outline-green-400 border border-green-400"
               required
             />
           </div>
@@ -100,7 +108,7 @@ function CreateProduk() {
               value={harga_produk}
               onChange={(e) => setHargaProduk(e.target.value)}
               id="harga"
-              className="p-2 rounded-lg outline-lime-400 border border-lime-400"
+              className="p-2 rounded-lg outline-green-400 border border-green-400"
               required
             />
           </div>
@@ -114,7 +122,7 @@ function CreateProduk() {
               maxLength={220}
               value={deskripsi_produk}
               onChange={(e) => setDeskripsiProduk(e.target.value)}
-              className="p-2 rounded-lg outline-lime-400 border border-lime-400 h-[150px]"
+              className="p-2 rounded-lg outline-green-400 border border-green-400 h-[150px]"
               required
             />
           </div>
@@ -125,7 +133,7 @@ function CreateProduk() {
             <select
               name="status"
               id="status"
-              className="p-2 border border-lime-400 rounded"
+              className="p-2 border border-green-400 rounded"
               value={promo}
               onChange={(e) => setPromo(e.target.value)}
             >
@@ -142,7 +150,7 @@ function CreateProduk() {
                 onChange={handleImageChange}
                 className="invisible"
               />
-              <p className="text-xs bg-lime-400 p-2 rounded-md w-20 text-center -mt-5 hover:bg-lime-500 hover:text-white">
+              <p className="text-xs bg-green-400 p-2 rounded-md w-20 text-center -mt-5 hover:bg-green-300">
                 {image ? "Ganti" : "Pilih"}
               </p>
             </label>
@@ -151,7 +159,7 @@ function CreateProduk() {
                 <img
                   src={image}
                   alt="Preview"
-                  className="mt-5 rounded-lg w-[100px]"
+                  className="mt-5 rounded-lg w-[500px] h-[200px] object-cover"
                 />
               )}
               {image && (
@@ -166,14 +174,14 @@ function CreateProduk() {
           </div>
           <div className="flex justify-end mx-10">
             <button
-              className="transition-all duration-1000 text-xs bg-black text-white p-2 rounded-md mr-5 hover:bg-lime-400 hover:text-black"
+              className="transition-all duration-1000 text-xs bg-black text-white p-2 rounded-md mr-5 hover:bg-green-400 hover:text-black"
               type="button"
               onClick={cancel}
             >
               Cancel
             </button>
             <button
-              className="transition-all duration-1000 text-xs bg-lime-400 p-2 rounded-md hover:bg-lime-300"
+              className="transition-all duration-1000 text-xs bg-green-400 p-2 rounded-md hover:bg-green-300"
               type="submit"
             >
               Submit

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { animated, useSpring } from "react-spring";
@@ -9,7 +9,9 @@ import PromoAnimate from "../animate/PromoAnimate";
 function Produk() {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const [openFilter, setOpenFilter] = useState(false);
   const [produk, setProduk] = useState([]);
+  const [originalProduk, setOriginalProduk] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const jumlah = 1;
   const [nama_produk, setNamaProduk] = useState("");
@@ -21,6 +23,7 @@ function Produk() {
   const [idProduk, setIdProduk] = useState();
   const [getPembelian, setGetPembelian] = useState([]);
   const [loading, setLoading] = useState(false);
+  const popoverRef = useRef(null);
 
   useEffect(() => {
     const startLoading = () => {
@@ -62,12 +65,33 @@ function Produk() {
       try {
         const response = await axios.get("http://localhost:5000/produk");
         setProduk(response.data);
+        setOriginalProduk(response.data);
       } catch (error) {
         console.error("Gagal mengambil data produk", error);
       }
     }
     fetchData();
+    const handleClickOutside = (event) => {
+      if (popoverRef.current && !popoverRef.current.contains(event.target)) {
+        setOpenFilter(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, []);
+  const filterResult = (item) => {
+    if (item === "Semua") {
+      setProduk(originalProduk);
+    } else {
+      const result = originalProduk.filter(
+        (row) => row.status_produk.toLowerCase() === item
+      );
+      setProduk(result);
+    }
+  };
 
   const formatRupiah = (number) => {
     const formatter = new Intl.NumberFormat("id-ID", {
@@ -127,7 +151,7 @@ function Produk() {
   return (
     <div>
       <div className="-mt-5">
-        <div className="flex items-center justify-center">
+        <div className="relative flex items-center justify-center">
           <input
             type="text"
             placeholder="Cari produk..."
@@ -145,6 +169,40 @@ function Produk() {
               autorenew
             </span>
           </button>
+          <button
+            className="flex items-center transition-all duration-1000 hover:text-green-400"
+            onClick={() => setOpenFilter(!openFilter)}
+          >
+            <span className="material-symbols-outlined cursor-pointer ml-3 mr-2">
+              filter_list
+            </span>
+            <p className="text-xs hover:underline">Filter</p>
+          </button>
+          {openFilter && (
+            <div
+              className="absolute top-0 right-64 bg-white z-20 text-xs flex flex-col items-start py-2 px-6 rounded border shadow"
+              ref={popoverRef}
+            >
+              <button
+                onClick={() => filterResult("promo")}
+                className="my-1 hover:text-green-400 cursor-pointer"
+              >
+                Promo
+              </button>
+              <button
+                onClick={() => filterResult("tidak promo")}
+                className="my-1 hover:text-green-400 cursor-pointer"
+              >
+                Tidak promo
+              </button>
+              <button
+                onClick={() => filterResult("Semua")}
+                className="my-1 hover:text-green-400 cursor-pointer"
+              >
+                Semua
+              </button>{" "}
+            </div>
+          )}
         </div>
         {searchQueryProduk ? (
           <p className="mt-3 text-xs text-gray-400 text-center">

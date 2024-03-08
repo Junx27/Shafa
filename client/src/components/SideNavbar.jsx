@@ -34,7 +34,7 @@ function SideNavbar() {
     navigate("/admin");
   };
   return (
-    <div className="relative">
+    <div className="z-50 relative">
       <div
         className={`fixed top-0 py-2 w-full flex justify-between backdrop-blur-md bg-white/30 z-40 border-b ${
           changeColor ? "shadow-lg" : ""
@@ -61,8 +61,8 @@ function SideNavbar() {
                     to={item.link}
                     className={({ isActive }) =>
                       isActive
-                        ? "transition-all duration-1000 bg-green-400 py-4 px-5 hover:bg-green-300 hover:shadow-lg ml-10 rounded-l-lg shadow"
-                        : "py-4 px-5 ml-10 hover:underline hover:underline-offset-8"
+                        ? "transition-all duration-1000 bg-green-400 py-2 px-5 hover:bg-green-300 hover:shadow-lg ml-10 rounded-l-lg shadow"
+                        : "py-2 px-5 ml-10 hover:underline hover:underline-offset-8"
                     }
                   >
                     <div className="flex flex-row items-center">

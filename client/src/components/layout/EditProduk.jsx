@@ -26,8 +26,6 @@ function CreateProduk() {
   };
 
   const removeImage = () => {
-    setImage(null);
-    setGambarProduk(null);
     window.location.reload();
   };
   useEffect(() => {
@@ -73,14 +71,14 @@ function CreateProduk() {
     }
   };
   return (
-    <div className="bg-lime-100 w-8/12 rounded-lg z-30 shadow-lg">
+    <div className="mt-10 w-full border rounded-lg z-30 shadow-lg">
       <div className="">
-        <div className="flex justify-between">
-          <h1 className="pl-5 py-2 bg-lime-400 mr-[60%] rounded-r-lg">
+        <div className="mx-5 mt-5 text-xs flex justify-between">
+          <h1 className="p-2 text-center bg-green-400 rounded w-32 my-auto shadow">
             Mengedit Produk
           </h1>
           <button onClick={() => navigate("/produk")}>
-            <span className="material-symbols-outlined bg-red-400 p-2 rounded-b-lg transition ease-in-out duration-1000">
+            <span className="material-symbols-outlined cursor-pointer">
               cancel
             </span>
           </button>
@@ -102,107 +100,108 @@ function CreateProduk() {
           </div>
         )}
         <form onSubmit={updateProduk} className="pb-10 py-5">
-          <div className="flex flex-col mx-10">
-            <label htmlFor="nama" className="my-2">
-              Nama
-            </label>
-            <input
-              type="text"
-              id="nama"
-              value={nama_produk}
-              onChange={(e) => setNamaProduk(e.target.value)}
-              className="p-2 rounded-lg outline-lime-400 border border-lime-400"
-            />
-          </div>
-          <div className="flex flex-col mx-10">
-            <label htmlFor="harga" className="my-2">
-              Harga
-            </label>
-            <input
-              type="number"
-              min={20000}
-              value={harga_produk}
-              onChange={(e) => setHargaProduk(e.target.value)}
-              id="harga"
-              className="p-2 rounded-lg outline-lime-400 border border-lime-400"
-            />
-          </div>
-          <div className="flex flex-col mx-10">
-            <label htmlFor="deskripsi" className="my-2">
-              Deskripsi
-            </label>
-            <textarea
-              type="text"
-              id="deskripsi"
-              maxLength={220}
-              value={deskripsi_produk}
-              onChange={(e) => setDeskripsiProduk(e.target.value)}
-              className="p-2 rounded-lg outline-lime-400 border border-lime-400 h-[150px]"
-            />
-          </div>
-          <div className="flex flex-col mx-10">
-            <label htmlFor="deskripsi" className="my-2">
-              Status
-            </label>
-            <select
-              name="status"
-              id="status"
-              className="p-2 border border-lime-400 rounded"
-              value={promo}
-              onChange={(e) => setPromo(e.target.value)}
-            >
-              <option value="promo">Promo</option>
-              <option value="tidak promo">Tidak promo</option>
-            </select>
-          </div>
-          <div>
-            {!image && <h1 className="mx-10 my-2">Gambar Lama</h1>}
-            <img
-              src={gambar_produk}
-              alt=""
-              className="mx-auto my-2 w-[600px] rounded"
-            />
-          </div>
-          <div className="flex flex-col mx-10 my-2">
-            Gambar Baru
-            <label htmlFor="gambar">
-              <input
-                type="file"
-                id="gambar"
-                onChange={handleImageChange}
-                className="invisible"
-              />
-              <p className="bg-lime-400 p-2 rounded-md w-20 text-center -mt-5 hover:bg-lime-500 hover:text-white">
-                {image ? "Ganti" : "Pilih"}
-              </p>
-            </label>
-            <div className="relative">
-              {image && (
-                <img src={image} alt="Preview" className="mt-5 rounded-lg" />
-              )}
-              {image && (
-                <p
-                  onClick={removeImage}
-                  className="bg-red-400 py-2 px-5 rounded-b-md text-center absolute top-5 right-0 cursor-pointer"
+          <div className="flex flex-row">
+            <div className="w-full text-xs">
+              <div className="flex flex-col mx-10">
+                <label htmlFor="nama" className="my-2">
+                  Nama
+                </label>
+                <input
+                  type="text"
+                  id="nama"
+                  value={nama_produk}
+                  onChange={(e) => setNamaProduk(e.target.value)}
+                  className="p-2 rounded outline-green-400 border border-green-400"
+                />
+              </div>
+              <div className="flex flex-col mx-10">
+                <label htmlFor="harga" className="my-2">
+                  Harga
+                </label>
+                <input
+                  type="number"
+                  min={20000}
+                  value={harga_produk}
+                  onChange={(e) => setHargaProduk(e.target.value)}
+                  id="harga"
+                  className="p-2 rounded outline-green-400 border border-green-400"
+                />
+              </div>
+              <div className="flex flex-col mx-10">
+                <label htmlFor="deskripsi" className="my-2">
+                  Deskripsi
+                </label>
+                <textarea
+                  type="text"
+                  id="deskripsi"
+                  maxLength={220}
+                  value={deskripsi_produk}
+                  onChange={(e) => setDeskripsiProduk(e.target.value)}
+                  className="p-2 rounded outline-green-400 border border-green-400 h-[150px]"
+                />
+              </div>
+              <div className="flex flex-col mx-10">
+                <label htmlFor="deskripsi" className="my-2">
+                  Status
+                </label>
+                <select
+                  name="status"
+                  id="status"
+                  className="p-2 border border-green-400 rounded"
+                  value={promo}
+                  onChange={(e) => setPromo(e.target.value)}
                 >
-                  X
-                </p>
-              )}
+                  <option value="promo">Promo</option>
+                  <option value="tidak promo">Tidak promo</option>
+                </select>
+              </div>
             </div>
-          </div>
-          <div className="flex justify-end mx-10">
-            <Link
-              className="bg-red-400 p-2 rounded-md mr-5 hover:bg-red-300 hover:text-white"
-              to={"/produk"}
-            >
-              Cancel
-            </Link>
-            <button
-              className="bg-lime-400 p-2 rounded-md hover:bg-lime-500 hover:text-white"
-              type="submit"
-            >
-              Submit
-            </button>
+            <div className="text-xs w-full mr-10">
+              <div className="relative">
+                <img
+                  src={image === null ? gambar_produk : image}
+                  alt=""
+                  className="mx-auto my-2 w-[600px] h-[400px] object-cover rounded"
+                />
+                <div className="">
+                  {image && (
+                    <p
+                      onClick={removeImage}
+                      className="absolute top-2 right-2 cursor-pointer text-sm"
+                    >
+                      X
+                    </p>
+                  )}
+                </div>
+              </div>
+              <div className="flex flex-col my-2">
+                <label htmlFor="gambar">
+                  <input
+                    type="file"
+                    id="gambar"
+                    onChange={handleImageChange}
+                    className="invisible"
+                  />
+                  <p className="transition-all duration-1000 bg-green-400 p-2 rounded-md w-20 text-center -mt-5 hover:bg-green-300">
+                    {image ? "Ganti" : "Pilih"}
+                  </p>
+                </label>
+              </div>
+              <div className="flex justify-end">
+                <Link
+                  className="w-20 text-center transition-all duration-1000 bg-black text-white p-2 rounded-md mr-5 hover:bg-green-400 hover:text-black"
+                  to={"/produk"}
+                >
+                  Batal
+                </Link>
+                <button
+                  className="w-20 text-center transition-all duration-1000 bg-green-400 p-2 rounded-md hover:bg-green-300"
+                  type="submit"
+                >
+                  Submit
+                </button>
+              </div>
+            </div>
           </div>
         </form>
       </div>

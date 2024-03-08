@@ -36,38 +36,26 @@ function Produk() {
   return (
     <div className="">
       <SideNavbar />
-      <div className="mt-5 ms-80 pl-6 mr-10 z-0">
-        <hr className="h-px border-0 bg-lime-200 mb-5" />
+      <div className="mt-20 ms-80 pl-6 mr-10 z-0">
         <div className="mt-5 relative">
           <button
-            className={
-              open
-                ? "relative top-0 left-0 z-40"
-                : "absolute top-0 left-[46.2%] z-40"
-            }
             onClick={showMenu}
+            className="flex items-center transition-all duration-1000 hover:text-green-400"
           >
-            <span
-              className={
-                open
-                  ? "material-symbols-outlined bg-lime-400 p-2 rounded-b-lg transition ease-in-out duration-1000"
-                  : "material-symbols-outlined bg-red-400 p-2 rounded-b-lg transition ease-in-out duration-1000"
-              }
-            >
-              {open ? "add_circle" : "cancel"}
-            </span>
+            <span className="material-symbols-outlined">add_circle</span>
+            <p className="text-xs ml-5 hover:underline cursor-pointer">
+              Menambahkan produk
+            </p>
           </button>
           {!open && (
             <div>
               <Popover>
                 <CreateProduk />
-                <button>close</button>
               </Popover>
             </div>
           )}
         </div>
         <div className="mt-5">
-          <h1 className="mb-5">Produk</h1>
           <ProdukList />
         </div>
       </div>

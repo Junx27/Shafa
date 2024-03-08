@@ -7,6 +7,7 @@ import axios from "axios";
 import PopOver from "./layout/PopOver.jsx";
 import { animated, useSpring } from "react-spring";
 import Logo from "./animate/Logo.jsx";
+import menu from "../assets/images/menu.png";
 
 function Navbar() {
   const dispatch = useDispatch();
@@ -89,9 +90,9 @@ function Navbar() {
     window.addEventListener("scroll", changeBackgroundColor);
   });
   return (
-    <div>
+    <div className="text-sm">
       <div
-        className={`flex justify-between fixed w-full top-0 z-50 px-10 py-3 items-center backdrop-blur-md bg-white/90 transition-all duration-1000 ${
+        className={`flex justify-between fixed w-full top-0 z-50 px-5 py-3 items-center backdrop-blur-md bg-white/30 transition-all duration-1000 ${
           changeColor ? "bg-white/100 shadow-lg pt-3" : "pt-5"
         }`}
       >
@@ -104,7 +105,7 @@ function Navbar() {
               className={({ isActive }) =>
                 isActive
                   ? "transition-all duration-1000 bg-gradient-to-b from-green-400 to-green-500 hover:bg-green-300 py-2 rounded-md shadow"
-                  : "py-2 text-gray-400 hover:text-black rounded-md hover:underline hover:underline-offset-8"
+                  : "py-2 hover:text-black rounded-md hover:underline hover:underline-offset-8"
               }
             >
               <div className="mx-5">{row.nama}</div>
@@ -140,7 +141,7 @@ function Navbar() {
             <div className="w-10 ml-5 rounded-full"></div>
           ) : (
             <animated.div style={animation} className="flex items-center">
-              <p className="font-bold capitalize text-sm absolute right-20 mr-8">
+              <p className="font-bold capitalize text-sm absolute right-20 mr-2">
                 {profile.nama}
               </p>
               <img
@@ -154,7 +155,7 @@ function Navbar() {
               />
             </animated.div>
           )}
-          <span className="font-bold text-xl ml-3 cursor-pointer">:</span>
+          <img src={menu} alt="" className="w-5" />
         </div>
         {openLogout && (
           <button
