@@ -140,6 +140,9 @@ function Navbar() {
             <div className="w-10 ml-5 rounded-full"></div>
           ) : (
             <animated.div style={animation} className="flex items-center">
+              <p className="font-bold capitalize text-sm absolute right-20 mr-8">
+                {profile.nama}
+              </p>
               <img
                 src={
                   profile.gambar_profil === "belum"

@@ -57,24 +57,22 @@ export const getPembelianById = async (req, res) => {
     });
     if (!pembelian)
       return res.status(404).json({ msg: "Data tidak ditemukan" });
-    let response;
-    response = await Pembelian.findOne({
-      where: {
-        id: pembelian.id,
-      },
-      include: [
+    const { status_pengiriman } = req.body;
+    try {
+      await Pembelian.update(
         {
-          model: User,
+          status_pengiriman: status_pengiriman,
         },
         {
-          model: Pembayaran,
-        },
-        {
-          model: Produks,
-        },
-      ],
-    });
-    res.status(200).json(response);
+          where: {
+            id: pembelian.id,
+          },
+        }
+      );
+      res.status(200).json({ msg: "pembelian berhasil diupdate" });
+    } catch (error) {
+      res.status(400).json({ msg: "pembelian gagal diupdate" });
+    }
   } catch (error) {
     res.status(500).json({ msg: error.message });
   }
@@ -180,6 +178,37 @@ export const updatePembelian = async (req, res) => {
         error: error.message,
       });
     }
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+};
+export const updatePembelianById = async (req, res) => {
+  try {
+    const pembelian = await Pembelian.findOne({
+      where: {
+        uuid: req.params.id,
+      },
+    });
+    if (!pembelian)
+      return res.status(404).json({ msg: "Data tidak ditemukan" });
+    let response;
+    response = await Pembelian.findOne({
+      where: {
+        id: pembelian.id,
+      },
+      include: [
+        {
+          model: User,
+        },
+        {
+          model: Pembayaran,
+        },
+        {
+          model: Produks,
+        },
+      ],
+    });
+    res.status(200).json(response);
   } catch (error) {
     res.status(500).json({ msg: error.message });
   }

@@ -16,7 +16,6 @@ export const getPembayaran = async (req, res) => {
       include: [
         {
           model: Users,
-          attributes: ["nama"],
         },
       ],
     });
@@ -72,6 +71,8 @@ export const getPembayaranSelesai = async (req, res) => {
     let response;
     response = await Pembayaran.findAll({
       where: {
+        status_pembayaran: "sudah",
+        status_pengiriman: "sudah",
         status_penerimaan: "sudah",
       },
       include: [
@@ -118,6 +119,7 @@ export const createPembayaran = async (req, res) => {
     alamat,
     status_pembayaran,
     status_pengiriman,
+    bukti_pengiriman,
     status_penerimaan,
     bukti_pembayaran,
     user_id,
@@ -134,6 +136,7 @@ export const createPembayaran = async (req, res) => {
         alamat: alamat,
         status_pembayaran: status_pembayaran,
         status_pengiriman: status_pengiriman,
+        bukti_pengiriman: bukti_pengiriman,
         status_penerimaan: status_penerimaan,
         user_id: req.userId,
       });
@@ -165,6 +168,7 @@ export const createPembayaran = async (req, res) => {
           alamat: alamat,
           status_pembayaran: status_pembayaran,
           status_pengiriman: status_pengiriman,
+          bukti_pengiriman: bukti_pengiriman,
           status_penerimaan: status_penerimaan,
           user_id: req.userId,
         });
@@ -185,13 +189,18 @@ export const updatePembayaran = async (req, res) => {
     if (!pembayaran) {
       return res.status(404).json({ msg: "Data tidak ditemukan" });
     }
-    const { status_pembayaran, status_pengiriman, status_penerimaan } =
-      req.body;
+    const {
+      status_pembayaran,
+      status_pengiriman,
+      status_penerimaan,
+      bukti_pengiriman,
+    } = req.body;
     await Pembayaran.update(
       {
         status_pembayaran,
         status_pengiriman,
         status_penerimaan,
+        bukti_pengiriman,
       },
       {
         where: {

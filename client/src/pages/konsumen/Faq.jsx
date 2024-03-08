@@ -19,7 +19,15 @@ function Faq() {
       navigate("/");
     }
   }, [isError, navigate]);
-
+  const copyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText("contoh");
+      alert("Teks berhasil disalin!");
+    } catch (error) {
+      console.error("Gagal menyalin teks:", error);
+      alert("Gagal menyalin teks. Silakan coba lagi.");
+    }
+  };
   return (
     <div>
       <Suspense fallback={<div></div>}>

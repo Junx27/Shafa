@@ -162,7 +162,7 @@ function Pembayaran() {
                     .map((row, index) => (
                       <div
                         key={index}
-                        className="border transition-all duration-1000 flex flex-col md:flex-row md:justify-between md:w-[500px] md:h-[120px] rounded-lg shadow hover:shadow-lg p-5 md:items-center mb-5"
+                        className="border transition-all duration-1000 flex flex-col md:flex-row md:justify-between md:w-[500px] md:h-[120px] rounded-lg shadow hover:shadow-lg p-5 md:items-center mb-8"
                       >
                         <div className="md:mx-0 mx-auto">
                           <Shipping />
@@ -193,8 +193,10 @@ function Pembayaran() {
                 </div>
               </div>
             )}
-            {pembayaran.filter((row) => row.user_id === userId).length !==
-              0 && (
+            {pembayaran.filter(
+              (row) =>
+                row.user_id === userId && row.status_pengiriman === "sudah"
+            ).length !== 0 && (
               <div className="border p-5 md:p-10 rounded-lg shadow">
                 <div className="text-[10px] md:text-xs flex bg-teal-400 p-2 rounded  w-[170px] md:w-64 shadow items-center">
                   <span className="text-[15px] md:text-xs material-symbols-outlined">
@@ -208,11 +210,15 @@ function Pembayaran() {
                     <span className="text-black underline">disini!</span>
                   </h1>
                   {pembayaran
-                    .filter((row) => row.user_id === userId)
+                    .filter(
+                      (row) =>
+                        row.user_id === userId &&
+                        row.status_pengiriman === "sudah"
+                    )
                     .map((row, index) => (
                       <div
                         key={index}
-                        className="border transition-all duration-1000 flex flex-col md:flex-row md:justify-between md:w-[500px] md:h-[120px] rounded-lg shadow hover:shadow-lg p-5 md:items-center mb-5"
+                        className="relative border transition-all duration-1000 flex flex-col md:flex-row md:justify-between md:w-[500px] md:h-[120px] rounded-lg shadow hover:shadow-lg p-5 md:items-center mb-8"
                       >
                         <div className="md:mx-0 mx-auto">
                           <SuccesAnimate />
@@ -244,6 +250,23 @@ function Pembayaran() {
                         >
                           Diterima
                         </button>
+                        <p className="absolute -top-6 right-0 text-gray-400 text-xs">
+                          No. paket:
+                          <span className="font-bold text-black hover:underline cursor-pointer">
+                            {row.bukti_pengiriman}
+                          </span>
+                          <span
+                            className="ml-3 text-xs material-symbols-outlined cursor-pointer"
+                            onClick={() => {
+                              navigator.clipboard.writeText(
+                                row.bukti_pengiriman
+                              );
+                              alert("No. paket berhasil disalin!");
+                            }}
+                          >
+                            content_copy
+                          </span>
+                        </p>
                       </div>
                     ))}
                 </div>

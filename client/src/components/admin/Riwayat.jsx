@@ -3,11 +3,15 @@ import { useEffect, useRef, useState } from "react";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import menu from "../../assets/images/menu.png";
+import { useNavigate } from "react-router-dom";
 
 function Riwayat() {
+  const navigate = useNavigate();
   const [riwayat, setRiwayat] = useState([]);
   const [open, setOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [isOpenPengirimanBelum, setIsOpenPenirimanBelum] = useState(false);
+  const [isOpenPengirimanSudah, setIsOpenPengirimanSudah] = useState(false);
   const [openItem, setOpenItem] = useState(null);
   const [pembelianByPembayaranId, setPembelianByPembayaranId] = useState([]);
   const popoverRef = useRef(null);
@@ -15,9 +19,7 @@ function Riwayat() {
   useEffect(() => {
     const fetchPembayaran = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:5000/pembayaran/penerimaan/selesai"
-        );
+        const response = await axios.get("http://localhost:5000/pembayaran");
         setRiwayat(response.data);
       } catch (error) {
         console.error(error);
@@ -81,21 +83,293 @@ function Riwayat() {
   };
   return (
     <div>
-      {riwayat.length !== 0 ? (
-        <div className="mt-20">
-          <div className="ml-5 text-[10px] md:text-xs flex bg-green-400 p-2 rounded  w-[170px] md:w-64 shadow items-center">
+      {riwayat.filter((row) => row.status_pengiriman === "belum").length !==
+      0 ? (
+        <div className="mt-20 border p-5 rounded shadow">
+          <div className="text-[10px] md:text-xs flex bg-red-400 p-2 rounded  w-[170px] md:w-64 shadow items-center">
             <span className="text-[15px] md:text-xs material-symbols-outlined">
               description
             </span>
-            <h1 className="ml-2">Riwayat penjualan konsumen</h1>
+            <h1 className="ml-2">Konfirmasi pengiriman konsumen</h1>
           </div>
           <div className="mt-5">
             {riwayat
+              .filter((row) => row.status_pengiriman === "belum")
               .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
               .map((row, index) => (
                 <div
                   key={index}
-                  className="relative border transition-all duration-1000 flex flex-col md:flex-row md:justify-between md:w-full md:h-[120px] rounded-lg shadow hover:shadow-lg p-5 md:items-center mb-5"
+                  className="bg-white relative border transition-all duration-1000 flex flex-col md:flex-row md:justify-between md:w-full md:h-[120px] rounded-lg shadow hover:shadow-lg p-5 md:items-center mb-5"
+                >
+                  <img
+                    src={
+                      row.user.gambar_profil === "belum"
+                        ? "http://localhost:5000/images/defaultProfile.png"
+                        : row.user.gambar_profil
+                    }
+                    alt=""
+                    className="w-16 mx-auto md:mr-5 md:ml-3 rounded-full shadow"
+                  />
+                  <div className="flex flex-col mt-10 md:mt-0 h-[100px] my-auto mr-2">
+                    <p className="text-xs md:text-md font-bold capitalize">
+                      {row.nama}
+                    </p>
+                    <p className="text-[10px] md:text-xs text-gray-400 my-1">
+                      Detail:
+                    </p>
+                    <hr />
+                    <p className="text-[10px] md:text-xs mt-2">
+                      {formatIndonesianDate(row.createdAt)}/
+                      <span className="font-bold">
+                        {formatRupiah(row.total)}
+                      </span>
+                    </p>
+                  </div>
+                  <div className="border-l pl-2 text-xs flex flex-col h-[80px] my-auto">
+                    <p className="font-bold">Status pembayaran</p>
+                    <p
+                      className={`mt-8 capitalize ${
+                        row.status_pembayaran === "belum"
+                          ? "text-red-400"
+                          : "text-green-400"
+                      }`}
+                    >
+                      {row.status_pembayaran}
+                    </p>
+                  </div>
+                  <div className="border-l pl-2 text-xs flex flex-col h-[80px] my-auto">
+                    <p className="font-bold">status pengiriman</p>
+                    <p
+                      className={`mt-8 capitalize ${
+                        row.status_pengiriman === "belum"
+                          ? "text-red-400"
+                          : "text-green-400"
+                      }`}
+                    >
+                      {row.status_pengiriman}
+                    </p>
+                  </div>
+                  <div className="border-l pl-2 text-xs flex flex-col h-[80px] my-auto mr-16">
+                    <p className="font-bold">status penerimaan</p>
+                    <p
+                      className={`mt-8 capitalize ${
+                        row.status_penerimaan === "belum"
+                          ? "text-red-400"
+                          : "text-green-400"
+                      }`}
+                    >
+                      {row.status_penerimaan}
+                    </p>
+                  </div>
+                  <span
+                    className="text-sm hover:text-red-400 cursor-pointer material-symbols-outlined"
+                    onClick={() =>
+                      setIsOpenPenirimanBelum(!isOpenPengirimanBelum)
+                    }
+                  >
+                    delete
+                  </span>
+                  <span
+                    className="text-sm hover:text-green-400 cursor-pointer material-symbols-outlined"
+                    onClick={() => navigate(`/pesanan/${row.uuid}`)}
+                  >
+                    open_in_new
+                  </span>
+
+                  {isOpenPengirimanBelum && (
+                    <Popover>
+                      <div className="-mt-56 w-[400px] h-[150px] bg-white rounded p-5">
+                        <p className="text-xs mb-10">
+                          Apakah anda ingin menghapus data pembelian ini?
+                          <br />
+                          Seluruh data transaksi akan dihapus!
+                        </p>
+                        <div className="flex justify-end">
+                          <button
+                            className="mr-3 transition-all duration-1000 bg-black text-white hover:bg-green-400 hover:text-black p-2 rounded shadow text-xs"
+                            onClick={() =>
+                              setIsOpenPenirimanBelum(!isOpenPengirimanBelum)
+                            }
+                          >
+                            Tidak
+                          </button>
+                          <button
+                            className="mr-3 transition-all duration-1000 bg-green-400 hover:bg-green-300 hover:text-black p-2 px-4 rounded shadow text-xs"
+                            onClick={() => deletePenerimaanSelesai(row.uuid)}
+                          >
+                            Ya
+                          </button>
+                        </div>
+                      </div>
+                    </Popover>
+                  )}
+                </div>
+              ))}
+          </div>
+        </div>
+      ) : (
+        <h1 className="mt-10 text-center text-xs text-gray-400">
+          Belum ada pesanan masuk
+        </h1>
+      )}
+      {riwayat.filter(
+        (row) =>
+          row.status_pengiriman === "sudah" && row.status_penerimaan === "belum"
+      ).length !== 0 ? (
+        <div className="mt-20 border p-5 rounded shadow">
+          <div className="text-[10px] md:text-xs flex bg-sky-400 p-2 rounded  w-[170px] md:w-64 shadow items-center">
+            <span className="text-[15px] md:text-xs material-symbols-outlined">
+              description
+            </span>
+            <h1 className="ml-2">Menunggu konfirmasi konsumen</h1>
+          </div>
+          <div className="mt-5">
+            {riwayat
+              .filter(
+                (row) =>
+                  row.status_pengiriman === "sudah" &&
+                  row.status_penerimaan === "belum"
+              )
+              .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+              .map((row, index) => (
+                <div
+                  key={index}
+                  className="bg-white relative border transition-all duration-1000 flex flex-col md:flex-row md:justify-between md:w-full md:h-[120px] rounded-lg shadow hover:shadow-lg p-5 md:items-center mb-5"
+                >
+                  <img
+                    src={
+                      row.user.gambar_profil === "belum"
+                        ? "http://localhost:5000/images/defaultProfile.png"
+                        : row.user.gambar_profil
+                    }
+                    alt=""
+                    className="w-16 mx-auto md:mr-5 md:ml-3 rounded-full shadow"
+                  />
+                  <div className="flex flex-col mt-10 md:mt-0 h-[100px] my-auto mr-2">
+                    <p className="text-xs md:text-md font-bold capitalize">
+                      {row.nama}
+                    </p>
+                    <p className="text-[10px] md:text-xs text-gray-400 my-1">
+                      Detail:
+                    </p>
+                    <hr />
+                    <p className="text-[10px] md:text-xs mt-2">
+                      {formatIndonesianDate(row.createdAt)}/
+                      <span className="font-bold">
+                        {formatRupiah(row.total)}
+                      </span>
+                    </p>
+                  </div>
+                  <div className="border-l pl-2 text-xs flex flex-col h-[80px] my-auto">
+                    <p className="font-bold">Status pembayaran</p>
+                    <p
+                      className={`mt-8 capitalize ${
+                        row.status_pembayaran === "belum"
+                          ? "text-red-400"
+                          : "text-green-400"
+                      }`}
+                    >
+                      {row.status_pembayaran}
+                    </p>
+                  </div>
+                  <div className="border-l pl-2 text-xs flex flex-col h-[80px] my-auto">
+                    <p className="font-bold">status pengiriman</p>
+                    <p
+                      className={`mt-8 capitalize ${
+                        row.status_pengiriman === "belum"
+                          ? "text-red-400"
+                          : "text-green-400"
+                      }`}
+                    >
+                      {row.status_pengiriman}
+                    </p>
+                  </div>
+                  <div className="border-l pl-2 text-xs flex flex-col h-[80px] my-auto mr-16">
+                    <p className="font-bold">status penerimaan</p>
+                    <p
+                      className={`mt-8 capitalize ${
+                        row.status_penerimaan === "belum"
+                          ? "text-red-400"
+                          : "text-green-400"
+                      }`}
+                    >
+                      {row.status_penerimaan}
+                    </p>
+                  </div>
+                  <span
+                    className="text-sm hover:text-red-400 cursor-pointer material-symbols-outlined"
+                    onClick={() =>
+                      setIsOpenPengirimanSudah(!isOpenPengirimanSudah)
+                    }
+                  >
+                    delete
+                  </span>
+                  <span
+                    className="text-sm hover:text-green-400 cursor-pointer material-symbols-outlined"
+                    onClick={() => navigate(`/pesanan/${row.uuid}`)}
+                  >
+                    open_in_new
+                  </span>
+
+                  {isOpenPengirimanSudah && (
+                    <Popover>
+                      <div className="-mt-56 w-[400px] h-[150px] bg-white rounded p-5">
+                        <p className="text-xs mb-10">
+                          Apakah anda ingin menghapus data pembelian ini?
+                          <br />
+                          Seluruh data transaksi akan dihapus!
+                        </p>
+                        <div className="flex justify-end">
+                          <button
+                            className="mr-3 transition-all duration-1000 bg-black text-white hover:bg-green-400 hover:text-black p-2 rounded shadow text-xs"
+                            onClick={() =>
+                              setIsOpenPengirimanSudah(!isOpenPengirimanSudah)
+                            }
+                          >
+                            Tidak
+                          </button>
+                          <button
+                            className="mr-3 transition-all duration-1000 bg-green-400 hover:bg-green-300 hover:text-black p-2 px-4 rounded shadow text-xs"
+                            onClick={() => deletePenerimaanSelesai(row.uuid)}
+                          >
+                            Ya
+                          </button>
+                        </div>
+                      </div>
+                    </Popover>
+                  )}
+                </div>
+              ))}
+          </div>
+        </div>
+      ) : (
+        <h1 className="mt-10 text-center text-xs text-gray-400">
+          Belum ada pesanan masuk
+        </h1>
+      )}
+      {riwayat.filter(
+        (row) =>
+          row.status_pengiriman === "sudah" && row.status_penerimaan === "sudah"
+      ).length !== 0 ? (
+        <div className="mt-20 p-5 rounded shadow">
+          <div className="text-[10px] md:text-xs flex bg-green-400 p-2 rounded  w-[170px] md:w-64 shadow items-center">
+            <span className="text-[15px] md:text-xs material-symbols-outlined">
+              description
+            </span>
+            <h1 className="ml-2">Pembelian selesai</h1>
+          </div>
+          <div className="mt-5">
+            {riwayat
+              .filter(
+                (row) =>
+                  row.status_pengiriman === "sudah" &&
+                  row.status_penerimaan === "sudah"
+              )
+              .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+              .map((row, index) => (
+                <div
+                  key={index}
+                  className="bg-white relative border transition-all duration-1000 flex flex-col md:flex-row md:justify-between md:w-full md:h-[120px] rounded-lg shadow hover:shadow-lg p-5 md:items-center mb-5"
                 >
                   <img
                     src={
@@ -168,9 +442,15 @@ function Riwayat() {
                       <div className="flex flex-col items-start p-5">
                         <button
                           className="hover:text-green-400"
+                          onClick={() => navigate(`/pesanan/${row.uuid}`)}
+                        >
+                          Lihat detail
+                        </button>
+                        <button
+                          className="hover:text-green-400 mt-2"
                           onClick={() => handlePembayaranItemClick(row.id)}
                         >
-                          Lihat
+                          Lihat transaksi
                         </button>
                         <button
                           className="hover:text-green-400 mt-2"

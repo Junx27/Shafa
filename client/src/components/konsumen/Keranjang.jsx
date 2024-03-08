@@ -184,6 +184,7 @@ function Keranjang() {
       formData.append("bukti_pembayaran", bukti_pembayaran);
       formData.append("status_pembayaran", "belum");
       formData.append("status_pengiriman", "belum");
+      formData.append("bukti_pengiriman", "belum");
       formData.append("status_penerimaan", "belum");
 
       await axios.post("http://localhost:5000/pembayaran", formData, {
@@ -365,18 +366,38 @@ function Keranjang() {
                               Nama penerima:
                             </h1>
                             <hr className="h-px border-0 bg-green-400 my-2" />
-                            <p className="text-xs md:text-md capitalize font-bold">
-                              {nama}
-                            </p>
+                            <div className="relative">
+                              <input
+                                type="text"
+                                value={nama}
+                                className="w-full text-xs md:text-md capitalize font-bold p-2 outline-green-400"
+                                onChange={(e) => setNama(e.target.value)}
+                              />
+                              <span
+                                className={`text-gray-400 absolute right-2 top-2 ml-5 text-[15px] md:text-xs material-symbols-outlined`}
+                              >
+                                edit
+                              </span>
+                            </div>
                           </div>
                           <div className="flex flex-col mx-5 md:mx-10 my-5">
                             <h1 className="text-gray-400 text-[10px] md:text-xs">
                               Alamat pengiriman:
                             </h1>
                             <hr className="h-px border-0 bg-green-400 my-2" />
-                            <p className="text-xs md:text-md capitalize font-bold">
-                              {alamat}
-                            </p>
+                            <div className="relative">
+                              <textarea
+                                type="text"
+                                value={alamat}
+                                className="w-full text-xs md:text-md capitalize font-bold p-2 outline-green-400"
+                                onChange={(e) => setAlamat(e.target.value)}
+                              />
+                              <span
+                                className={`text-gray-400 absolute right-2 top-2 ml-5 text-[15px] md:text-xs material-symbols-outlined`}
+                              >
+                                edit
+                              </span>
+                            </div>
                           </div>
                           <div className="flex flex-col mx-5 md:mx-10 my-5">
                             <h1 className="text-gray-400 text-[10px] md:text-xs">
@@ -428,7 +449,7 @@ function Keranjang() {
                                         <img
                                           src={image}
                                           alt=""
-                                          className="w-[600px]"
+                                          className="w-[400px] h-[700px]"
                                         />
                                         <button
                                           onClick={() => setView(!view)}
