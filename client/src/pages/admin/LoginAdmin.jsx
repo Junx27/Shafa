@@ -38,7 +38,7 @@ function LoginAdmin() {
           <div className="relative">
             <Login />
             <span
-              className="material-symbols-outlined absolute top-5 right-5 cursor-pointer"
+              className="tranistion-all duration-1000 hover:text-red-400 material-symbols-outlined absolute top-5 right-5 cursor-pointer"
               onClick={() => setOpen(!open)}
             >
               cancel

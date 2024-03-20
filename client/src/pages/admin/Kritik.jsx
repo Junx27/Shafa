@@ -23,11 +23,7 @@ function Kritik() {
   return (
     <div className="">
       <SideNavbar />
-      <div className="mt-20 ms-80 pl-6 mr-10">
-        <div className="text-xs flex bg-green-400 p-2 rounded w-64 shadow">
-          <span className="text-xs material-symbols-outlined">mail</span>
-          <h1 className="text ml-2">Kritik dan saran masuk</h1>
-        </div>
+      <div className="mt-20 mx-5 md:mx-0 md:ms-80 md:pl-6 md:mr-10">
         <div className="mt-10">
           <ViewKritik />
         </div>

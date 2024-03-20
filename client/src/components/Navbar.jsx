@@ -113,7 +113,7 @@ function Navbar() {
           ))}
         </div>
         <div
-          className={`hidden md:block bg-orange-400 absolute right-[720px] top-7 text-xs px-1 rounded-full ${
+          className={`hidden md:block text-red-400 absolute right-[725px] top-5 text-[10px] ${
             data.filter((row) => row.user_id === userId).length !== 0
               ? "visible"
               : "invisible"

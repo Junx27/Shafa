@@ -353,8 +353,8 @@ function Keranjang() {
                             onClick={() => setOpen(!open)}
                             type="button"
                           >
-                            <span className="transition-all duration-1000 material-symbols-outlined hover:bg-black hover:text-white rounded p-1 ">
-                              close
+                            <span className="transition-all duration-1000 material-symbols-outlined hover:text-red-400 rounded p-1 ">
+                              cancel
                             </span>
                           </div>
                         </div>
@@ -462,14 +462,14 @@ function Keranjang() {
                                   )}
                                   <div className="mx-5 pb-10 md:pb-0 md:mx-0 mt-5 flex">
                                     <button
-                                      className="bg-black text-white p-2 text-[10px] md:text-xs rounded mr-5 hover:bg-green-400"
+                                      className="transition-all duration-1000 bg-black text-white p-2 text-[10px] md:text-xs rounded mr-5 hover:bg-red-400"
                                       onClick={removeImage}
                                       type="button"
                                     >
                                       Hapus
                                     </button>
                                     <button
-                                      className="bg-green-400 p-2 px-4 text-[10px] md:text-xs rounded hover:bg-green-300"
+                                      className="transition-all duration-1000 bg-green-400 p-2 px-4 text-[10px] md:text-xs rounded hover:bg-green-300"
                                       onClick={() => setView(!view)}
                                       type="button"
                                     >

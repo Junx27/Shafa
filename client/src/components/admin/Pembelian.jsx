@@ -121,8 +121,8 @@ function Pembelian() {
         </div>
       ) : (
         <animated.div className="mt-10" style={animation}>
-          <div className="flex justify-between">
-            <div className="text-[10px] md:text-xs flex bg-white p-2 rounded  w-[170px] md:w-64 shadow items-center">
+          <div className="flex justify-between items-center">
+            <div className="text-[10px] md:text-xs flex bg-green-400 p-2 rounded w-[220px] md:w-[250px] md:w-64 shadow items-center">
               <span className="text-[15px] md:text-xs material-symbols-outlined">
                 description
               </span>
@@ -130,7 +130,7 @@ function Pembelian() {
             </div>
             <div>
               <span
-                className="relative top-2 right-2 material-symbols-outlined cursor-pointer"
+                className="transition-all duration-1000 hover:text-red-400 relative right-2 material-symbols-outlined cursor-pointer"
                 onClick={() => navigate("/riwayat")}
               >
                 cancel
@@ -198,15 +198,15 @@ function Pembelian() {
             </div>
           </div>
           <div className="flex justify-between items-center">
-            <div className="my-5 text-[10px] md:text-xs flex bg-white p-2 rounded  w-[170px] md:w-64 shadow items-center">
+            <div className="my-5 text-[10px] md:text-xs flex bg-green-400 p-2 rounded w-[120px] md:w-[170px] md:w-64 shadow items-center">
               <span className="text-[15px] md:text-xs material-symbols-outlined">
                 description
               </span>
               <h1 className="ml-2">Detail pembelian</h1>
             </div>
             <div>
-              <p className="text-xs">
-                Nomor resi pengiriman:{" "}
+              <p className="text-[10px] md:text-xs overflow-auto">
+                No. paket:{" "}
                 <span className="font-bold hover:underline cursor-pointer">
                   {status_bukti_pengiriman}
                 </span>
@@ -222,7 +222,7 @@ function Pembelian() {
             </div>
           </div>
           <div className="border shadow rounded w-full p-5">
-            <div className="flex flex-row">
+            <div className="flex flex-col md:flex-row">
               <div>
                 <img
                   src={bukti_transfer}
@@ -231,11 +231,11 @@ function Pembelian() {
                 />
               </div>
 
-              <div className="ml-5">
+              <div className="ml-0 md:ml-5">
                 {pembelianByPembayaranId.map((row, index) => (
                   <div
                     key={index}
-                    className="w-[700px] transition-all duration-1000 flex justify-between items-center shadow mt-5 rounded-lg hover:shadow-lg"
+                    className="md:w-[700px] transition-all duration-1000 flex justify-between items-center shadow mt-5 rounded-lg hover:shadow-lg"
                   >
                     <p className="font-bold text-xs ml-5">{index + 1}</p>
                     <img
@@ -287,7 +287,7 @@ function Pembelian() {
                       <form
                         action=""
                         onSubmit={updateStatusPengiriman}
-                        className={`relative w-[500px] p-5 rounded shadow bg-white -mt-64`}
+                        className={`relative w-96 md:w-[500px] p-5 rounded shadow bg-white -mt-64`}
                       >
                         <span
                           className="absolute top-3 right-3 material-symbols-outlined cursor-pointer z-50"

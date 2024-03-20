@@ -193,7 +193,7 @@ function Profile() {
                   </div>
                   <div className="absolute bottom-10 right-20 md:right-10 text-xs">
                     <button
-                      className="transition-all duration-1000 bg-black text-white hover:text-black hover:bg-green-400 w-20 p-2 rounded mr-5"
+                      className="transition-all duration-1000 bg-black text-white hover:text-black hover:bg-red-400 w-20 p-2 rounded mr-5"
                       onClick={openDelete}
                     >
                       Hapus
@@ -211,9 +211,9 @@ function Profile() {
                 <PopOver>
                   <form
                     onSubmit={updateProfile}
-                    className="bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% md:w-[600px] md:h-[750px] relative flex flex-col mx-auto rounded-[20px] shadow-lg transition-all duration-1000 hover:shadow-lg pb-5"
+                    className="bg-white md:w-[500px] md:h-[750px] relative flex flex-col mx-auto rounded-[20px] shadow-lg transition-all duration-1000 hover:shadow-lg pb-5"
                   >
-                    <div className="flex flex-col mx-10">
+                    <div className="flex flex-col mx-5">
                       <img
                         src={
                           profile.gambar_profil === "belum"
@@ -236,7 +236,7 @@ function Profile() {
                       </div>
                       <label
                         htmlFor="gambar"
-                        className="-mt-5 flex justify-end text-xs"
+                        className="flex justify-center ml-10 text-xs"
                       >
                         <input
                           type="file"
@@ -263,7 +263,7 @@ function Profile() {
                           value={nama}
                           maxLength={15}
                           onChange={(e) => setNama(e.target.value)}
-                          className="text-xs my-2 p-2 rounded border border-green-400 outline-none"
+                          className="text-xs my-2 p-2 rounded border border-green-400 outline-green-400"
                         />
                       </div>
                       <div className="flex flex-col">
@@ -278,7 +278,7 @@ function Profile() {
                           type="email"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
-                          className="text-xs my-2 p-2 rounded border border-green-400 outline-none"
+                          className="text-xs my-2 p-2 rounded border border-green-400 outline-green-400"
                         />
                       </div>
                       <div className="flex flex-col">
@@ -294,7 +294,7 @@ function Profile() {
                           value={password}
                           placeholder="******"
                           onChange={(e) => setPassword(e.target.value)}
-                          className="text-xs my-2 p-2 rounded border border-green-400 outline-none"
+                          className="text-xs my-2 p-2 rounded border border-green-400 outline-green-400"
                         />
                       </div>
                       <div className="flex flex-col">
@@ -309,7 +309,7 @@ function Profile() {
                           type="text"
                           value={alamat}
                           onChange={(e) => setAlamat(e.target.value)}
-                          className="text-xs my-2 p-2 rounded border border-green-400 outline-none"
+                          className="text-xs my-2 p-2 rounded border border-green-400 outline-green-400"
                         />
                       </div>
                       <div className="flex flex-col">
@@ -324,18 +324,18 @@ function Profile() {
                           type="number"
                           value={no_tlp}
                           onChange={(e) => setNoTlp(e.target.value)}
-                          className="text-xs my-2 p-2 rounded border border-green-400 outline-none"
+                          className="text-xs my-2 p-2 rounded border border-green-400 outline-green-400"
                         />
                       </div>
                       <div className="flex justify-center mt-5">
                         <button
-                          className="transition-all duration-1000 bg-black text-white py-2 px-5 rounded hover:bg-green-400 hover:text-black text-xs mr-5"
+                          className="w-full transition-all duration-1000 bg-black text-white py-2 rounded hover:bg-red-400 hover:text-black text-xs mr-5"
                           type="button"
                         >
                           Batal
                         </button>
                         <button
-                          className="transition-all duration-1000 bg-green-400 py-2 px-3 rounded hover:bg-green-300 text-xs"
+                          className="w-full transition-all duration-1000 bg-green-400 py-2 rounded hover:bg-green-300 text-xs"
                           type="submit"
                         >
                           Submit
@@ -343,8 +343,8 @@ function Profile() {
                       </div>
                       <div className="absolute right-6 top-3 md:right-3">
                         <div className="" onClick={cancel} type="button">
-                          <span className="transition-all duration-1000 hover:bg-black text-white p-1 mt-1 rounded cursor-pointer material-symbols-outlined">
-                            close
+                          <span className="transition-all duration-1000 hover:text-red-400 p-1 mt-1 rounded cursor-pointer material-symbols-outlined">
+                            cancel
                           </span>
                         </div>
                       </div>

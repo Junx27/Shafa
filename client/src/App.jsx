@@ -21,7 +21,6 @@ const Profile = lazy(() => import("./pages/konsumen/Profile"));
 const ProdukKonsumen = lazy(() => import("./pages/konsumen/Produk"));
 const EditProduk = lazy(() => import("./pages/admin/EditProduk.jsx"));
 const Page404 = lazy(() => import("./pages/Page404.jsx"));
-const ViewKonsumen = lazy(() => import("../src/pages/admin/EditKonsumen.jsx"));
 const EditPembayaran = lazy(() =>
   import("./pages/konsumen/EditPembayaran.jsx")
 );
@@ -44,7 +43,6 @@ function App() {
           <Route path="/produk" Component={Produk} />
           <Route path="/produk/edit/:id" Component={EditProduk} />
           <Route path="/konsumen" Component={Konsumen} />
-          <Route path="/konsumen/:id" Component={ViewKonsumen} />
           <Route path="/pesanan/:pesananId" Component={Pesanan} />
           <Route path="/riwayat" Component={Riwayat} />
           <Route path="/pengaturan" Component={Pengaturan} />

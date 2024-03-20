@@ -47,7 +47,7 @@ function LoginAdmin() {
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="mt-3 p-3 rounded-lg border border-green-400"
+          className="mt-3 p-3 rounded-lg border border-green-400 outline-green-400"
           placeholder="Masukan email"
           required
         />
@@ -59,7 +59,7 @@ function LoginAdmin() {
           type={passwordVisible ? "text" : "password"}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="mt-3 p-3 rounded-lg border border-green-400"
+          className="mt-3 p-3 rounded-lg border border-green-400 outline-green-400"
           placeholder="*****"
           required
         />

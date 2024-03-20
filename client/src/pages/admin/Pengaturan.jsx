@@ -23,11 +23,9 @@ function Pengaturan() {
   return (
     <div className="">
       <SideNavbar />
-      <div className="mt-5 ms-80 pl-6 mr-10">
-        <hr className="h-px border-0 bg-lime-200 mb-5" />
-        <div>
-          <Profile />
-        </div>
+
+      <div className="mt-20">
+        <Profile />
       </div>
     </div>
   );

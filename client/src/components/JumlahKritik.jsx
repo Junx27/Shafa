@@ -1,10 +1,10 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-function JumlahPromo() {
+function JumlahKritik() {
   const [hasil, setHasil] = useState([]);
   const fetchData = async () => {
-    const response = await axios.get("http://localhost:5000/promo");
+    const response = await axios.get("http://localhost:5000/kritik");
     setHasil(response.data);
   };
   useEffect(() => {
@@ -13,4 +13,4 @@ function JumlahPromo() {
   return <div className="font-medium">{hasil.length} Active</div>;
 }
 
-export default JumlahPromo;
+export default JumlahKritik;

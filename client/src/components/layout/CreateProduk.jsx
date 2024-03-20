@@ -55,14 +55,14 @@ function CreateProduk() {
   };
 
   return (
-    <div className="bg-white w-[500px] ml-64 rounded-lg z-30">
+    <div className="bg-white w-full md:w-[500px] md:ml-64 rounded-lg z-30">
       <div className="text-xs">
         <div className="flex justify-between items-center">
           <h1 className="p-2 ml-3 mt-3 bg-green-400 rounded shadow">
             Menambahkan produk
           </h1>
           <span
-            className="material-symbols-outlined cursor-pointer mr-3 mt-3"
+            className="transition-all duration-1000 hover:text-red-400 material-symbols-outlined cursor-pointer mr-3 mt-3"
             onClick={cancel}
           >
             cancel
@@ -84,7 +84,7 @@ function CreateProduk() {
             </p>
           </div>
         )}
-        <form onSubmit={saveProduct} className="pb-10 py-5">
+        <form onSubmit={saveProduct} className="py-5">
           <div className="flex flex-col mx-10">
             <label htmlFor="nama" className="my-2">
               Nama
@@ -94,7 +94,7 @@ function CreateProduk() {
               id="nama"
               value={nama_produk}
               onChange={(e) => setNamaProduk(e.target.value)}
-              className="p-2 rounded-lg outline-green-400 border border-green-400"
+              className="p-2 rounded outline-green-400 border border-green-400"
               required
             />
           </div>
@@ -108,7 +108,7 @@ function CreateProduk() {
               value={harga_produk}
               onChange={(e) => setHargaProduk(e.target.value)}
               id="harga"
-              className="p-2 rounded-lg outline-green-400 border border-green-400"
+              className="p-2 rounded outline-green-400 border border-green-400"
               required
             />
           </div>
@@ -122,7 +122,7 @@ function CreateProduk() {
               maxLength={220}
               value={deskripsi_produk}
               onChange={(e) => setDeskripsiProduk(e.target.value)}
-              className="p-2 rounded-lg outline-green-400 border border-green-400 h-[150px]"
+              className="p-2 rounded outline-green-400 border border-green-400 h-[150px]"
               required
             />
           </div>
@@ -150,7 +150,7 @@ function CreateProduk() {
                 onChange={handleImageChange}
                 className="invisible"
               />
-              <p className="text-xs bg-green-400 p-2 rounded-md w-20 text-center -mt-5 hover:bg-green-300">
+              <p className="text-xs bg-green-400 p-2 rounded w-20 text-center -mt-5 hover:bg-green-300">
                 {image ? "Ganti" : "Pilih"}
               </p>
             </label>
@@ -159,29 +159,29 @@ function CreateProduk() {
                 <img
                   src={image}
                   alt="Preview"
-                  className="mt-5 rounded-lg w-[500px] h-[200px] object-cover"
+                  className="mt-5 rounded-lg w-full h-[120px] md:w-[500px] md:h-[200px] object-cover"
                 />
               )}
               {image && (
                 <p
                   onClick={removeImage}
-                  className="text-xs bg-black text-white py-2 px-5 rounded text-center absolute -top-8 left-24 cursor-pointer"
+                  className="transition-all duration-1000 hover:bg-red-400 hover:text-black text-xs bg-black text-white py-2 px-5 rounded text-center absolute -top-8 left-24 cursor-pointer"
                 >
                   Hapus
                 </p>
               )}
             </div>
           </div>
-          <div className="flex justify-end mx-10">
+          <div className="flex justify-center mx-10 mt-5">
             <button
-              className="transition-all duration-1000 text-xs bg-black text-white p-2 rounded-md mr-5 hover:bg-green-400 hover:text-black"
+              className="w-full transition-all duration-1000 text-xs bg-black text-white p-2 rounded mr-5 hover:bg-red-400 hover:text-black"
               type="button"
               onClick={cancel}
             >
-              Cancel
+              Batal
             </button>
             <button
-              className="transition-all duration-1000 text-xs bg-green-400 p-2 rounded-md hover:bg-green-300"
+              className="w-full transition-all duration-1000 text-xs bg-green-400 p-2 rounded hover:bg-green-300"
               type="submit"
             >
               Submit

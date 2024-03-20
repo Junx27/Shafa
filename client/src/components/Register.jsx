@@ -69,7 +69,7 @@ function Register() {
                 value={nama}
                 onChange={(e) => setNama(e.target.value)}
                 placeholder="Masukan nama"
-                className="mt-3 p-3 rounded-lg border border-green-400"
+                className="mt-3 p-3 rounded-lg border border-green-400 outline-green-400"
                 required
               />
             </div>
@@ -81,7 +81,7 @@ function Register() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Masukan email"
-                className="mt-3 p-3 rounded-lg border border-green-400"
+                className="mt-3 p-3 rounded-lg border border-green-400 outline-green-400"
                 required
               />
             </div>
@@ -93,7 +93,7 @@ function Register() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Masukan password"
-                className="mt-3 p-3 rounded-lg border border-green-400"
+                className="mt-3 p-3 rounded-lg border border-green-400 outline-green-400"
                 required
               />
             </div>
@@ -105,7 +105,7 @@ function Register() {
                 value={alamat}
                 onChange={(e) => setAlamat(e.target.value)}
                 placeholder="Masukan alamat"
-                className="mt-3 p-3 rounded-lg border border-green-400"
+                className="mt-3 p-3 rounded-lg border border-green-400 outline-green-400"
                 required
               />
             </div>
@@ -117,7 +117,7 @@ function Register() {
                 value={no_tlp}
                 onChange={(e) => setNoTlp(e.target.value)}
                 placeholder="Masukan nomor telepon"
-                className="mt-3 p-3 rounded-lg border border-green-400"
+                className="mt-3 p-3 rounded-lg border border-green-400 outline-green-400"
                 required
               />
             </div>
@@ -154,7 +154,7 @@ function Register() {
             {preview && (
               <p
                 onClick={removeImage}
-                className="bg-black text-white p-2 rounded absolute bottom-20 right-0 cursor-pointer"
+                className="transition-all duration-1000 bg-black text-white hover:bg-red-400 hover:text-black shadow p-2 rounded absolute bottom-20 right-0 cursor-pointer"
               >
                 Hapus
               </p>

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import { useNavigate } from "react-router-dom";
+import Empty from "../animate/Empty";
 
 function PesananMasuk() {
   const navigate = useNavigate();
@@ -87,9 +88,10 @@ function PesananMasuk() {
           </div>
         </div>
       ) : (
-        <h1 className="mt-10 text-center text-xs text-gray-400">
-          Belum ada pesanan masuk
-        </h1>
+        <div className="border rounded-lg shadow my-5">
+          <h1 className="text-gray-400 text-xs p-5">Belum ada pesanan masuk</h1>
+          <Empty />
+        </div>
       )}
     </div>
   );

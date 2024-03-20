@@ -2,7 +2,7 @@ import SideNavbar from "../../components/SideNavbar";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { meAdmin } from "../../features/AuthSlice";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import ViewRiwayat from "../../components/admin/Riwayat";
 
 function Riwayat() {
@@ -19,19 +19,6 @@ function Riwayat() {
       navigate("/admin");
     }
   }, [isError, navigate]);
-  const [loading, setLoading] = useState(false);
-
-  // Fungsi untuk mengatur status loading menjadi true selama 3 detik
-
-  useEffect(() => {
-    const startLoading = () => {
-      setLoading(true);
-      setTimeout(() => {
-        setLoading(false);
-      }, 2000);
-    };
-    startLoading();
-  }, []);
   return (
     <div className="">
       <SideNavbar />

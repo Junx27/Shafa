@@ -41,7 +41,7 @@ function LandingPage() {
             <PopOver>
               <div className="relative">
                 <span
-                  className="absolute top-3 right-3 material-symbols-outlined cursor-pointer"
+                  className="transition-all duration-1000 hover:text-red-400 absolute top-3 right-3 material-symbols-outlined cursor-pointer"
                   onClick={() => setOpenLogin(!openLogin)}
                 >
                   cancel
@@ -54,7 +54,7 @@ function LandingPage() {
             <PopOver>
               <div className="relative">
                 <span
-                  className="absolute top-3 right-3 material-symbols-outlined cursor-pointer z-50"
+                  className="transition-all duration-1000 hover:text-red-400 absolute top-3 right-3 material-symbols-outlined cursor-pointer z-50"
                   onClick={() => setOpenRegister(!openRegister)}
                 >
                   cancel

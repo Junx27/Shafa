@@ -88,7 +88,7 @@ export const updateAdmin = async (req, res) => {
   const { nama, email, password, confPassword, no_tlp, no_rek, image } =
     req.body;
   const hashPassword = await argon2.hash(password);
-  const gambar_sementara = "belum";
+  const gambar_sementara = admin.image;
   const oldImagePath = admin.image;
   const __dirname = path.dirname(fileURLToPath(import.meta.url));
   if (req.files === null) {

@@ -71,139 +71,143 @@ function CreateProduk() {
     }
   };
   return (
-    <div className="mt-10 w-full border rounded-lg z-30 shadow-lg">
-      <div className="">
-        <div className="mx-5 mt-5 text-xs flex justify-between">
-          <h1 className="p-2 text-center bg-green-400 rounded w-32 my-auto shadow">
-            Mengedit Produk
-          </h1>
-          <button onClick={() => navigate("/produk")}>
-            <span className="material-symbols-outlined cursor-pointer">
-              cancel
-            </span>
-          </button>
-        </div>
-        {msg && (
-          <div className="relative">
-            <p className=" mt-2 px-5 py-5 bg-red-300">
-              Menambahkan produk gagal, mungkin kesalahan pada nama, nama tidak
-              boleh sama dengan yang sudah ada!
-              <button
-                className="rounded-b-md absolute top-0 right-0"
-                onClick={() => navigate("/produk")}
-              >
-                <span className="material-symbols-outlined text-white cursor-pointer">
-                  disabled_by_default
-                </span>
-              </button>
-            </p>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+      <div className="mt-10 w-full h-full md:h-auto md:w-[800px] bg-white border rounded-lg z-30 shadow-lg overflow-auto">
+        <div className="">
+          <div className="fixed w-[388px] bg-white -top-1 rounded px-5 py-5 md:relative md:top-0 md:w-full text-xs flex justify-between">
+            <h1 className="p-2 text-center bg-green-400 rounded w-32 my-auto shadow">
+              Mengedit Produk
+            </h1>
+            <button onClick={() => navigate("/produk")}>
+              <span className="transition-all duration-1000 hover:text-red-400 material-symbols-outlined cursor-pointer">
+                cancel
+              </span>
+            </button>
           </div>
-        )}
-        <form onSubmit={updateProduk} className="pb-10 py-5">
-          <div className="flex flex-row">
-            <div className="w-full text-xs">
-              <div className="flex flex-col mx-10">
-                <label htmlFor="nama" className="my-2">
-                  Nama
-                </label>
-                <input
-                  type="text"
-                  id="nama"
-                  value={nama_produk}
-                  onChange={(e) => setNamaProduk(e.target.value)}
-                  className="p-2 rounded outline-green-400 border border-green-400"
-                />
-              </div>
-              <div className="flex flex-col mx-10">
-                <label htmlFor="harga" className="my-2">
-                  Harga
-                </label>
-                <input
-                  type="number"
-                  min={20000}
-                  value={harga_produk}
-                  onChange={(e) => setHargaProduk(e.target.value)}
-                  id="harga"
-                  className="p-2 rounded outline-green-400 border border-green-400"
-                />
-              </div>
-              <div className="flex flex-col mx-10">
-                <label htmlFor="deskripsi" className="my-2">
-                  Deskripsi
-                </label>
-                <textarea
-                  type="text"
-                  id="deskripsi"
-                  maxLength={220}
-                  value={deskripsi_produk}
-                  onChange={(e) => setDeskripsiProduk(e.target.value)}
-                  className="p-2 rounded outline-green-400 border border-green-400 h-[150px]"
-                />
-              </div>
-              <div className="flex flex-col mx-10">
-                <label htmlFor="deskripsi" className="my-2">
-                  Status
-                </label>
-                <select
-                  name="status"
-                  id="status"
-                  className="p-2 border border-green-400 rounded"
-                  value={promo}
-                  onChange={(e) => setPromo(e.target.value)}
+          {msg && (
+            <div className="relative">
+              <p className=" mt-2 px-5 py-5 bg-red-300">
+                Menambahkan produk gagal, mungkin kesalahan pada nama, nama
+                tidak boleh sama dengan yang sudah ada!
+                <button
+                  className="rounded-b-md absolute top-0 right-0"
+                  onClick={() => navigate("/produk")}
                 >
-                  <option value="promo">Promo</option>
-                  <option value="tidak promo">Tidak promo</option>
-                </select>
-              </div>
+                  <span className="material-symbols-outlined text-white cursor-pointer">
+                    disabled_by_default
+                  </span>
+                </button>
+              </p>
             </div>
-            <div className="text-xs w-full mr-10">
-              <div className="relative">
-                <img
-                  src={image === null ? gambar_produk : image}
-                  alt=""
-                  className="mx-auto my-2 w-[600px] h-[400px] object-cover rounded"
-                />
-                <div className="">
-                  {image && (
-                    <p
-                      onClick={removeImage}
-                      className="absolute top-2 right-2 cursor-pointer text-sm"
-                    >
-                      X
-                    </p>
-                  )}
+          )}
+          <form
+            onSubmit={updateProduk}
+            className="mt-5 pb-10 py-5 overflow-hidden"
+          >
+            <div className="flex flex-col md:flex-row">
+              <div className="w-full text-xs">
+                <div className="flex flex-col mx-10">
+                  <label htmlFor="nama" className="my-2">
+                    Nama
+                  </label>
+                  <input
+                    type="text"
+                    id="nama"
+                    value={nama_produk}
+                    onChange={(e) => setNamaProduk(e.target.value)}
+                    className="p-2 rounded outline-green-400 border border-green-400"
+                  />
+                </div>
+                <div className="flex flex-col mx-10">
+                  <label htmlFor="harga" className="my-2">
+                    Harga
+                  </label>
+                  <input
+                    type="number"
+                    min={20000}
+                    value={harga_produk}
+                    onChange={(e) => setHargaProduk(e.target.value)}
+                    id="harga"
+                    className="p-2 rounded outline-green-400 border border-green-400"
+                  />
+                </div>
+                <div className="flex flex-col mx-10">
+                  <label htmlFor="deskripsi" className="my-2">
+                    Deskripsi
+                  </label>
+                  <textarea
+                    type="text"
+                    id="deskripsi"
+                    maxLength={220}
+                    value={deskripsi_produk}
+                    onChange={(e) => setDeskripsiProduk(e.target.value)}
+                    className="p-2 rounded outline-green-400 border border-green-400 h-[150px]"
+                  />
+                </div>
+                <div className="flex flex-col mx-10">
+                  <label htmlFor="deskripsi" className="my-2">
+                    Status
+                  </label>
+                  <select
+                    name="status"
+                    id="status"
+                    className="p-2 border border-green-400 rounded outline-green-400"
+                    value={promo}
+                    onChange={(e) => setPromo(e.target.value)}
+                  >
+                    <option value="promo">Promo</option>
+                    <option value="tidak promo">Tidak promo</option>
+                  </select>
                 </div>
               </div>
-              <div className="flex flex-col my-2">
-                <label htmlFor="gambar">
-                  <input
-                    type="file"
-                    id="gambar"
-                    onChange={handleImageChange}
-                    className="invisible"
+              <div className="text-xs w-full mx-10 mr-0 md:mr-10">
+                <div className="flex my-2">
+                  <label htmlFor="gambar">
+                    <input
+                      type="file"
+                      id="gambar"
+                      onChange={handleImageChange}
+                      className="invisible"
+                    />
+                    <p className="transition-all duration-1000 bg-green-400 p-2 rounded w-20 text-center -mt-5 hover:bg-green-300">
+                      {image ? "Ganti" : "Pilih"}
+                    </p>
+                  </label>
+                  {image && (
+                    <button
+                      className="w-20 -ml-[160px] transition-all duration-1000 bg-black text-white hover:text-black hover:bg-red-400 py-2 px-5 rounded text-center cursor-pointer"
+                      onClick={() => window.location.reload()}
+                      type="button"
+                    >
+                      Hapus
+                    </button>
+                  )}
+                </div>
+                <div className="relative">
+                  <img
+                    src={image === null ? gambar_produk : image}
+                    alt=""
+                    className="md:mx-auto my-2 w-[300px] h-[200px] md:w-[600px] md:h-[400px] object-cover rounded"
                   />
-                  <p className="transition-all duration-1000 bg-green-400 p-2 rounded-md w-20 text-center -mt-5 hover:bg-green-300">
-                    {image ? "Ganti" : "Pilih"}
-                  </p>
-                </label>
-              </div>
-              <div className="flex justify-end">
-                <Link
-                  className="w-20 text-center transition-all duration-1000 bg-black text-white p-2 rounded-md mr-5 hover:bg-green-400 hover:text-black"
-                  to={"/produk"}
-                >
-                  Batal
-                </Link>
-                <button
-                  className="w-20 text-center transition-all duration-1000 bg-green-400 p-2 rounded-md hover:bg-green-300"
-                  type="submit"
-                >
-                  Submit
-                </button>
+                </div>
+                <div className="flex overflow-auto mr-20 md:mr-0 my-5">
+                  <Link
+                    className="w-full text-center transition-all duration-1000 bg-black text-white p-2 rounded mr-5 hover:bg-red-400 hover:text-black"
+                    to={"/produk"}
+                  >
+                    Batal
+                  </Link>
+                  <button
+                    className="w-full text-center transition-all duration-1000 bg-green-400 p-2 rounded hover:bg-green-300"
+                    type="submit"
+                  >
+                    Submit
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
   );
