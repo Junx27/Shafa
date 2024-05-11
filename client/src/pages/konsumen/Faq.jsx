@@ -19,20 +19,15 @@ function Faq() {
       navigate("/");
     }
   }, [isError, navigate]);
-  const copyToClipboard = async () => {
-    try {
-      await navigator.clipboard.writeText("contoh");
-      alert("Teks berhasil disalin!");
-    } catch (error) {
-      console.error("Gagal menyalin teks:", error);
-      alert("Gagal menyalin teks. Silakan coba lagi.");
-    }
-  };
+
   return (
     <div>
       <Suspense fallback={<div></div>}>
         <div>
           <Navbar />
+        </div>
+        <div className="h-[800px]">
+          <h1 className="mt-20">ini adalah halaman bantuan</h1>
         </div>
         <div>
           <Footer />
