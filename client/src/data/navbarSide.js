@@ -1,4 +1,4 @@
-export const navbar = [
+export const navbarSide = [
   {
     nama: "Home",
     link: "/home",
@@ -14,6 +14,10 @@ export const navbar = [
   {
     nama: "Riwayat",
     link: "/riwayatkonsumen",
+  },
+  {
+    nama: "Profile",
+    link: "/profile",
   },
   {
     nama: "Bantuan",

@@ -114,10 +114,25 @@ function Pembayaran() {
     });
     return formatter.format(number);
   };
-  const deletePenerimaanSelesai = async (id) => {
-    await axios.delete(`http://localhost:5000/pembayaran/${id}`);
-    window.location.reload();
+  const deletePenerimaanSelesai = async (e, id) => {
+    e.preventDefault();
+    try {
+      const status = "dihapus";
+      const formData = new FormData();
+      formData.append("status_penerimaan", status);
+      await axios.patch(`http://localhost:5000/pembayaran/${id}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      window.location.reload();
+    } catch (error) {
+      if (error.response) {
+        console.error("Gagal memperbarui data:", error);
+      }
+    }
   };
+
   // eslint-disable-next-line react/prop-types
   const Popover = ({ children }) => {
     return (
@@ -343,8 +358,8 @@ function Pembayaran() {
                                   </button>
                                   <button
                                     className="mr-3 transition-all duration-1000 bg-green-400 hover:bg-green-300 hover:text-black p-2 px-4 rounded shadow text-xs"
-                                    onClick={() =>
-                                      deletePenerimaanSelesai(row.uuid)
+                                    onClick={(e) =>
+                                      deletePenerimaanSelesai(e, row.uuid)
                                     }
                                   >
                                     Ya

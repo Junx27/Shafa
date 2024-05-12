@@ -26,7 +26,7 @@ export const navbar = [
   {
     id: 4,
     image: history,
-    nama: "History",
+    nama: "Riwayat",
     link: "/riwayat",
   },
   {

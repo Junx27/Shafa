@@ -391,7 +391,8 @@ function Riwayat() {
           {riwayat.filter(
             (row) =>
               row.status_pengiriman === "sudah" &&
-              row.status_penerimaan === "sudah"
+              (row.status_penerimaan === "sudah" ||
+                row.status_penerimaan === "dihapus")
           ).length !== 0 ? (
             <div className="mt-10">
               <div className="text-[10px] md:text-xs flex bg-green-400 p-2 rounded md:w-64 shadow items-center">
@@ -405,7 +406,8 @@ function Riwayat() {
                   .filter(
                     (row) =>
                       row.status_pengiriman === "sudah" &&
-                      row.status_penerimaan === "sudah"
+                      (row.status_penerimaan === "sudah" ||
+                        row.status_penerimaan === "dihapus")
                   )
                   .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
                   .map((row, index) => (

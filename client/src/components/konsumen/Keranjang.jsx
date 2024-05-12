@@ -18,6 +18,7 @@ function Keranjang() {
   const [data, setData] = useState([]);
   const [productQuantity, setProductQuantity] = useState({});
   const [loading, setLoading] = useState(false);
+  const [openQris, setOpenQris] = useState(false);
 
   useEffect(() => {
     const startLoading = () => {
@@ -412,9 +413,16 @@ function Keranjang() {
                         <div>
                           <p className="text-gray-400 text-[10px] md:text-xs mx-5 md:mx-0 md:mr-10 text-justify">
                             Selsaikan pembayaran dengan upload bukti transfer ke
-                            No. Rek BRI 09087676564531444 a/n Shafa farm
-                            Hidroponik. Pastikan pembayaran sesuai dengan benar,
-                            proses pembayaran akan diproses 1 X 24 jam.{" "}
+                            No. Rek BRI 09087676564531444 atau{" "}
+                            <span
+                              className="font-bold text-black cursor-pointer hover:underline me-1"
+                              onClick={() => setOpenQris(!openQris)}
+                            >
+                              Scan QRIS disini
+                            </span>
+                            a/n Shafa farm Hidroponik. Pastikan pembayaran
+                            sesuai dengan benar, proses pembayaran akan diproses
+                            1 X 24 jam.{" "}
                             <span
                               className="text-black cursor-pointer hover:underline"
                               onClick={() => navigate("/faq")}
@@ -422,6 +430,13 @@ function Keranjang() {
                               Dapatkan informasi lengkap disini!
                             </span>
                           </p>
+                          {openQris && (
+                            <img
+                              src="/images/qris.jpg"
+                              alt=""
+                              className="w-[200px] h-[200px] absolute mt-5"
+                            />
+                          )}
                           <div className="flex flex-col mb-10 md:mb-0">
                             <label htmlFor="gambar">
                               <input

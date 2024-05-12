@@ -97,7 +97,7 @@ function Footer() {
                       <span className="material-symbols-outlined mr-2 bg-white p-1 rounded-full shadow">
                         receipt_long
                       </span>
-                      <a href="/riwayatkonsumen">History</a>
+                      <a href="/riwayatkonsumen">Riwayat</a>
                     </li>
                     <li className="transition-all duration-1000 flex items-center mt-2 cursor-pointer bg-white hover:w-[150px] hover:px-2 w-0 hover:shadow rounded py-1">
                       <span className="material-symbols-outlined mr-2 bg-white p-1 rounded-full shadow">
@@ -232,7 +232,7 @@ function Footer() {
                 <span className="material-symbols-outlined mr-2 bg-white p-1 rounded-full shadow">
                   receipt_long
                 </span>
-                <a href="/riwayatkonsumen">History</a>
+                <a href="/riwayatkonsumen">Riwayat</a>
               </li>
               <li className="transition-all duration-1000 flex items-center mt-2 cursor-pointer bg-white hover:w-[150px] hover:px-2 w-0 hover:shadow rounded py-1">
                 <span className="material-symbols-outlined mr-2 bg-white p-1 rounded-full shadow">

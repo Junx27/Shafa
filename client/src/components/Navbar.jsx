@@ -1,5 +1,6 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { navbar } from "../data/navbarKonsumen";
+import { navbarSide } from "../data/navbarSide.js";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser, reset } from "../features/AuthSlice.js";
@@ -8,6 +9,7 @@ import PopOver from "./layout/PopOver.jsx";
 import { animated, useSpring } from "react-spring";
 import Logo from "./animate/Logo.jsx";
 import menu from "../assets/images/menu.png";
+import Profile from "./konsumen/Profile.jsx";
 
 function Navbar() {
   const dispatch = useDispatch();
@@ -70,7 +72,6 @@ function Navbar() {
   useEffect(() => {
     fetchData();
   }, []);
-
   const logout = () => {
     dispatch(logoutUser());
     dispatch(reset());
@@ -113,16 +114,14 @@ function Navbar() {
           ))}
         </div>
         <div
-          className={`hidden md:block text-red-400 absolute right-[725px] top-5 text-[10px] ${
+          className={`hidden animate-pulse md:block w-2 h-2 bg-orange-400 rounded-full absolute right-[705px] top-7 ${
             data.filter((row) => row.user_id === userId).length !== 0
               ? "visible"
               : "invisible"
           }`}
-        >
-          {data.filter((row) => row.user_id === userId).length}
-        </div>
+        ></div>
         <div
-          className={`hidden md:block bg-orange-400 absolute right-[615px] top-7 text-xs px-1 rounded-full ${
+          className={`hidden md:block bg-orange-400 absolute right-[500px] top-7 text-xs px-1 rounded-full ${
             pembayaranBelum.filter((row) => row.user_id === userId).length !== 0
               ? "visible"
               : "invisible"
@@ -158,12 +157,9 @@ function Navbar() {
           <img src={menu} alt="" className="w-5" />
         </div>
         {openLogout && (
-          <button
-            className="hidden md:block absolute right-10 top-20 bg-green-400 hover:bg-green-300 py-2 px-4 rounded-md shadow text-xs"
-            onClick={logout}
-          >
-            Logout
-          </button>
+          <div className="hidden md:block absolute right-0 top-0">
+            <Profile />
+          </div>
         )}
       </div>
       {openNavbar && (
@@ -174,7 +170,7 @@ function Navbar() {
                 style={animationSidebar}
                 className="w-64 bg-white h-[800px] py-10"
               >
-                {navbar.map((row, index) => (
+                {navbarSide.map((row, index) => (
                   <NavLink key={index} to={row.link}>
                     <div className="transition-all duration-1000 my-10 hover:underline hover:underline-offset-8 mx-10">
                       {row.nama}

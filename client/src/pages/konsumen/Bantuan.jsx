@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { meUser } from "../../features/AuthSlice";
 import { Suspense, lazy, useEffect } from "react";
+import Bantuan from "../../components/konsumen/Bantuan";
 const Navbar = lazy(() => import("../../components/Navbar"));
 const Footer = lazy(() => import("../../components/Footer"));
 
@@ -26,8 +27,8 @@ function Faq() {
         <div>
           <Navbar />
         </div>
-        <div className="h-[800px]">
-          <h1 className="mt-20">ini adalah halaman bantuan</h1>
+        <div className="mt-20">
+          <Bantuan />
         </div>
         <div>
           <Footer />
