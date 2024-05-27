@@ -53,7 +53,6 @@ function CreateProduk() {
       }
     }
   };
-
   return (
     <div className="bg-white w-full md:w-[500px] md:ml-64 rounded-lg z-30">
       <div className="text-xs">
@@ -70,7 +69,7 @@ function CreateProduk() {
         </div>
         {msg && (
           <div className="relative">
-            <p className=" mt-2 px-5 py-5 bg-red-400">
+            <p className=" mt-2 px-5 py-5 text-red-400">
               Menambahkan produk gagal, mungkin kesalahan pada nama, nama tidak
               boleh sama dengan yang sudah ada!
               <button

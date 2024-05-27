@@ -55,9 +55,9 @@ function Profile() {
       formData.append("nama", nama);
       formData.append("email", email);
       formData.append("password", password);
-      formData.append("no_tlp", no_tlp);
       formData.append("alamat", alamat);
-      formData.append("image", image);
+      formData.append("no_tlp", no_tlp);
+      formData.append("gambar_profil", image);
 
       await axios.patch(
         `http://localhost:5000/users/${profile.uuid}`,
@@ -102,7 +102,7 @@ function Profile() {
               <img
                 src={
                   profile.gambar_profil === "belum"
-                    ? "http://localhost:5000/images/defaultProfile.png"
+                    ? "defaultProfile.png"
                     : profile.gambar_profil
                 }
                 alt=""
@@ -157,7 +157,13 @@ function Profile() {
                   </div>
                 </div>
                 <img
-                  src={preview === null ? profile.gambar_profil : preview}
+                  src={
+                    preview === null
+                      ? profile.gambar_profil === "belum"
+                        ? "defaultProfile.png"
+                        : profile.gambar_profil
+                      : preview
+                  }
                   alt=""
                   className="my-2 w-[100px] h-[100px] md:w-[200px] md:h-[200px] object-cover rounded-full mx-auto"
                 />
@@ -246,7 +252,7 @@ function Profile() {
                       Batal
                     </button>
                     <button
-                      className="w-96 transition-all duration-1000 bg-green-400 p-2 rounded w-20 text-center hover:bg-green-300"
+                      className="w-96 transition-all duration-1000 bg-green-400 p-2 rounded text-center hover:bg-green-300"
                       type="submit"
                     >
                       Submit

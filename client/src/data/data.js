@@ -68,3 +68,8 @@ export const konsumen = [
     image: "http://localhost:5000/images/cb2d7a9b4648910f382165f367ca727c.png",
   },
 ];
+export const admin = [
+  {
+    uuid: "e5261160-87d4-4193-8a7a-7fc132303bec",
+  },
+];

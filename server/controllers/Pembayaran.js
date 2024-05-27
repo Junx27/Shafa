@@ -150,7 +150,9 @@ export const createPembayaran = async (req, res) => {
     const fileSize = file.data.length;
     const ext = path.extname(file.name);
     const fileName = file.md5 + ext;
-    const url = `${req.protocol}://${req.get("host")}/images/${fileName}`;
+    const url = `${req.protocol}://${req.get(
+      "host"
+    )}/images/transfer/${fileName}`;
     const allowedType = [".png", ".jpg", ".jpeg"];
 
     if (!allowedType.includes(ext.toLowerCase()))
@@ -158,7 +160,7 @@ export const createPembayaran = async (req, res) => {
     if (fileSize > 5000000)
       return res.status(422).json({ msg: "Gambar dibawah 5 Mb" });
 
-    file.mv(`./public/images/${fileName}`, async (err) => {
+    file.mv(`./public/images/transfer/${fileName}`, async (err) => {
       if (err) return res.status(500).json({ msg: err.message });
       try {
         await Pembayaran.create({
@@ -232,7 +234,11 @@ export const deletePembayaran = async (req, res) => {
     });
     if (imagePath !== "belum") {
       const fileName = imagePath.split("/").pop();
-      const filePath = path.join(__dirname, "../public/images/", fileName);
+      const filePath = path.join(
+        __dirname,
+        "../public/images/transfer/",
+        fileName
+      );
       console.log(filePath);
 
       fs.unlink(filePath, (err) => {
@@ -248,54 +254,6 @@ export const deletePembayaran = async (req, res) => {
     res.status(500).json({ msg: error.message });
   }
 };
-
-// export const deleteTransaksiByProductName = async (req, res) => {
-//   const productName = req.params.nama_produk;
-
-//   try {
-//     // Hapus transaksi berdasarkan nama_produk
-//     const deletedTransaksiCount = await Transaksi.destroy({
-//       where: {
-//         nama_produk: productName,
-//       },
-//     });
-
-//     if (deletedTransaksiCount > 0) {
-//       return res.status(200).json({
-//         msg: `Transaksi dengan nama produk ${productName} berhasil dihapus`,
-//       });
-//     } else {
-//       return res.status(404).json({
-//         msg: `Transaksi dengan nama produk ${productName} tidak ditemukan`,
-//       });
-//     }
-//   } catch (error) {
-//     return res.status(500).json({ msg: error.message });
-//   }
-// };
-// export const deleteTransaksiByUserId = async (req, res) => {
-//   const userId = req.params.user_id;
-
-//   try {
-//     const deletedTransaksiCount = await Transaksi.destroy({
-//       where: {
-//         user_id: userId,
-//       },
-//     });
-
-//     if (deletedTransaksiCount > 0) {
-//       return res.status(200).json({
-//         msg: `Transaksi dengan user_id ${userId} berhasil dihapus`,
-//       });
-//     } else {
-//       return res.status(404).json({
-//         msg: `Transaksi dengan user_id ${userId} tidak ditemukan`,
-//       });
-//     }
-//   } catch (error) {
-//     return res.status(500).json({ msg: error.message });
-//   }
-// };
 export const deletePembayaranById = async (req, res) => {
   try {
     const pembayaran = await Pembayaran.findOne({

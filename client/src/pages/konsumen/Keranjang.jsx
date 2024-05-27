@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { meUser } from "../../features/AuthSlice";
 import { Suspense, lazy, useEffect } from "react";
+import Whatsapp from "../../components/features/Whatsapp";
 const Navbar = lazy(() => import("../../components/Navbar"));
 const Footer = lazy(() => import("../../components/Footer"));
 const InfromasiKeranjang = lazy(() =>
@@ -33,6 +34,7 @@ function Keranjang() {
           <InfromasiKeranjang />
         </div>
         <div>
+          <Whatsapp />
           <Footer />
         </div>
       </Suspense>

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import BelumAdaData from "../BelumAdaData";
 import { animated, useSpring } from "react-spring";
 import LoadingSpinner from "../animate/Loading";
+import { admin } from "../../data/data.js";
 
 function Keranjang() {
   const navigate = useNavigate();
@@ -19,6 +20,22 @@ function Keranjang() {
   const [productQuantity, setProductQuantity] = useState({});
   const [loading, setLoading] = useState(false);
   const [openQris, setOpenQris] = useState(false);
+  const [rek, setRek] = useState();
+
+  const fetchRek = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/admin/${admin[0].uuid}`
+      );
+      setRek(response.data.no_rek);
+    } catch (error) {
+      console.error("Error fetching profile:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchRek();
+  }, []);
 
   useEffect(() => {
     const startLoading = () => {
@@ -413,7 +430,11 @@ function Keranjang() {
                         <div>
                           <p className="text-gray-400 text-[10px] md:text-xs mx-5 md:mx-0 md:mr-10 text-justify">
                             Selsaikan pembayaran dengan upload bukti transfer ke
-                            No. Rek BRI 09087676564531444 atau{" "}
+                            No. Rek:{" "}
+                            <span className="font-bold underline text-black">
+                              {rek}
+                            </span>{" "}
+                            atau{" "}
                             <span
                               className="font-bold text-black cursor-pointer hover:underline me-1"
                               onClick={() => setOpenQris(!openQris)}

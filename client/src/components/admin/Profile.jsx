@@ -83,7 +83,7 @@ function Profile() {
               <img
                 src={
                   profile.image === "belum"
-                    ? "http://localhost:5000/images/defaultProfile.png"
+                    ? "defaultProfile.png"
                     : profile.image
                 }
                 alt=""
@@ -132,7 +132,13 @@ function Profile() {
                   </div>
                 </div>
                 <img
-                  src={preview === null ? profile.image : preview}
+                  src={
+                    preview === null
+                      ? profile.image === "belum"
+                        ? "defaultProfile.png"
+                        : profile.image
+                      : preview
+                  }
                   alt=""
                   className="my-2 w-[100px] h-[100px] md:w-[200px] md:h-[200px] object-cover rounded-full mx-auto"
                 />

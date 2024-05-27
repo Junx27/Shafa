@@ -24,11 +24,6 @@ function Register() {
       setGambar(file);
     }
   };
-
-  const removeImage = () => {
-    setPreview(null);
-    setGambar(null);
-  };
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
@@ -114,6 +109,7 @@ function Register() {
               <input
                 id="noTlp"
                 type="number"
+                inputMode="numeric"
                 value={no_tlp}
                 onChange={(e) => setNoTlp(e.target.value)}
                 placeholder="Masukan nomor telepon"
@@ -151,14 +147,6 @@ function Register() {
                 )}
               </div>
             </label>
-            {preview && (
-              <p
-                onClick={removeImage}
-                className="transition-all duration-1000 bg-black text-white hover:bg-red-400 hover:text-black shadow p-2 rounded absolute bottom-20 right-0 cursor-pointer"
-              >
-                Hapus
-              </p>
-            )}
           </div>
           <button
             className="text-xs transition-all duration-1000 bg-green-400 hover:bg-green-300 p-3 rounded-lg mt-2 md:mt-10 shadow"

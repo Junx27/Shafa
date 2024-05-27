@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { meUser } from "../../features/AuthSlice";
 import { Suspense, useEffect } from "react";
 import { lazy } from "react";
+import Whatsapp from "../../components/features/Whatsapp";
 const Navbar = lazy(() => import("../../components/Navbar"));
 const Footer = lazy(() => import("../../components/Footer"));
 const Pembayaran = lazy(() => import("../../components/konsumen/Pembayaran"));
@@ -32,6 +33,7 @@ function History() {
           <Pembayaran />
         </div>
         <div>
+          <Whatsapp />
           <Footer />
         </div>
       </Suspense>

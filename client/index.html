@@ -12,10 +12,37 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
     />
+    <style>
+      input[type="number"]::-webkit-inner-spin-button,
+      input[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+    </style>
     <title>Shafa Farm Hidroponik</title>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    <script>
+      const priceInput = document.getElementById("price");
+
+      priceInput.addEventListener("input", function (event) {
+        // Hapus karakter selain digit dan koma
+        const formattedValue = event.target.value.replace(/[^\d,]/g, "");
+
+        // Pisahkan ribuan dengan titik
+        const parts = formattedValue.split(",");
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+        // Format angka dengan maksimal dua digit di belakang koma
+        if (parts.length > 1) {
+          parts[1] = parts[1].substring(0, 2);
+        }
+
+        // Gabungkan kembali
+        event.target.value = parts.join(",");
+      });
+    </script>
   </body>
 </html>

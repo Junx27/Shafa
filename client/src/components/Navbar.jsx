@@ -146,7 +146,7 @@ function Navbar() {
               <img
                 src={
                   profile.gambar_profil === "belum"
-                    ? "http://localhost:5000/images/defaultProfile.png"
+                    ? "defaultProfile.png"
                     : profile.gambar_profil
                 }
                 alt=""

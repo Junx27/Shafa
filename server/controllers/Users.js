@@ -57,7 +57,9 @@ export const createUser = async (req, res) => {
     const fileSize = file.data.length;
     const ext = path.extname(file.name);
     const fileName = file.md5 + ext;
-    const url = `${req.protocol}://${req.get("host")}/images/${fileName}`;
+    const url = `${req.protocol}://${req.get(
+      "host"
+    )}/images/profile/${fileName}`;
     const allowedType = [".png", ".jpg", ".jpeg"];
 
     if (!allowedType.includes(ext.toLowerCase()))
@@ -65,7 +67,7 @@ export const createUser = async (req, res) => {
     if (fileSize > 5000000)
       return res.status(422).json({ msg: "Image must be less than 5 MB" });
 
-    file.mv(`./public/images/${fileName}`, async (err) => {
+    file.mv(`./public/images/profile/${fileName}`, async (err) => {
       if (err) return res.status(500).json({ msg: err.message });
       try {
         await User.create({
@@ -128,7 +130,9 @@ export const updateUser = async (req, res) => {
     const fileSize = file.data.length;
     const ext = path.extname(file.name);
     const fileName = file.md5 + ext;
-    const url = `${req.protocol}://${req.get("host")}/images/${fileName}`;
+    const url = `${req.protocol}://${req.get(
+      "host"
+    )}/images/profile/${fileName}`;
     const allowedType = [".png", ".jpg", ".jpeg"];
 
     if (!allowedType.includes(ext.toLowerCase()))
@@ -136,7 +140,7 @@ export const updateUser = async (req, res) => {
     if (fileSize > 5000000)
       return res.status(422).json({ msg: "Image must be less than 5 MB" });
 
-    file.mv(`./public/images/${fileName}`, async (err) => {
+    file.mv(`./public/images/profile/${fileName}`, async (err) => {
       if (err) return res.status(500).json({ msg: err.message });
       try {
         await User.update(
@@ -157,7 +161,11 @@ export const updateUser = async (req, res) => {
         );
         if (oldImagePath) {
           const fileName = oldImagePath.split("/").pop();
-          const filePath = path.join(__dirname, "../public/images/", fileName);
+          const filePath = path.join(
+            __dirname,
+            "../public/images/profile/",
+            fileName
+          );
           fs.unlink(filePath, (err) => {
             if (err) {
               console.error("Gagal menghapus gambar:", err);
@@ -190,7 +198,11 @@ export const deleteUser = async (req, res) => {
     });
     if (imagePath !== "belum") {
       const fileName = imagePath.split("/").pop();
-      const filePath = path.join(__dirname, "../public/images/", fileName);
+      const filePath = path.join(
+        __dirname,
+        "../public/images/profile/",
+        fileName
+      );
       console.log(filePath);
 
       fs.unlink(filePath, (err) => {

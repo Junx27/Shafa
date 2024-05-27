@@ -1,12 +1,14 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { meUser } from "../../features/AuthSlice";
-import { Suspense, lazy, useEffect } from "react";
+import { Suspense, lazy, useEffect, useRef } from "react";
 import Bantuan from "../../components/konsumen/Bantuan";
+import Whatsapp from "../../components/features/Whatsapp";
 const Navbar = lazy(() => import("../../components/Navbar"));
 const Footer = lazy(() => import("../../components/Footer"));
 
 function Faq() {
+  const pdfRef = useRef();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isError } = useSelector((state) => state.auth);
@@ -26,10 +28,11 @@ function Faq() {
         <div>
           <Navbar />
         </div>
-        <div className="mt-20">
+        <div className="mt-20" ref={pdfRef}>
           <Bantuan />
         </div>
         <div>
+          <Whatsapp />
           <Footer />
         </div>
       </Suspense>

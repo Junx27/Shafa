@@ -7,6 +7,7 @@ import HeroAnimate1 from "../../components/animate/HeroAnimate1";
 import HeroAnimateMobile from "../../components/animate/HeroAnimateMobile";
 import HeroAnimate1Mobile from "../../components/animate/HeroAnimate1Mobile";
 import axios from "axios";
+import Whatsapp from "../../components/features/Whatsapp";
 
 const HomeView = lazy(() => import("../../components/konsumen/Home"));
 const Promo = lazy(() => import("../../components/layout/HeroPromo"));
@@ -120,6 +121,7 @@ function Home() {
           <HomeView />
         </div>
         <div>
+          <Whatsapp />
           <Footer />
         </div>
       </Suspense>

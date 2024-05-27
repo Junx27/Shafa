@@ -162,22 +162,22 @@ function Profile() {
               </div>
               <div className="h-[500px] mb-5 md:w-[600px] md:h-[700px] mt-10 relative flex flex-col md:mx-auto rounded-[20px] shadow transition-all duration-1000 hover:shadow-lg">
                 <div className="">
-                  <div className="bg-gradient-to-r from-sky-500 to-emerald-500  w-full h-[310px] absolute z-0 rounded-t-[20px] shadow"></div>
+                  <div className="w-full h-[310px] absolute z-0 rounded-t-[20px] shadow"></div>
                   <img
                     src={
                       profile.gambar_profil === "belum"
-                        ? "http://localhost:5000/images/defaultProfile.png"
+                        ? "defaultProfile.png"
                         : profile.gambar_profil
                     }
                     alt=""
-                    className="border border-4 md:border-8 relative w-[100px] h-[100px] md:w-[200px] md:h-[200px] rounded-full mx-auto mt-10 shadow z-10"
+                    className="relative w-[100px] h-[100px] md:w-[200px] md:h-[200px] rounded-full mx-auto mt-10 shadow z-10"
                   />
                 </div>
                 <div className="mt-3 mx-16 z-10">
-                  <h1 className="text-white font-bold md:text-2xl text-center capitalize">
+                  <h1 className="font-bold md:text-2xl text-center capitalize">
                     {profile.nama}
                   </h1>
-                  <div className="absolute w-full md:w-[600px] left-0 px-6 mt-3 bg-white rounded-t-[20px]">
+                  <div className="absolute w-full md:w-[600px] left-0 px-6 mt-3 bg-white rounded-t-[20px] border-t">
                     <div className="text-xs mt-5 flex flex-col">
                       <p className="font-light text-gray-500 mr-20">Email</p>
                       <p className="mt-2">{profile.email}</p>
@@ -211,17 +211,17 @@ function Profile() {
                 <PopOver>
                   <form
                     onSubmit={updateProfile}
-                    className="bg-white md:w-[500px] md:h-[750px] relative flex flex-col mx-auto rounded-[20px] shadow-lg transition-all duration-1000 hover:shadow-lg pb-5"
+                    className="bg-white w-[400px] md:w-[500px] md:h-[750px] relative flex flex-col mx-auto rounded-[20px] shadow-lg transition-all duration-1000 hover:shadow-lg pb-5"
                   >
                     <div className="flex flex-col mx-5">
                       <img
                         src={
                           profile.gambar_profil === "belum"
-                            ? "http://localhost:5000/images/defaultProfile.png"
+                            ? "defaultProfile.png"
                             : profile.gambar_profil
                         }
                         alt=""
-                        className={`relative w-[200px] w-[200px] rounded-full mx-auto mt-10 shadow z-10 ${
+                        className={`relative w-[200px] rounded-full mx-auto mt-10 md:mt-5 shadow z-10 ${
                           image ? "invisible" : "visible"
                         }`}
                       />
@@ -234,22 +234,21 @@ function Profile() {
                           />
                         )}
                       </div>
-                      <label
-                        htmlFor="gambar"
-                        className="flex justify-center ml-10 text-xs"
-                      >
+                      <label htmlFor="gambar" className="text-xs">
                         <input
                           type="file"
                           id="gambar"
                           onChange={handleImageChange}
                           className="invisible"
                         />
-                        <p className="transition-all duration-1000 bg-green-400 p-2 rounded-md w-20 text-center -mt-5 hover:bg-green-300 mb-5">
-                          {image ? "Ganti" : "Pilih"}
-                        </p>
+                        <div className="flex justify-center mt-5">
+                          <p className="transition-all duration-1000 bg-green-400 p-2 rounded-md w-20 text-center -mt-5 hover:bg-green-300 mb-5">
+                            {image ? "Ganti" : "Pilih"}
+                          </p>
+                        </div>
                       </label>
                     </div>
-                    <div className="bg-white p-5 rounded-lg mx-10">
+                    <div className="bg-white rounded-lg mx-10">
                       <div className="flex flex-col">
                         <label
                           htmlFor="nama"
@@ -341,7 +340,7 @@ function Profile() {
                           Submit
                         </button>
                       </div>
-                      <div className="absolute right-6 top-3 md:right-3">
+                      <div className="absolute right-6 top-8 md:top-3 md:right-3">
                         <div className="" onClick={cancel} type="button">
                           <span className="transition-all duration-1000 hover:text-red-400 p-1 mt-1 rounded cursor-pointer material-symbols-outlined">
                             cancel

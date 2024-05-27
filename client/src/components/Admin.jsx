@@ -38,9 +38,7 @@ function Admin() {
             <p className="font-bold ml-2 capitalize">{profile.nama}</p>
             <img
               src={
-                profile.image === "belum"
-                  ? "http://localhost:5000/images/defaultProfile.png"
-                  : profile.image
+                profile.image === "belum" ? "defaultProfile.png" : profile.image
               }
               alt=""
               className="w-10 ml-5 rounded-full"

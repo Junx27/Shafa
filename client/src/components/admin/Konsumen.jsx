@@ -298,7 +298,7 @@ function Konsumen() {
                   <img
                     src={
                       row.gambar_profil === "belum"
-                        ? "http://localhost:5000/images/defaultProfile.png"
+                        ? "defaultProfile.png"
                         : row.gambar_profil
                     }
                     alt=""
@@ -422,7 +422,11 @@ function Konsumen() {
                         </div>
                         <img
                           src={
-                            preview === null ? profile.gambar_profil : preview
+                            preview === null
+                              ? profile.gambar_profil === "belum"
+                                ? "defaultProfile.png"
+                                : profile.gambar_profil
+                              : preview
                           }
                           alt=""
                           className="my-2 w-[100px] h-[100px] md:w-[200px] md:h-[200px] object-cover rounded-full mx-auto"

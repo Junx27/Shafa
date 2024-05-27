@@ -42,7 +42,7 @@ function PendaftaranKonsumen() {
                   <img
                     src={
                       row.gambar_profil === "belum"
-                        ? "http://localhost:5000/images/defaultProfile.png"
+                        ? "defaultProfile.png"
                         : row.gambar_profil
                     }
                     alt=""

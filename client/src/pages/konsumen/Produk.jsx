@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { meUser } from "../../features/AuthSlice";
 import { Suspense, lazy, useEffect } from "react";
+import Whatsapp from "../../components/features/Whatsapp";
 const ProdukList = lazy(() => import("../../components/konsumen/Produk"));
 const Navbar = lazy(() => import("../../components/Navbar"));
 const Footer = lazy(() => import("../../components/Footer"));
@@ -27,10 +28,11 @@ function Produk() {
         <div>
           <Navbar />
         </div>
-        <div className="mt-32 mx-5 md:mx-32 pb-20">
+        <div className="mt-32 mx-5 md:mx-32 pb-32">
           <ProdukList />
         </div>
-        <div>
+        <div className="mt-32">
+          <Whatsapp />
           <Footer />
         </div>
       </Suspense>

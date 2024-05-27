@@ -179,7 +179,7 @@ function Produk() {
               <img
                 src={
                   row.gambar_produk === "belum"
-                    ? "http://localhost:5000/images/defaultProductImage.jpg"
+                    ? "defaultProductImage.jpg"
                     : row.gambar_produk
                 }
                 alt=""

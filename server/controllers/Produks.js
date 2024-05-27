@@ -123,7 +123,9 @@ export const createProduks = async (req, res) => {
     const fileSize = file.data.length;
     const ext = path.extname(file.name);
     const fileName = file.md5 + ext;
-    const url = `${req.protocol}://${req.get("host")}/images/${fileName}`;
+    const url = `${req.protocol}://${req.get(
+      "host"
+    )}/images/product/${fileName}`;
     const allowedType = [".png", ".jpg", ".jpeg"];
 
     if (!allowedType.includes(ext.toLowerCase()))
@@ -131,7 +133,7 @@ export const createProduks = async (req, res) => {
     if (fileSize > 5000000)
       return res.status(422).json({ msg: "Gambar dibawah 5 Mb" });
 
-    file.mv(`./public/images/${fileName}`, async (err) => {
+    file.mv(`./public/images/product/${fileName}`, async (err) => {
       if (err) return res.status(500).json({ msg: err.message });
       try {
         await Produks.create({
@@ -193,7 +195,9 @@ export const updateProduks = async (req, res) => {
       const fileSize = file.data.length;
       const ext = path.extname(file.name);
       const fileName = file.md5 + ext;
-      const url = `${req.protocol}://${req.get("host")}/images/${fileName}`;
+      const url = `${req.protocol}://${req.get(
+        "host"
+      )}/images/product/${fileName}`;
       const allowedType = [".png", ".jpg", ".jpeg"];
 
       if (!allowedType.includes(ext.toLowerCase()))
@@ -201,7 +205,7 @@ export const updateProduks = async (req, res) => {
       if (fileSize > 5000000)
         return res.status(422).json({ msg: "Gambar kurang dari 5 Mb" });
 
-      file.mv(`./public/images/${fileName}`, async (err) => {
+      file.mv(`./public/images/product/${fileName}`, async (err) => {
         if (err) return res.status(500).json({ msg: err.message });
         try {
           await Produks.update(
@@ -223,7 +227,7 @@ export const updateProduks = async (req, res) => {
             const fileName = oldImagePath.split("/").pop();
             const filePath = path.join(
               __dirname,
-              "../public/images/",
+              "../public/images/product/",
               fileName
             );
             fs.unlink(filePath, (err) => {
@@ -261,7 +265,11 @@ export const deleteProduks = async (req, res) => {
     });
     if (imagePath !== "belum") {
       const fileName = imagePath.split("/").pop();
-      const filePath = path.join(__dirname, "../public/images/", fileName);
+      const filePath = path.join(
+        __dirname,
+        "../public/images/product/",
+        fileName
+      );
       console.log(filePath);
 
       fs.unlink(filePath, (err) => {
