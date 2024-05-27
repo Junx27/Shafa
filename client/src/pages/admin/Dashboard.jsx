@@ -104,7 +104,7 @@ function Dashboard() {
                 </div>
                 <div
                   className="bg-red-200 border border-red-200 transition-all duration-1000 p-5 rounded-lg shadow-md cursor-pointer hover:shadow-lg -mt-10 md:mt-0"
-                  onClick={() => navigate("/pesanan")}
+                  onClick={() => navigate("/riwayat")}
                 >
                   <div className="flex flex-row items-center">
                     <img src={pesananIcon} alt="" className="w-10 mr-5" />

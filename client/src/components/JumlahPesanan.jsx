@@ -1,10 +1,10 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-function JUmlahPesanan() {
+function JumlahPesanan() {
   const [hasil, setHasil] = useState([]);
   const fetchData = async () => {
-    const response = await axios.get("http://localhost:5000/pembayaran/sudah");
+    const response = await axios.get("http://localhost:5000/pembayaran");
     setHasil(response.data);
   };
   useEffect(() => {
@@ -13,4 +13,4 @@ function JUmlahPesanan() {
   return <div className="font-medium">{hasil.length} Active</div>;
 }
 
-export default JUmlahPesanan;
+export default JumlahPesanan;

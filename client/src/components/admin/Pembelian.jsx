@@ -160,7 +160,7 @@ function Pembelian() {
               <p className="font-bold">Alamat pengiriman</p>
               <p className="mt-8 capitalize">{alamat}</p>
             </div>
-            <div className="border-l pl-2 text-xs flex flex-col h-[80px] my-auto">
+            <div className="border-l pl-2 text-xs flex flex-col h-[80px] w-[250px] my-auto">
               <p className="font-bold">Status pembayaran</p>
               <p
                 className={`mt-8 capitalize ${
@@ -169,7 +169,7 @@ function Pembelian() {
                     : "text-green-400"
                 }`}
               >
-                {status_pembayaran}
+                Pembayaran selesai
               </p>
             </div>
             <div className="border-l pl-2 text-xs flex flex-col h-[80px] my-auto">
@@ -224,6 +224,7 @@ function Pembelian() {
           <div className="border shadow rounded w-full p-5">
             <div className="flex flex-col md:flex-row">
               <div>
+                <h1 className="text-xs pb-2 font-bold">Bukti pembayaran:</h1>
                 <img
                   src={bukti_transfer}
                   alt=""

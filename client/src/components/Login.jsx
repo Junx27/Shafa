@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { loginUser, reset } from "../features/AuthSlice.js";
 import Logo from "../components/animate/LogoLogin.jsx";
 
-function LoginAdmin() {
+function Login() {
   const navigate = useNavigate();
   const [passwordVisible, setPasswordVisible] = useState(false);
 
@@ -85,4 +85,4 @@ function LoginAdmin() {
   );
 }
 
-export default LoginAdmin;
+export default Login;

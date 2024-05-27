@@ -25,9 +25,6 @@ function CreateProduk() {
     }
   };
 
-  const removeImage = () => {
-    window.location.reload();
-  };
   useEffect(() => {
     const getProdukByTd = async () => {
       try {

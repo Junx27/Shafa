@@ -1,12 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Login from "../../components/LoginAdmin.jsx";
 import AdminAnimate from "../../components/animate/AdminAnimate.jsx";
 import PopOver from "../../components/layout/PopOver.jsx";
 import AdminAnimateMobile from "../../components/animate/AdminAnimateMobile.jsx";
 import Logo from "../../components/animate/Logo.jsx";
+import { useDispatch } from "react-redux";
+import { logoutAdmin } from "../../features/AuthSlice.js";
 
 function LoginAdmin() {
   const [open, setOpen] = useState(false);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(logoutAdmin());
+  }, [dispatch]);
   return (
     <div className="bg-white py-20">
       <div>

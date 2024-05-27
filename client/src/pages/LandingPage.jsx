@@ -6,11 +6,18 @@ import PopOver from "../components/layout/PopOver";
 import LandingPageAnimateMobile from "../components/animate/LandingPageAnimateMobile";
 import Register from "../components/Register";
 import LoadingSpinner from "../components/animate/Loading";
+import { logoutUser } from "../features/AuthSlice";
+import { useDispatch } from "react-redux";
 
 function LandingPage() {
   const [openLogin, setOpenLogin] = useState(false);
   const [openRegister, setOpenRegister] = useState(false);
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(logoutUser());
+  }, [dispatch]);
 
   useEffect(() => {
     const startLoading = () => {

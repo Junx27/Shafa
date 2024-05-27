@@ -160,7 +160,7 @@ function Riwayat() {
                               : "text-green-400"
                           }`}
                         >
-                          {row.status_pembayaran}
+                          Pembayaran selesai
                         </p>
                       </div>
                       <div className="border-l pl-2 text-xs flex flex-col h-[80px] my-auto">
@@ -303,7 +303,7 @@ function Riwayat() {
                               : "text-green-400"
                           }`}
                         >
-                          {row.status_pembayaran}
+                          Pembayaran selesai
                         </p>
                       </div>
                       <div className="border-l pl-2 text-xs flex flex-col h-[80px] my-auto">
@@ -448,7 +448,7 @@ function Riwayat() {
                               : "text-green-400"
                           }`}
                         >
-                          {row.status_pembayaran}
+                          Pembayaran selesai
                         </p>
                       </div>
                       <div className="border-l pl-2 text-xs flex flex-col h-[80px] my-auto">

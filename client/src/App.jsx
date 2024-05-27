@@ -2,8 +2,6 @@ import { Route, Routes } from "react-router-dom";
 import { Suspense, lazy } from "react";
 const LandingPage = lazy(() => import("./pages/LandingPage"));
 const HalamanProduk = lazy(() => import("./pages/RegisterPage.jsx"));
-const BantuanPendaftaran = lazy(() => import("./pages/landingPage/Bantuan"));
-const KeuntunganKonsumen = lazy(() => import("./pages/landingPage/Keuntungan"));
 const LoginAdmin = lazy(() => import("./pages/admin/LoginAdmin"));
 const Dashboard = lazy(() => import("./pages/admin/Dashboard"));
 const Konsumen = lazy(() => import("./pages/admin/Konsumen"));
@@ -36,8 +34,6 @@ function App() {
         <Routes>
           <Route path="/" Component={LandingPage} />
           <Route path="/registerberhasil" Component={HalamanProduk} />
-          <Route path="/bantuanpendaftaran" Component={BantuanPendaftaran} />
-          <Route path="/keuntungankonsumen" Component={KeuntunganKonsumen} />
           <Route path="/admin" Component={LoginAdmin} />
           <Route path="/dashboard" Component={Dashboard} />
           <Route path="/produk" Component={Produk} />

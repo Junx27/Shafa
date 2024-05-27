@@ -20,7 +20,6 @@ function Faq() {
       navigate("/");
     }
   }, [isError, navigate]);
-
   return (
     <div>
       <Suspense fallback={<div></div>}>
