@@ -312,11 +312,11 @@ function Produk() {
                           <PromoAnimate />
                         </div>
                       )}
-                      <h1 className="-ml-5 text-xl md:text-3xl font-bold">
+                      <h1 className="text-xl md:text-3xl font-bold capitalize mt-2">
                         {nama_produk}
                       </h1>
                     </div>
-                    <div className="grid grid-cols-1 gap-5 content-between">
+                    <div className="grid grid-cols-1 gap-5 content-between mt-3">
                       <div className="h-24">
                         <p className="text-[10px] md:text-xs text-gray-400">
                           Deskripsi:

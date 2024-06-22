@@ -121,7 +121,7 @@ function Navbar() {
           }`}
         ></div>
         <div
-          className={`hidden md:block bg-orange-400 absolute right-[500px] top-7 text-xs px-1 rounded-full ${
+          className={`hidden bg-orange-400 absolute right-[500px] top-7 text-xs px-1 rounded-full ${
             pembayaranBelum.filter((row) => row.user_id === userId).length !== 0
               ? "visible"
               : "invisible"

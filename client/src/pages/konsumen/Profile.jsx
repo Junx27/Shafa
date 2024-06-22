@@ -21,7 +21,6 @@ function Profile() {
   const [gambar, setGambar] = useState("");
   const [image, setImage] = useState(null);
   const [open, setOpen] = useState("");
-  const [openPopUp, setOpenPopUp] = useState();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isError } = useSelector((state) => state.auth);
@@ -70,14 +69,6 @@ function Profile() {
     setImage(null);
     setGambar(null);
   };
-
-  const openDelete = () => {
-    setOpenPopUp(true);
-    scrollToTop();
-  };
-  const closeDelete = () => {
-    setOpenPopUp(false);
-  };
   const fetchProfile = async () => {
     const response = await axios.get("http://localhost:5000/me");
     setProfile(response.data);
@@ -119,25 +110,6 @@ function Profile() {
         console.error("Gagal memperbarui data:", error);
       }
     }
-  };
-
-  const deleteKonsumen = async () => {
-    try {
-      await axios.delete(`http://localhost:5000/users/${id}`);
-      navigate("/");
-    } catch (error) {
-      if (error.response) {
-        console.error("Gagal", error);
-      }
-    }
-  };
-  // eslint-disable-next-line react/prop-types
-  const Popover = ({ children }) => {
-    return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-        <div>{children}</div>
-      </div>
-    );
   };
   return (
     <div>
@@ -192,12 +164,6 @@ function Profile() {
                     </div>
                   </div>
                   <div className="absolute bottom-10 right-20 md:right-10 text-xs">
-                    <button
-                      className="transition-all duration-1000 bg-black text-white hover:text-black hover:bg-red-400 w-20 p-2 rounded mr-5"
-                      onClick={openDelete}
-                    >
-                      Hapus
-                    </button>
                     <button
                       className="transition-all duration-1000 bg-green-400 w-20 p-2 rounded hover:bg-green-300"
                       onClick={openEdit}
@@ -352,36 +318,7 @@ function Profile() {
                 </PopOver>
               )}
             </div>
-            <div>
-              {openPopUp && (
-                <Popover onClose={openDelete}>
-                  <div
-                    className={`z-20 ${openPopUp ? "visible" : "invisible"}`}
-                  >
-                    <div className="bg-white rounded-lg border shadow-lg mx-auto w-96">
-                      <p className="text-xs text-center p-10">
-                        Apa anda ingin menghapus akun ini, semua data akan
-                        dihapus dari sistem ini!
-                      </p>
-                      <div className="flex justify-end pb-5 text-xs">
-                        <button
-                          className=" bg-black text-white hover:text-black hover:bg-green-400 p-2 rounded w-20"
-                          onClick={closeDelete}
-                        >
-                          Tidak
-                        </button>
-                        <button
-                          className="bg-green-400 hover:bg-green-300 p-2 rounded w-20 mx-5"
-                          onClick={deleteKonsumen}
-                        >
-                          ya
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </Popover>
-              )}
-            </div>
+            <div></div>
             <div>
               <Footer />
             </div>

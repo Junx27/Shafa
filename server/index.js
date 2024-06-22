@@ -58,5 +58,5 @@ app.use(PembayaranRoute);
 
 store.sync();
 app.listen(process.env.APP_PORT, () => {
-  console.log("Server berjalan");
+  console.log("Server berjalan di server shafa");
 });
